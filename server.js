@@ -45,4 +45,11 @@ app.get('/', (req, res) => {
 app.listen(3300, () => {
     console.log(`서버 가동`);
   });
+
+const { connectToDatabase } = require('./config/mysql');
+
+  // MySQL 연결 시도
+connectToDatabase();
+  
+  // 이후 데이터베이스 쿼리 작업 등을 진행할 수 있습니다.
   
