@@ -17,6 +17,13 @@ var cookieParser = require('cookie-parser');
 // 주로 POST 요청의 본문 데이터를 처리
 var bodyParser = require('body-parser');
 
+const { connectToDatabase } = require('./config/mysql');
+
+  // MySQL 연결 시도
+connectToDatabase();
+  
+  // 이후 데이터베이스 쿼리 작업 등을 진행할 수 있습니다.
+
 // express 객체 생성
 const app = express();
 
@@ -39,17 +46,12 @@ app.use(bodyParser.json());
 
 // 메인페이지
 app.get('/', (req, res) => {
-      res.render('main');
+      res.render('template');
   });
 
 app.listen(3300, () => {
     console.log(`서버 가동`);
   });
 
-const { connectToDatabase } = require('./config/mysql');
 
-  // MySQL 연결 시도
-connectToDatabase();
-  
-  // 이후 데이터베이스 쿼리 작업 등을 진행할 수 있습니다.
   
