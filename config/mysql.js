@@ -1,31 +1,29 @@
 const mysql = require('mysql2');
 
-// 데이터베이스 연결 설정
-const connection = mysql.createConnection({
-    host: 'project-db-campus.smhrd.com', // 데이터베이스 호스트
-    port: 3307,                            // 포트 번호
-    user: 'mindload',                      // 데이터베이스 사용자 이름
-    password: 'mind1234!',                 // 데이터베이스 비밀번호
-    database: 'your_database'              // 사용할 데이터베이스 이름 (필요에 따라 수정)
-});
+// MySQL 연결 정보 설정
+const dbConfig = {
+  host: 'project-db-cgi.smhrd.com',
+  port: 3307,
+  user: 'mindload',
+  password: 'mind1234!'
+};
 
-// 연결 시도
-connection.connect((err) => {
+// MySQL 연결 객체 생성
+const connection = mysql.createConnection(dbConfig);
+
+// MySQL 연결 함수
+function connectToDatabase() {
+  connection.connect((err) => {
     if (err) {
-        console.error('데이터베이스 연결 실패:', err.stack);
-        return;
+      console.error('MySQL 연결 오류:', err);
+      return;
     }
-    console.log('데이터베이스에 연결됨:', connection.threadId);
-});
+    console.log('MySQL에 성공적으로 연결되었습니다!');
+  });
+}
 
-// 예시: 쿼리 실행
-connection.query('SELECT * FROM your_table', (error, results) => {
-    if (error) {
-        console.error('쿼리 실행 실패:', error);
-        return;
-    }
-    console.log('결과:', results);
-});
-
-// 연결 종료 (필요할 때)
-connection.end();
+// 연결 객체와 연결 함수 내보내기
+module.exports = {
+  connection,
+  connectToDatabase
+};

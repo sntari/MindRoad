@@ -42,7 +42,14 @@ app.get('/', (req, res) => {
       res.render('main');
   });
 
-app.listen(3300, () => {
+app.listen(3301, () => {
     console.log(`서버 가동`);
   });
+
+const { connectToDatabase } = require('./config/mysql');
+
+// MySQL 연결 시도
+connectToDatabase();
+  
+// 서버 관련 코드 작성 (예: Express.js 서버 설정 등)
   
