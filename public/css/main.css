@@ -2001,7 +2001,7 @@ ul.actions li:first-child {
 	}
 
 }
-
+/* 로그인 버튼 css */
 #login-button-container {
 	position: absolute;
 	top: 20px;
@@ -2009,7 +2009,7 @@ ul.actions li:first-child {
 	z-index: 1000;
 }
 
-#login-button {
+#show {
 	display: inline-block;
 	padding: 10px 20px;
 	color: #fff;
@@ -2029,7 +2029,7 @@ ul.actions li:first-child {
 	margin: 1em 1em 0 0;
 }
 
-#login-button:hover {
+#show:hover {
 	font-weight: bold;
 	/* 호버 시 텍스트 굵게 */
 }
@@ -2040,7 +2040,7 @@ ul.actions li:first-child {
 		right: 10px;
 	}
 
-	#login-button {
+	#show {
 		font-size: 12px;
 		padding: 8px 16px;
 		width: 80px;
