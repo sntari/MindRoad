@@ -7,7 +7,7 @@
 <html>
 
 <head>
-	<title>Astral by HTML5 UP</title>
+	<title><%=title%></title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="../css/main.css" />
@@ -35,19 +35,19 @@
 			<div class="login__content">
 				<div class="login__forms">
 					<!-- 로그인 폼 -->
-					<form action="" class="login__register" id="login-in">
+					<form class="login__register" id="login-in">
 						<h1 class="login__title">Sign In</h1>
 						<div class="login__box">
 							<i class='bx bx-user login__icon'></i>
-							<input type="text" placeholder="Username" class="login__input">
+							<input type="text" name="mem_id" placeholder="Email" class="login__input">
 						</div>
 						<div class="login__box">
 							<i class='bx bx-lock login__icon'></i>
-							<input type="text" placeholder="Password" class="login__input">
+							<input type="password" name="mem_pw" placeholder="Password" class="login__input">
 						</div>
 						<a href="#" class="login__forgot">Forgot Password? </a>
 
-						<a href="#" class="login__button">Sign In</a>
+						<a href="#" class="login__button" id="l-link">Sign In</a>
 
 						<div>
 							<span class="login__account login__account--account">Don't Have an Account?</span>
@@ -56,24 +56,24 @@
 					</form>
 
 					<!-- 회원가입 폼 -->
-					<form action="" class="login__create none" id="login-up">
+					<form class="login__create none" id="login-up">
 						<h1 class="login__title">Create Account</h1>
 						<div class="login__box">
 							<i class='bx bx-user login__icon'></i>
-							<input type="text" placeholder="Username" class="login__input">
+							<input type="text" name="mem_id" placeholder="Email" class="login__input">
 						</div>
 
 						<div class="login__box">
 							<i class='bx bx-at login__icon'></i>
-							<input type="text" placeholder="Email" class="login__input">
+							<input type="text" name="mem_nick" placeholder="Nickname" class="login__input">
 						</div>
 
 						<div class="login__box">
 							<i class='bx bx-lock login__icon'></i>
-							<input type="text" placeholder="Password" class="login__input">
+							<input type="password" name="mem_pw" placeholder="Password" class="login__input">
 						</div>
 
-						<a href="#" class="login__button">Sign Up</a>
+						<a href="#" class="login__button" id="r-link">Sign Up</a>
 
 						<div>
 							<span class="login__account login__account--account">Already have an Account?</span>
@@ -140,6 +140,53 @@
 	<script src="../js/util.js"></script>
 	<script src="../js/main.js"></script>
 	<script src="../js/login.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('#r-link').on('click', function (event) {
+				event.preventDefault(); // 기본 a태그 동작(링크 이동)을 막음
+				$('#login-up').submit(); // 폼을 제출
+			});
+
+			$('#login-up').submit(function (event) {
+				event.preventDefault(); // 폼의 기본 제출 동작을 막음
+				const formData = $(this).serialize();
+				$.ajax({
+					type: 'POST',
+					url: '/member/register',
+					data: formData,
+					success: function (response) {
+						console.log("회원가입성공", response);
+					},
+					error: function (xhr, status, error) {
+						console.log("회원가입실패", xhr.responseText);
+					}
+				});
+			});
+		});
+
+		$(document).ready(function () {
+			$('#l-link').on('click', function (event) {
+				event.preventDefault(); // 기본 a태그 동작(링크 이동)을 막음
+				$('#login-in').submit(); // 폼을 제출
+			});
+
+			$('#login-in').submit(function (event) {
+				event.preventDefault(); // 폼의 기본 제출 동작을 막음
+				const formData = $(this).serialize();
+				$.ajax({
+					type: 'POST',
+					url: '/member/login',
+					data: formData,
+					success: function (response) {
+						console.log("로그인성공", response);
+					},
+					error: function (xhr, status, error) {
+						console.log("로그인실패", xhr.responseText);
+					}
+				});
+			});
+		});
+	</script>
 </body>
 
 </html>

@@ -17,15 +17,27 @@ var cookieParser = require('cookie-parser');
 // 주로 POST 요청의 본문 데이터를 처리
 var bodyParser = require('body-parser');
 
-const { connectToDatabase } = require('./config/mysql');
-
-  // MySQL 연결 시도
-connectToDatabase();
-  
-  // 이후 데이터베이스 쿼리 작업 등을 진행할 수 있습니다.
-
 // express 객체 생성
 const app = express();
+
+// 세션 설정
+app.use(session({
+  secret: 'MindRoad',
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // HTTPS를 사용하지 않는 경우 false로 설정
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+
+app.use(cookieParser('MindRoad'));
+
+app.use((req, res, next) => {
+  res.locals.user = req.session.user;
+  next();
+});
 
 // ejs를 템플릿 엔진으로 사용하도록 설정
 app.use(expressLayouts);
@@ -44,14 +56,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // HTTP 요청의 body에서 JSON 형식으로 전송된 데이터를 파싱(parsing)하여 JavaScript 객체로 만들어주는 역할 
 app.use(bodyParser.json());
 
+// 로그인 관련 라우터
+const memberRoutes = require('./routes/MemberRoutes');
+app.use('/member', memberRoutes);
+
 // 메인페이지
 app.get('/', (req, res) => {
-      res.render('template');
-  });
+  if (req.session.user) {
+    res.render('template', { user: req.session.user, title: '유저있음' });
+  } else {
+    res.render('template', { user: null, title: '유저없음' });
+  }
+});
 
 app.listen(3300, () => {
-    console.log(`서버 가동`);
-  });
+  console.log(`서버 가동`);
+});
 
 
-  
