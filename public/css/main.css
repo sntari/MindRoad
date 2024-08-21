@@ -1604,8 +1604,6 @@ form select,
 form textarea {
 	-webkit-appearance: none;
 	border: 0;
-	background: #f4f4f4;
-	padding: 0.75em;
 	width: 100%;
 	-moz-transition: background-color .25s ease-in-out;
 	-webkit-transition: background-color .25s ease-in-out;
@@ -1619,13 +1617,6 @@ form input[type="password"]:focus,
 form select:focus,
 form textarea:focus {
 	background: #f8f8f8;
-}
-
-form input[type="text"],
-form input[type="email"],
-form input[type="password"],
-form select {
-	line-height: 1.35em;
 }
 
 form ::-webkit-input-placeholder {
@@ -2001,52 +1992,7 @@ ul.actions li:first-child {
 	}
 
 }
-/* 로그인 버튼 css */
-#login-button-container {
-	position: absolute;
-	top: 20px;
-	right: 20px;
-	z-index: 1000;
-}
 
-#show {
-	display: inline-block;
-	padding: 10px 20px;
-	color: #fff;
-	/* 텍스트 색상 */
-	text-decoration: none;
-	/* 밑줄 제거 */
-	border-radius: 5px;
-	/* 모서리 둥글게 */
-	font-size: 20px;
-	/* 폰트 크기 */
-	text-align: center;
-	/* 텍스트 중앙 정렬 */
-	background-color: transparent;
-	/* 배경색 없음 */
-	width: 100px;
-	/* 버튼의 고정된 너비 */
-	margin: 1em 1em 0 0;
-}
-
-#show:hover {
-	font-weight: bold;
-	/* 호버 시 텍스트 굵게 */
-}
-
-@media (max-width: 768px) {
-	#login-button-container {
-		top: 10px;
-		right: 10px;
-	}
-
-	#show {
-		font-size: 12px;
-		padding: 8px 16px;
-		width: 80px;
-		/* 모바일 화면에서는 너비를 줄임 */
-	}
-}
 
 
 /* Wrapper */
