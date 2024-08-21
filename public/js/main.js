@@ -4,6 +4,41 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
+document.getElementById('chatInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && this.value.trim() !== '') {
+        const message = this.value;
+        addUserMessage(message); // 사용자 메시지 추가
+        this.value = ''; // 입력창 초기화
+    }
+});
+
+function addUserMessage(message) {
+    const chatContent = document.getElementById('chatContent');
+    const userMessageElement = document.createElement('div');
+    userMessageElement.className = 'user-message';
+    userMessageElement.textContent = message;
+    chatContent.appendChild(userMessageElement);
+
+    // 스크롤을 맨 아래로 이동
+    chatContent.scrollTop = chatContent.scrollHeight;
+}
+
+function addBotMessage(message) {
+    const chatContent = document.getElementById('chatContent');
+    const botMessageElement = document.createElement('div');
+    botMessageElement.className = 'bot-message';
+    botMessageElement.textContent = message;
+    chatContent.appendChild(botMessageElement);
+
+    // 스크롤을 맨 아래로 이동
+    chatContent.scrollTop = chatContent.scrollHeight;
+}
+
+// 예시: 챗봇이 응답하는 경우
+setTimeout(() => {
+    addBotMessage("저는 챗봇입니다! 무엇을 도와드릴까요?");
+}, 1000);
+
 (function($) {
 
 	var $window = $(window),
