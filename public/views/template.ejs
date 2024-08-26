@@ -128,27 +128,32 @@
 					<!-- Nav -->
 					<nav id="nav">
 						<a href="#" class="icon solid fa-comment"><span>Chat Bot</span></a>
+						<% if(user){ %>
 						<a href="#tarot" class="icon solid fa-sun"><span>Tarot</span></a>
 						<a href="#mypage" class="icon solid fa-user"><span>MyPage</span></a>
+						<% } %>
 					</nav>
 
 					<!-- Main -->
 					<div id="main">
 						<!-- 홈(챗봇) -->
 						 
-						<article id="home" class="panel intro">
+						<article id="home" class="panel">
 							<%- include('home') %>
-
 						</article>
 
 						<!-- 타로카드 -->
 						<article id="tarot" class="panel">
+							<% if(user){ %>
 							<%- include('tarot') %>
+							<% } %>
 						</article>
 
 						<!-- 마이페이지 -->
 						<article id="mypage" class="panel">
+							<% if(user){ %>
 							<%- include('mypage') %>
+							<% } %>
 						</article>
 
 					</div>
