@@ -14,7 +14,35 @@
   z-index: 1000;
 }
 
+/* 로그아웃 버튼 css */
+#logout-button-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
 #show {
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  /* 텍스트 색상 */
+  text-decoration: none;
+  /* 밑줄 제거 */
+  border-radius: 5px;
+  /* 모서리 둥글게 */
+  font-size: 20px;
+  /* 폰트 크기 */
+  text-align: center;
+  /* 텍스트 중앙 정렬 */
+  background-color: transparent;
+  /* 배경색 없음 */
+  width: 100px;
+  /* 버튼의 고정된 너비 */
+  margin: 1em 1em 0 0;
+}
+
+#logoutshow {
   display: inline-block;
   padding: 10px 20px;
   color: #fff;
@@ -39,6 +67,11 @@
   /* 호버 시 텍스트 굵게 */
 }
 
+#logoutshow:hover {
+  font-weight: bold;
+  /* 호버 시 텍스트 굵게 */
+}
+
 @media (max-width: 768px) {
   #login-button-container {
     top: 10px;
@@ -51,6 +84,13 @@
     width: 80px;
     /* 모바일 화면에서는 너비를 줄임 */
   }
+  #logoutshow {
+    font-size: 12px;
+    padding: 8px 16px;
+    width: 80px;
+    /* 모바일 화면에서는 너비를 줄임 */
+  }
+  
 }
 
 /* 로그인을 누를 시 팝업이 뜨면서 배경을 검게 만듬 */
@@ -89,6 +129,61 @@ h1 {
 a {
   text-decoration: none;
 }
+
+/* -------------------------------------- 프로그래스바 ----------------------------------------- */
+#register_id_text,
+#register_nick_text {
+    color: red;
+    margin-bottom: -7px;
+    margin-top: -8px;
+}
+
+#pw_len {
+  margin-bottom: 0;
+  color: red;
+  display: none;
+  margin-bottom: -22px;
+  margin-top: -8px;
+}
+
+/* #progress_bar 스타일 */
+#progress_bar {
+  display: flex;
+  margin-top: 0;
+  margin-bottom: -4px;
+}
+
+/* #sample 스타일 */
+#sample {
+  display: block;
+  margin-left: 22px;
+  height: 0px;
+}
+
+#meter {
+  appearance: none;
+    width: 220px;
+    display: block;
+    margin-top: 17px;
+    margin-left: 10px;
+    margin-bottom: 22px;
+}
+
+#meter::-webkit-progress-bar {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+#meter::-webkit-progress-value {
+  border-radius: 10px;
+  background: var(--c, red);
+}
+
+#meter[value]::-webkit-progress-value {
+  transition: width 0.5s;
+}
+
+/* --------------------------------------끝----------------------------------------- */
 
 .login {
   margin: 0;
@@ -174,7 +269,7 @@ a {
 .login__button {
   display: block;
   padding: 1rem;
-  margin: 2rem 0;
+  margin-bottom: 1rem;
   background-color: #4AD395;
   color: #fff;
   font-weight: 600;

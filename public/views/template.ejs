@@ -7,7 +7,9 @@
 <html>
 
 <head>
-	<title><%=title%></title>
+	<title>
+		<%=title%>
+	</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="../css/main.css" />
@@ -26,167 +28,348 @@
 
 <body class="is-preload">
 	<!-- 로그인 버튼 -->
-	<div id="login-button-container">
-		<a href="#login" id="show">Login</a>
-	</div>
-	<!-- 회원가입/로그인 모달창 -->
-	<div class="background">
-		<div class="login">
-			<div class="login__content">
-				<div class="login__forms">
-					<!-- 로그인 폼 -->
-					<form class="login__register" id="login-in">
-						<h1 class="login__title">Sign In</h1>
-						<div class="login__box">
-							<i class='bx bx-user login__icon'></i>
-							<input type="text" name="mem_id" placeholder="Email" class="login__input">
-						</div>
-						<div class="login__box">
-							<i class='bx bx-lock login__icon'></i>
-							<input type="password" name="mem_pw" placeholder="Password" class="login__input">
-						</div>
-						<a href="#" class="login__forgot">Forgot Password? </a>
+		<% if(user){%>
+		<div id="logout-button-container">
+			<a href="/member/logout" id="logoutshow">Logout</a>
+		</div>
+		<% }else{ %>
+		<div id="login-button-container">
+			<a href="#login" id="show">Login</a>
+		</div>
+		<%} %>
+				<!-- 회원가입/로그인 모달창 -->
+				<div class="background">
+					<div class="login">
+						<div class="login__content">
+							<div class="login__forms">
+								<!-- 로그인 폼 -->
+								<form class="login__register" id="login-in">
+									<h1 class="login__title">Sign In</h1>
+									<div class="login__box">
+										<i class='bx bx-user login__icon'></i>
+										<input type="text" name="mem_id" placeholder="Email" class="login__input"
+											required>
+									</div>
 
-						<a href="#" class="login__button" id="l-link">Sign In</a>
+									<div class="login__box">
+										<i class='bx bx-lock login__icon'></i>
+										<input type="password" name="mem_pw" placeholder="Password" class="login__input"
+											required>
+									</div>
 
-						<div>
-							<span class="login__account login__account--account">Don't Have an Account?</span>
-							<span class="login__signin login__signin--signup" id="sign-up">Sign Up</span>
+									<p id="login_check" style="display: none; color: red; margin-bottom: 0;">로그인 실패</p>
+
+									<a href="#" class="login__forgot">Forgot Password? </a>
+									
+									<a href="#" class="login__button" id="l-link">Sign In</a>
+									
+									<div>
+										<span class="login__account login__account--account">Don't Have an
+											Account?</span>
+										<span class="login__signin login__signin--signup" id="sign-up">Sign Up</span>
+									</div>
+								</form>
+
+								<!-- 회원가입 폼 -->
+								<form class="login__create none" id="login-up">
+									<h1 class="login__title">Create Account</h1>
+									<div class="login__box">
+										<i class='bx bx-user login__icon'></i>
+										<input type="text" id="register_id" name="mem_id" placeholder="Email"
+											class="login__input" required>
+									</div>
+									<p id="register_id_text"></p>
+
+									<div class="login__box">
+										<i class='bx bx-at login__icon'></i>
+										<input type="text" id="register_nick" name="mem_nick" placeholder="Nickname"
+											class="login__input" required>
+									</div>
+									<p id="register_nick_text"></p>
+
+									<div class="login__box">
+										<i class='bx bx-lock login__icon'></i>
+										<input type="password" id="register_pw" name="mem_pw" placeholder="Password"
+											class="login__input" required>
+									</div>
+
+									<p id="pw_len">길이가 너무 짧어</p>
+
+									<div id="progress_bar">
+										<progress max="4" value="0" id="meter"></progress>
+										<p id="sample"></p>
+									</div>
+
+
+									<a href="#" class="login__button" id="r-link">Sign Up</a>
+
+									<div>
+										<span class="login__account login__account--account">Already have an
+											Account?</span>
+										<span class="login__signup login__signup--signup" id="sign-in">Sign In</span>
+									</div>
+
+									<div class="login__social">
+										<a href="#" class="login__social--icon"><i class='bx bxl-facebook'></i></a>
+										<a href="#" class="login__social--icon"><i class='bx bxl-twitter'></i></a>
+										<a href="#" class="login__social--icon"><i class='bx bxl-google'></i></a>
+										<a href="#" class="login__social--icon"><i class='bx bxl-github'></i></a>
+									</div>
+								</form>
+							</div>
 						</div>
-					</form>
-
-					<!-- 회원가입 폼 -->
-					<form class="login__create none" id="login-up">
-						<h1 class="login__title">Create Account</h1>
-						<div class="login__box">
-							<i class='bx bx-user login__icon'></i>
-							<input type="text" name="mem_id" placeholder="Email" class="login__input">
-						</div>
-
-						<div class="login__box">
-							<i class='bx bx-at login__icon'></i>
-							<input type="text" name="mem_nick" placeholder="Nickname" class="login__input">
-						</div>
-
-						<div class="login__box">
-							<i class='bx bx-lock login__icon'></i>
-							<input type="password" name="mem_pw" placeholder="Password" class="login__input">
-						</div>
-
-						<a href="#" class="login__button" id="r-link">Sign Up</a>
-
-						<div>
-							<span class="login__account login__account--account">Already have an Account?</span>
-							<span class="login__signup login__signup--signup" id="sign-in">Sign In</span>
-						</div>
-
-						<div class="login__social">
-							<a href="#" class="login__social--icon"><i class='bx bxl-facebook'></i></a>
-							<a href="#" class="login__social--icon"><i class='bx bxl-twitter'></i></a>
-							<a href="#" class="login__social--icon"><i class='bx bxl-google'></i></a>
-							<a href="#" class="login__social--icon"><i class='bx bxl-github'></i></a>
-						</div>
-					</form>
+					</div>
 				</div>
-			</div>
-		</div>
-	</div>
 
 
-	<!-- Wrapper-->
-	<div id="wrapper">
+				<!-- Wrapper-->
+				<div id="wrapper">
 
-		<!-- Nav -->
-		<nav id="nav">
-			<a href="#" class="icon solid fa-comment"><span>Chat Bot</span></a>
-			<a href="#tarot" class="icon solid fa-sun"><span>Tarot</span></a>
-			<a href="#mypage" class="icon solid fa-user"><span>MyPage</span></a>
-		</nav>
+					<!-- Nav -->
+					<nav id="nav">
+						<a href="#" class="icon solid fa-comment"><span>Chat Bot</span></a>
+						<a href="#tarot" class="icon solid fa-sun"><span>Tarot</span></a>
+						<a href="#mypage" class="icon solid fa-user"><span>MyPage</span></a>
+					</nav>
 
-		<!-- Main -->
-		<div id="main">
+					<!-- Main -->
+					<div id="main">
+						<!-- 홈(챗봇) -->
+						 
+						<article id="home" class="panel intro">
+							<%- include('home') %>
 
-			<!-- 홈(챗봇) -->
-			<article id="home" class="panel intro">
-				<%- include('home') %>
-			</article>
+						</article>
 
-			<!-- 타로카드 -->
-			<article id="tarot" class="panel">
-				<%- include('tarot') %>
-			</article>
+						<!-- 타로카드 -->
+						<article id="tarot" class="panel">
+							<%- include('tarot') %>
+						</article>
 
-			<!-- 마이페이지 -->
-			<article id="mypage" class="panel">
-				<%- include('mypage') %>
-			</article>
+						<!-- 마이페이지 -->
+						<article id="mypage" class="panel">
+							<%- include('mypage') %>
+						</article>
 
-		</div>
+					</div>
 
-		<!-- Footer -->
-		<div id="footer">
-			<ul class="copyright">
-				<li>&copy; 스마트인재개발원</li>
-				<li> MindRoad : 김현우 | 문승명 | 김형욱 | 오창선 | 김지성</li>
-			</ul>
-		</div>
+					<!-- Footer -->
+					<div id="footer">
+						<ul class="copyright">
+							<li>&copy; 스마트인재개발원</li>
+							<li> MindRoad : 김현우 | 문승명 | 김형욱 | 오창선 | 무지성 | 박건 </li>
+						</ul>
+					</div>
 
-	</div>
+				</div>
 
-	<!-- Scripts -->
-	<script src="../js/jquery.min.js"></script>
-	<script src="../js/browser.min.js"></script>
-	<script src="../js/breakpoints.min.js"></script>
-	<script src="../js/util.js"></script>
-	<script src="../js/main.js"></script>
-	<script src="../js/login.js"></script>
-	<script>
-		$(document).ready(function () {
-			$('#r-link').on('click', function (event) {
-				event.preventDefault(); // 기본 a태그 동작(링크 이동)을 막음
-				$('#login-up').submit(); // 폼을 제출
-			});
+				<!-- Scripts -->
+				<script src="../js/jquery.min.js"></script>
+				<script src="../js/browser.min.js"></script>
+				<script src="../js/breakpoints.min.js"></script>
+				<script src="../js/util.js"></script>
+				<script src="../js/main.js"></script>
+				<script src="../js/login.js"></script>
+				<script>
 
-			$('#login-up').submit(function (event) {
-				event.preventDefault(); // 폼의 기본 제출 동작을 막음
-				const formData = $(this).serialize();
-				$.ajax({
-					type: 'POST',
-					url: '/member/register',
-					data: formData,
-					success: function (response) {
-						console.log("회원가입성공", response);
-					},
-					error: function (xhr, status, error) {
-						console.log("회원가입실패", xhr.responseText);
+					// EMAIL 중복체크
+					$(document).ready(function () {
+						$('#register_id').blur(function () {
+							const memIdValue = $(this).val();
+							document.getElementById("register_id_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
+							document.querySelectorAll('.login__box')[3].style.marginTop = '1rem';
+							document.querySelectorAll('.login__box')[2].style.padding = '1.125rem 1rem';
+							console.log("AJAX request value:", memIdValue);
+							if (!memIdValue) {
+								return;
+							}
+							$.ajax({
+								url: "/member/checkE",
+								type: "POST",
+								data: {  // 전달할 데이터
+									EMAIL: memIdValue
+								},
+								success: function (response) {
+									console.log("Server response:", response);
+									if (response === "available") {
+										document.getElementById("register_id_text").innerText = "";
+										document.querySelectorAll('.login__box')[3].style.marginTop = '1rem';
+										document.querySelectorAll('.login__box')[2].style.padding = '1.125rem 1rem';
+									} else {
+										document.getElementById("register_id_text").innerText = "이미 사용중인 이메일입니다.";
+										document.querySelectorAll('.login__box')[3].style.marginTop = '0';
+										document.querySelectorAll('.login__box')[2].style.padding = '0.4rem 1rem';
+										console.log("실패");
+
+									}
+								},
+								error: function (xhr, status, error) {
+									console.error("AJAX 오류 발생:", status, error);
+								}
+							});
+						});
+					});
+					// NICKNAME 중복체크
+					let checkNickname = 0;
+					$(document).ready(function () {
+						$('#register_nick').blur(function () {
+							const NickValue = $(this).val();
+							document.getElementById("register_nick_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
+							document.querySelectorAll('.login__box')[4].style.marginTop = '1rem';
+							document.querySelectorAll('.login__box')[3].style.padding = '1.125rem 1rem';
+							console.log("AJAX request value:", NickValue);
+							if (!NickValue) {
+								return;
+							}
+							$.ajax({
+								url: "/member/checkN",
+								type: "POST",
+								data: {  // 전달할 데이터
+									NICK: NickValue
+								},
+								success: function (response) {
+									console.log("Server response:", response);
+									if (response === "available") {
+										document.getElementById("register_nick_text").innerText = "";
+										document.querySelectorAll('.login__box')[4].style.marginTop = '1rem';
+										document.querySelectorAll('.login__box')[3].style.padding = '1.125rem 1rem';
+										checkNickname = 1;
+									} else {
+										document.getElementById("register_nick_text").innerText = "이미 사용중인 닉네임입니다.";
+										document.querySelectorAll('.login__box')[4].style.marginTop = '0';
+										document.querySelectorAll('.login__box')[3].style.padding = '0.4rem 1rem';
+										checkNickname = 0;
+									}
+								},
+								error: function (xhr, status, error) {
+									console.error("AJAX 오류 발생:", status, error);
+								}
+							});
+						});
+					});
+
+
+					// 회원가입
+
+					$(document).ready(function () {
+						$('#r-link').on('click', function (event) {
+							event.preventDefault(); // 기본 a태그 동작(링크 이동)을 막음
+							$('#login-up').submit(); // 폼을 제출
+						});
+
+						$('#login-up').submit(function (event) {
+							event.preventDefault(); // 폼의 기본 제출 동작을 막음
+							const formData = $(this).serialize();
+
+							if (password.value.length >= 7 && checkNickname == 1) {
+								$.ajax({
+									type: 'POST',
+									url: '/member/register',
+									data: formData,
+									success: function (response) {
+										console.log("회원가입성공", response);
+										loginin.classList.remove("none");		//로그인화면으로 넘어가기
+										loginup.classList.remove("block");		//로그인화면으로 넘어가기
+										loginin.classList.add("block");			//로그인화면으로 넘어가기
+										loginup.classList.add("none");			//로그인화면으로 넘어가기
+										document.getElementById('register_id').value = '';	 // 회원가입 input 값 초기화
+										document.getElementById('register_nick').value = ''; // 회원가입 input 값 초기화
+										document.getElementById('register_pw').value = '';   // 회원가입 input 값 초기화
+										document.getElementById("pw_len").style.display = 'none'; 					 // 비밀번호 보안강도 초기화
+										document.querySelectorAll('.login__box')[4].style.padding = '1.125rem 1rem'; // 비밀번호 보안강도 초기화
+										document.getElementById("sample").innerText = ""; 							 // 비밀번호 보안강도 초기화
+									},
+									error: function (xhr, status, error) {
+										console.log("회원가입실패", xhr.responseText);
+									}
+								});
+							}
+						});
+					});
+
+
+					// 로그인
+					$(document).ready(function () {
+						$('#l-link').on('click', function (event) {
+							event.preventDefault(); // 기본 a태그 동작(링크 이동)을 막음
+							$('#login-in').submit(); // 폼을 제출
+						});
+
+						$('#login-in').submit(function (event) {
+							event.preventDefault(); // 폼의 기본 제출 동작을 막음
+							const formData = $(this).serialize();
+							$.ajax({
+								type: 'POST',
+								url: '/member/login',
+								data: formData,
+								success: function (response) {
+									console.log("로그인성공", response);
+									window.location.href = '/';
+								},
+								error: function (xhr, status, error) {
+									console.log("로그인실패", xhr.responseText);
+									document.getElementById("login_check").style.display = 'block';
+								}
+							});
+						});
+					});
+
+					// 비밀번호 강도
+					const password = document.querySelector("#register_pw")
+					const strengthBar = document.querySelector("#meter")
+					var display = document.querySelector(".textbox")
+					password.addEventListener("keyup", function () {
+						checkPassword(password.value);
+					});
+					function checkPassword(password) {
+
+						let strength = 0
+						const regexes = [
+							/[a-z]+/,
+							/[A-Z]+/,
+							/[0-9]+/,
+							/[$@#&!]+/,
+						]
+
+						regexes.forEach((regex, index) => {
+							strength += password.match(regex) ? 1 : 0
+						})
+
+						strengthBar.value = strength
+
+						switch (strength) {
+							case 1:
+								strengthBar.style.setProperty("--c", "red")
+								document.getElementById("sample").innerText = "약함";
+								break
+							case 2:
+								document.getElementById("sample").innerText = "중간";
+							case 3:
+								strengthBar.style.setProperty("--c", "orange")
+								document.getElementById("sample").innerText = "강함";
+								break
+							case 4:
+								strengthBar.style.setProperty("--c", "green")
+								document.getElementById("sample").innerText = "강함2";
+								break
+							case 0:
+								document.getElementById("sample").innerText = "";
+						}
 					}
-				});
-			});
-		});
+					$(document).ready(function () {
+						$('#register_pw').on('input', function () {
+							console.log(password.value.length);
 
-		$(document).ready(function () {
-			$('#l-link').on('click', function (event) {
-				event.preventDefault(); // 기본 a태그 동작(링크 이동)을 막음
-				$('#login-in').submit(); // 폼을 제출
-			});
-
-			$('#login-in').submit(function (event) {
-				event.preventDefault(); // 폼의 기본 제출 동작을 막음
-				const formData = $(this).serialize();
-				$.ajax({
-					type: 'POST',
-					url: '/member/login',
-					data: formData,
-					success: function (response) {
-						console.log("로그인성공", response);
-					},
-					error: function (xhr, status, error) {
-						console.log("로그인실패", xhr.responseText);
-					}
-				});
-			});
-		});
-	</script>
+							if (password.value.length == 0 || password.value.length >= 7) {
+								document.getElementById("pw_len").style.display = 'none'; // 문자열 길이가 7 이상이면 경고 메시지를 숨김
+								document.querySelectorAll('.login__box')[4].style.padding = '1.125rem 1rem';
+							} if (0 < password.value.length && password.value.length <= 6) {
+								document.getElementById("pw_len").style.display = 'block'; // 문자열 길이가 6 이하일 때 경고 메시지를 표시
+								document.querySelectorAll('.login__box')[4].style.padding = '0.6rem 1rem';
+							}
+						});
+					});
+				</script>
 </body>
 
 </html>

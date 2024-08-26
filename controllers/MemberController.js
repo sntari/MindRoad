@@ -25,13 +25,49 @@ async function login(req, res) {
     }
 }
 
+
+// EMAIL 체크
+async function checkE(req, res) {
+    const { EMAIL } = req.body;
+    try {
+        const userEMAIL = await memberService.checkEMAIL(EMAIL);
+        if (userEMAIL) {
+            res.send("not available");
+        } else {
+            res.send("available");
+        }
+    } catch (error) {
+        console.error("Error in checkE function:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}
+
+// NICKNAME 체크
+async function checkN(req, res) {
+    const { NICK } = req.body;
+    try {
+        const userNICK = await memberService.checkNICK(NICK);
+        if (userNICK) {
+            res.send("not available");
+        } else {
+            res.send("available");
+        }
+    } catch (error) {
+        console.error("Error in checkE function:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}
+
+
+
 // 로그아웃 기능
 function logout(req, res) {
     req.session.destroy((err) => {
         if (err) {
-            return res.status(500).send('세션 제거');
+            return res.status(500).send('세션 제거');            
         }
         res.redirect('/');
+        console.log("로그아웃 성공");
     });
 }
 
@@ -41,4 +77,6 @@ module.exports = {
     register,
     login,
     logout,
+    checkE,
+    checkN,
 };
