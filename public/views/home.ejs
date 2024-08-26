@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <!-- -------------------------------- 로그인시 보여줄 화면 (챗봇) -------------------------- -->
     <div class="chat-wrapper">
         <div class="chat-container">
             <div id="chatContent" class="chat-content"></div>
@@ -17,8 +18,32 @@
             <input type="chat_text" id="chatInput" placeholder="메시지를 입력하세요..." />
         </div>
     </div>
+    <!-- ------------------------------------------- 끝 -------------------------------------- -->
+    <!-- ----------------------------------- 로그인 안했을 때 화면 ----------------------------- -->
+    <div class="not_login_main_page">
+        <p>1</p>
+        <p>2</p>
+        <p>3</p>
+        <p>6</p>
+        <p>5</p>
+        <p>7</p>
+        <p>1</p>
+
+    </div>
+    <!-- ------------------------------------------- 끝 --------------------------------------- -->
+
 
     <script src="script.js"></script>
+    <script>
+        // 서버에서 EJS로 세션에 있는 user 값을 전달
+        const user = "<%= user %>";
+
+        // user 값이 없으면 .chat-wrapper 요소를 숨김
+        if (!user) {
+            document.querySelector('.chat-wrapper').style.display = 'none';
+            document.querySelector('.not_login_main_page').style.display = 'block';
+        }
+    </script>
 </body>
 
 </html>
