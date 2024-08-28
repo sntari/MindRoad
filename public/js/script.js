@@ -66,7 +66,7 @@ function getCurrentTime() {
 }
 
 // 서버에서 EJS로 세션에 있는 user 값을 전달
-const user = "<%= user %>";
+const user = document.body.getAttribute('data-user');
         
 // user 값이 없으면 .chat-wrapper 요소를 숨김
 if (!user) {
