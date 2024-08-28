@@ -1,3 +1,6 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-gauge@0.1.8/dist/chartjs-gauge.min.js"></script>
+
 <div>
     <div style="display: flex;">
         <h2>dd</h2>
@@ -16,6 +19,24 @@
 <div id="myinfo" class="tab-content" style="display:block">
     <h2>myinfo</h2>
     <p>내용</p>
+    <div id="myinfoimg" class="myinfo-container">
+        <div id="parametergraph" class="img-container">
+            <canvas id="myGaugeChart" width="600px" height="500px"></canvas>
+            <p>계측기 형식의 그래프</p>
+        </div>
+        <div id="linegraph" class="img-container">
+            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMzA2MjdfMjY0/MDAxNjg3ODI1NDM0NTU4.rmAN35Iw2T68t7GZXxV-mZVgBzlyrKGh-uibY-fcAP8g.B-hSHQMxdN-Jkxg94zqTmYYCH3RANCIQG3we7ZKEM78g.JPEG.parkamsterdam/IMG_4503.JPG?type=w800">
+            <p>꺾은 선 그래프</p>
+        </div>
+        <div id="piegraph" class="img-container">
+            <img src="https://i.namu.wiki/i/Jj1wBA8nihMdZlBl-PnRehWyp22_owdvssSQrEBPVB3QOsARPC_CjGRheHU7fAJeij7crSjsyAG0Guyr_BNRQQ.webp">
+            <p>파이 그래프</p>
+        </div>
+        <div id="worrycategory" class="img-container">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkwf9C42huD4YP1L5JAlLHHwaOHopI6M8fg&s">
+            <p>고민 카테고리</p>
+        </div>
+    </div>
 </div>
 
 <div id="info_r" class="tab-content" style="display:none">
@@ -46,3 +67,36 @@
         <p>내용</p>
     </div>
     <script src="../js/mypage.js"></script>
+<script>
+    function openTab(tabName) {
+        var i;
+        var x = document.getElementsByClassName("tab-content");
+        for (i = 0; i < x.length; i++) {
+            x[i].classList.remove('active');
+        }
+        document.getElementById(tabName).classList.add('active');
+    }
+
+    // Chart.js로 게이지 그래프 그리기
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('myGaugeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [20, 80], // 여기에 실제 데이터 값을 넣으세요.
+                    backgroundColor: ['#4caf50', 'red'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                rotation: -Math.PI*28.75,
+                circumference: Math.PI * 57.5,
+                cutout: '50%',
+                plugins: {
+                    tooltip: { enabled: false }
+                }
+            }
+        });
+    });
+</script>
