@@ -1,180 +1,83 @@
 <!DOCTYPE HTML>
-<!--
-	Astral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 
 <head>
+	<!-- 서버에서 전달받는 title 변수 -->
 	<title>
 		<%=title%>
 	</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<!-- 기본 main.css -->
 	<link rel="stylesheet" href="../css/main.css" />
 
 	<!-- 로그인/회원가입 관련 css -->
 	<link rel="stylesheet" href="../css/login.css">
-
 	<!-- 로그인/회원가입 내부 아이콘 -->
 	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+	<!-- 마이페이지 css -->
+	<link rel="stylesheet" href="../css/mypage.css">
 
+
+	<!-- noscript -->
 	<noscript>
 		<link rel="stylesheet" href="../css/noscript.css" />
 	</noscript>
 
 </head>
 
-<body class="is-preload">
-	<!-- 로그인 버튼 -->
-		<% if(user){%>
-		<div id="logout-button-container">
-			<a href="/member/logout" id="logoutshow">Logout</a>
+<body class="is-preload" data-user="<%= user %>">
+	<%- include('login') %>
+		<!-- Wrapper-->
+		<div id="wrapper">
+
+			<!-- Nav -->
+			<nav id="nav">
+				<a href="#" class="icon solid fa-comment"><span>Chat Bot</span></a>
+				<% if(user){ %>
+					<a href="#tarot" class="icon solid fa-hat-wizard"><span>Tarot</span></a>
+					<a href="#mypage" class="icon solid fa-user"><span>MyPage</span></a>
+					<% } %>
+			</nav>
+
+			<!-- Main -->
+			<div id="main">
+				<!-- 홈(챗봇) -->
+
+				<article id="home" class="panel">
+					<%- include('home') %>
+				</article>
+
+				<!-- 타로카드 -->
+				<article id="tarot" class="panel">
+					<%- include('tarot') %>
+				</article>
+
+				<!-- 마이페이지 -->
+				<article id="mypage" class="panel">
+					<%- include('mypage') %>
+				</article>
+
+			</div>
+
+			<!-- Footer -->
+			<div id="footer">
+				<ul class="copyright">
+					<li>&copy; 스마트인재개발원</li>
+					<li> MindRoad : 김현우 | 문승명 | 김형욱 | 오창선 | 김지성 </li>
+				</ul>
+			</div>
+
 		</div>
-		<% }else{ %>
-		<div id="login-button-container">
-			<a href="#login" id="show">Login</a>
-		</div>
-		<%} %>
-				<!-- 회원가입/로그인 모달창 -->
-				<div class="background">
-					<div class="login">
-						<div class="login__content">
-							<div class="login__forms">
-								<!-- 로그인 폼 -->
-								<form class="login__register" id="login-in">
-									<h1 class="login__title">Sign In</h1>
-									<div class="login__box">
-										<i class='bx bx-user login__icon'></i>
-										<input type="text" name="mem_id" placeholder="Email" class="login__input"
-											required>
-									</div>
 
-									<div class="login__box">
-										<i class='bx bx-lock login__icon'></i>
-										<input type="password" name="mem_pw" placeholder="Password" class="login__input"
-											required>
-									</div>
-
-									<p id="login_check" style="display: none; color: red; margin-bottom: 0;">로그인 실패</p>
-
-									<a href="#" class="login__forgot">Forgot Password? </a>
-									
-									<a href="#" class="login__button" id="l-link">Sign In</a>
-									
-									<div>
-										<span class="login__account login__account--account">Don't Have an
-											Account?</span>
-										<span class="login__signin login__signin--signup" id="sign-up">Sign Up</span>
-									</div>
-								</form>
-
-								<!-- 회원가입 폼 -->
-								<form class="login__create none" id="login-up">
-									<h1 class="login__title">Create Account</h1>
-									<div class="login__box">
-										<i class='bx bx-user login__icon'></i>
-										<input type="text" id="register_id" name="mem_id" placeholder="Email"
-											class="login__input" required>
-									</div>
-									<p id="register_id_text"></p>
-
-									<div class="login__box">
-										<i class='bx bx-at login__icon'></i>
-										<input type="text" id="register_nick" name="mem_nick" placeholder="Nickname"
-											class="login__input" required>
-									</div>
-									<p id="register_nick_text"></p>
-
-									<div class="login__box">
-										<i class='bx bx-lock login__icon'></i>
-										<input type="password" id="register_pw" name="mem_pw" placeholder="Password"
-											class="login__input" required>
-									</div>
-
-									<p id="pw_len">길이가 너무 짧습니다</p>
-
-									<div id="progress_bar">
-										<progress max="4" value="0" id="meter"></progress>
-										<p id="sample"></p>
-									</div>
-
-
-									<a href="#" class="login__button" id="r-link">Sign Up</a>
-
-									<div>
-										<span class="login__account login__account--account">Already have an
-											Account?</span>
-										<span class="login__signup login__signup--signup" id="sign-in">Sign In</span>
-									</div>
-
-									<div class="login__social">
-										<a href="#" class="login__social--icon"><i class='bx bxl-facebook'></i></a>
-										<a href="#" class="login__social--icon"><i class='bx bxl-twitter'></i></a>
-										<a href="#" class="login__social--icon"><i class='bx bxl-google'></i></a>
-										<a href="#" class="login__social--icon"><i class='bx bxl-github'></i></a>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<!-- Wrapper-->
-				<div id="wrapper">
-
-					<!-- Nav -->
-					<nav id="nav">
-						<a href="#" class="icon solid fa-comment"><span>Chat Bot</span></a>
-						<% if(user){ %>
-						<a href="#tarot" class="icon solid fa-hat-wizard"><span>Tarot</span></a>
-						<a href="#mypage" class="icon solid fa-user"><span>MyPage</span></a>
-						<% } %>
-					</nav>
-
-					<!-- Main -->
-					<div id="main">
-						<!-- 홈(챗봇) -->
-						 
-						<article id="home" class="panel">
-							<%- include('home') %>
-						</article>
-
-						<!-- 타로카드 -->
-						<article id="tarot" class="panel">
-							<% if(user){ %>
-							<%- include('tarot') %>
-							<% } %>
-						</article>
-
-						<!-- 마이페이지 -->
-						<article id="mypage" class="panel">
-							<% if(user){ %>
-							<%- include('mypage') %>
-							<% } %>
-						</article>
-
-					</div>
-
-					<!-- Footer -->
-					<div id="footer">
-						<ul class="copyright">
-							<li>&copy; 스마트인재개발원</li>
-							<li> MindRoad : 김현우 | 문승명 | 김형욱 | 오창선 | 무지성코딩충 | 빠껀 </li>
-						</ul>
-					</div>
-
-				</div>
-
-				<!-- Scripts -->
-				<script src="../js/jquery.min.js"></script>
-				<script src="../js/browser.min.js"></script>
-				<script src="../js/breakpoints.min.js"></script>
-				<script src="../js/util.js"></script>
-				<script src="../js/main.js"></script>
-				<script src="../js/login.js"></script>
+		<!-- 스크립트 js 연결 -->
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/browser.min.js"></script>
+		<script src="../js/breakpoints.min.js"></script>
+		<script src="../js/util.js"></script>
+		<script src="../js/home.js"></script>
+		<script src="../js/login.js"></script>
+		<script src="../js/script.js"></script>
 </body>
 
 </html>
