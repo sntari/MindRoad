@@ -25,3 +25,23 @@
 .active-tab {
     display: block;
 }
+
+.myinfo-container{
+    margin: 0 auto;
+    overflow: hidden;
+    padding-top: 10px;
+    width: 1300px;
+    align-items: center;
+}
+
+.img-container {
+    display:inline-block;
+}
+
+.img-container img{
+    float: center;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    width: 600px;
+    height: 600px;
+}
