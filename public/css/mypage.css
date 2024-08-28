@@ -25,3 +25,27 @@
 .active-tab {
     display: block;
 }
+
+/* 수정 */
+.form-container {
+    width: 600px;
+    padding: 20px;
+    border: 2px solid black;
+    margin: 0 auto;
+    text-align: center;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="button"] {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.form-group input[type="button"] {
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+}

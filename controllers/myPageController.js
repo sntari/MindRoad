@@ -4,7 +4,7 @@ const myPageService = require('../services/myPageService');
 async function info_r(req, res) {
     const { mem_nick, mem_id, mem_pw } = req.body;
     try {
-        const user = await myPageService.registerUser(mem_nick, mem_id, mem_pw);
+        const userupdate = await myPageService.registerUser(mem_nick, mem_id, mem_pw);
         res.status(200).send({ success: true });
     } catch (error) {
         console.error(error);  // 서버 측 콘솔에 오류 출력

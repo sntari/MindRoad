@@ -138,6 +138,7 @@ a {
   margin-bottom: -15px;
   margin-top: -14px;
   font-size: 12px;
+  min-height: 30px;
 }
 
 #pw_len {
@@ -235,7 +236,7 @@ a {
   column-gap: 0.5rem;
   padding: 1.125rem 1rem;
   background-color: #fff;
-  margin-top: 1rem;
+  margin : 0.5rem;
   border-radius: 0.5rem;
 }
 

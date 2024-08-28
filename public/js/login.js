@@ -61,11 +61,7 @@ signin.addEventListener("click", () => {
     document.querySelectorAll('.login__box')[4].style.padding = '1.125rem 1rem'; // 비밀번호 보안강도 초기화
     document.getElementById("sample").innerText = ""; 							 // 비밀번호 보안강도 초기화
     document.getElementById("register_nick_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
-    document.querySelectorAll('.login__box')[4].style.marginTop = '1rem';
-    document.querySelectorAll('.login__box')[3].style.padding = '1.125rem 1rem';
     document.getElementById("register_id_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
-    document.querySelectorAll('.login__box')[3].style.marginTop = '1rem';
-    document.querySelectorAll('.login__box')[2].style.padding = '1.125rem 1rem';
     strengthBar.value = 0;
 })
 
@@ -75,8 +71,6 @@ $(document).ready(function () {
     $('#register_id').blur(function () {
         const memIdValue = $(this).val();
         document.getElementById("register_id_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
-        document.querySelectorAll('.login__box')[3].style.marginTop = '1rem';
-        document.querySelectorAll('.login__box')[2].style.padding = '1.125rem 1rem';
         console.log("AJAX request value:", memIdValue);
         if (!memIdValue) {
             return;
@@ -91,13 +85,9 @@ $(document).ready(function () {
                 console.log("Server response:", response);
                 if (response === "available") {
                     document.getElementById("register_id_text").innerText = "";
-                    document.querySelectorAll('.login__box')[3].style.marginTop = '1rem';
-                    document.querySelectorAll('.login__box')[2].style.padding = '1.125rem 1rem';
                     checkEmail = 1;
                 } else {
                     document.getElementById("register_id_text").innerText = "이미 사용중인 이메일입니다.";
-                    document.querySelectorAll('.login__box')[3].style.marginTop = '0';
-                    document.querySelectorAll('.login__box')[2].style.padding = '0.6rem 1rem';
                     console.log("실패");
                     checkEmail = 0;
                 }
@@ -114,8 +104,6 @@ $(document).ready(function () {
     $('#register_nick').blur(function () {
         const NickValue = $(this).val();
         document.getElementById("register_nick_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
-        document.querySelectorAll('.login__box')[4].style.marginTop = '1rem';
-        document.querySelectorAll('.login__box')[3].style.padding = '1.125rem 1rem';
         console.log("AJAX request value:", NickValue);
         if (!NickValue) {
             return;
@@ -130,13 +118,9 @@ $(document).ready(function () {
                 console.log("Server response:", response);
                 if (response === "available") {
                     document.getElementById("register_nick_text").innerText = "";
-                    document.querySelectorAll('.login__box')[4].style.marginTop = '1rem';
-                    document.querySelectorAll('.login__box')[3].style.padding = '1.125rem 1rem';
                     checkNickname = 1;
                 } else {
                     document.getElementById("register_nick_text").innerText = "이미 사용중인 닉네임입니다.";
-                    document.querySelectorAll('.login__box')[4].style.marginTop = '0';
-                    document.querySelectorAll('.login__box')[3].style.padding = '0.6rem 1rem';
                     checkNickname = 0;
                 }
             },
