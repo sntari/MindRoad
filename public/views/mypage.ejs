@@ -1,24 +1,35 @@
 <header>
-    <h2>Contact Me</h2>
+    <link rel="stylesheet" href="../css/mypage.css">
 </header>
-<form action="#" method="post">
-    <div>
-        <div class="row">
-            <div class="col-6 col-12-medium">
-                <input type="text" name="name" placeholder="Name" />
-            </div>
-            <div class="col-6 col-12-medium">
-                <input type="text" name="email" placeholder="Email" />
-            </div>
-            <div class="col-12">
-                <input type="text" name="subject" placeholder="Subject" />
-            </div>
-            <div class="col-12">
-                <textarea name="message" placeholder="Message" rows="6"></textarea>
-            </div>
-            <div class="col-12">
-                <input type="submit" value="Send Message" />
-            </div>
+
+<div>
+    <div style="display: flex;">
+        <h2>dd</h2>
+        <div>
+            <h3>닉네임 : <%= user.NICKNAME %></h3>
+            <h3>이메일 : <%= user.EMAIL %></h3>
         </div>
     </div>
-</form>
+</div>
+
+<div class="mypage_button">
+    <button class="mypage_tab" onclick="openTab('myinfo')">내 상태</button>
+    <button class="mypage_tab" onclick="openTab('info_r')">회원정보수정</button>
+    <button class="mypage_tab" onclick="openTab('delete_ID')">계정탈퇴</button>
+</div>
+
+<div id="myinfo" class="tab-content" style="display:block">
+    <h2>myinfo</h2>
+    <p>내용</p>
+</div>
+
+<div id="info_r" class="tab-content" style="display:none">
+    <h2>info_r</h2>
+    <p>내용</p>
+</div>
+
+<div id="delete_ID" class="tab-content" style="display:none">
+    <h2>delete ID</h2>
+    <p>내용</p>
+</div>
+<script src="../js/mypage.js"></script>

@@ -1,0 +1,27 @@
+.mypage_button {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.mypage_tab {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.tab-content {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.tab-content h2 {
+    color: #333;
+}
+
+.active-tab {
+    display: block;
+}

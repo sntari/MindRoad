@@ -84,13 +84,14 @@
     width: 80px;
     /* 모바일 화면에서는 너비를 줄임 */
   }
+
   #logoutshow {
     font-size: 12px;
     padding: 8px 16px;
     width: 80px;
     /* 모바일 화면에서는 너비를 줄임 */
   }
-  
+
 }
 
 /* 로그인을 누를 시 팝업이 뜨면서 배경을 검게 만듬 */
@@ -133,9 +134,10 @@ a {
 /* -------------------------------------- 프로그래스바 ----------------------------------------- */
 #register_id_text,
 #register_nick_text {
-    color: red;
-    margin-bottom: -7px;
-    margin-top: -8px;
+  color: red;
+  margin-bottom: -15px;
+  margin-top: -14px;
+  font-size: 12px;
 }
 
 #pw_len {
@@ -144,6 +146,7 @@ a {
   display: none;
   margin-bottom: -22px;
   margin-top: -8px;
+  font-size: 12px;
 }
 
 /* #progress_bar 스타일 */
@@ -162,11 +165,11 @@ a {
 
 #meter {
   appearance: none;
-    width: 220px;
-    display: block;
-    margin-top: 17px;
-    margin-left: 10px;
-    margin-bottom: 22px;
+  width: 220px;
+  display: block;
+  margin-top: 17px;
+  margin-left: 26px;
+  margin-bottom: 22px;
 }
 
 #meter::-webkit-progress-bar {

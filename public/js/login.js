@@ -5,7 +5,7 @@ const cr = document.querySelector(".login__create");
 
 // 회원가입/ 로그인폼 아이디 선택자로 지정
 const signup = document.getElementById("sign-up");
-signin = document.getElementById("sign-in");
+const signin = document.getElementById("sign-in");
 loginin = document.getElementById("login-in");
 loginup = document.getElementById("login-up");
 
@@ -42,6 +42,10 @@ signup.addEventListener("click", () => {
 
     loginin.classList.add("none");
     loginup.classList.add("block");
+
+
+    document.getElementById('mem_id').value = '';	 // 로그인 input 값 초기화
+    document.getElementById('mem_pw').value = ''; // 로그인 input 값 초기화
 })
 
 signin.addEventListener("click", () => {
@@ -50,9 +54,23 @@ signin.addEventListener("click", () => {
 
     loginin.classList.add("block");
     loginup.classList.add("none");
+    document.getElementById('register_id').value = '';	 // 회원가입 input 값 초기화
+    document.getElementById('register_nick').value = ''; // 회원가입 input 값 초기화
+    document.getElementById('register_pw').value = '';   // 회원가입 input 값 초기화
+    document.getElementById("pw_len").style.display = 'none'; 					 // 비밀번호 보안강도 초기화
+    document.querySelectorAll('.login__box')[4].style.padding = '1.125rem 1rem'; // 비밀번호 보안강도 초기화
+    document.getElementById("sample").innerText = ""; 							 // 비밀번호 보안강도 초기화
+    document.getElementById("register_nick_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
+    document.querySelectorAll('.login__box')[4].style.marginTop = '1rem';
+    document.querySelectorAll('.login__box')[3].style.padding = '1.125rem 1rem';
+    document.getElementById("register_id_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
+    document.querySelectorAll('.login__box')[3].style.marginTop = '1rem';
+    document.querySelectorAll('.login__box')[2].style.padding = '1.125rem 1rem';
+    strengthBar.value = 0;
 })
 
 // EMAIL 중복체크
+let checkEmail = 0;
 $(document).ready(function () {
     $('#register_id').blur(function () {
         const memIdValue = $(this).val();
@@ -75,12 +93,13 @@ $(document).ready(function () {
                     document.getElementById("register_id_text").innerText = "";
                     document.querySelectorAll('.login__box')[3].style.marginTop = '1rem';
                     document.querySelectorAll('.login__box')[2].style.padding = '1.125rem 1rem';
+                    checkEmail = 1;
                 } else {
                     document.getElementById("register_id_text").innerText = "이미 사용중인 이메일입니다.";
                     document.querySelectorAll('.login__box')[3].style.marginTop = '0';
-                    document.querySelectorAll('.login__box')[2].style.padding = '0.4rem 1rem';
+                    document.querySelectorAll('.login__box')[2].style.padding = '0.6rem 1rem';
                     console.log("실패");
-
+                    checkEmail = 0;
                 }
             },
             error: function (xhr, status, error) {
@@ -117,7 +136,7 @@ $(document).ready(function () {
                 } else {
                     document.getElementById("register_nick_text").innerText = "이미 사용중인 닉네임입니다.";
                     document.querySelectorAll('.login__box')[4].style.marginTop = '0';
-                    document.querySelectorAll('.login__box')[3].style.padding = '0.4rem 1rem';
+                    document.querySelectorAll('.login__box')[3].style.padding = '0.6rem 1rem';
                     checkNickname = 0;
                 }
             },
@@ -141,7 +160,7 @@ $(document).ready(function () {
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
 
-        if (password.value.length >= 7 && checkNickname == 1) {
+        if (password.value.length >= 7 && checkNickname == 1 && checkEmail == 1) {
             $.ajax({
                 type: 'POST',
                 url: '/member/register',
@@ -195,6 +214,7 @@ $(document).ready(function () {
 });
 
 // 비밀번호 강도
+let strength = 0;
 const password = document.querySelector("#register_pw")
 const strengthBar = document.querySelector("#meter")
 var display = document.querySelector(".textbox")
@@ -202,8 +222,7 @@ password.addEventListener("keyup", function () {
     checkPassword(password.value);
 });
 function checkPassword(password) {
-
-    let strength = 0
+    strength = 0;
     const regexes = [
         /[a-z]+/,
         /[A-Z]+/,
@@ -223,9 +242,11 @@ function checkPassword(password) {
             document.getElementById("sample").innerText = "취약";
             break
         case 2:
-            document.getElementById("sample").innerText = "약함";
-        case 3:
             strengthBar.style.setProperty("--c", "orange")
+            document.getElementById("sample").innerText = "약함";
+            break
+        case 3:
+            strengthBar.style.setProperty("--c", "yellowgreen")
             document.getElementById("sample").innerText = "중간";
             break
         case 4:
