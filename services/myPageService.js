@@ -6,8 +6,8 @@ async function updateMemberInfo(nickname, newMemId, newMemPw) {
     try {
         // mem_id와 mem_pw를 업데이트하는 SQL 쿼리
         const [result] = await connection.execute(
-            'UPDATE MEMBERS SET mem_id = ?, mem_pw = ? WHERE nickname = ?',
-            [newMemId, newMemPw, nickname]
+            'UPDATE MEMBERS SET NICKNAME = ?, mem_pw = ? WHERE mem_id = ?',
+            [nickname, newMemPw, newMemId]
         );
         
         // 업데이트된 행 수를 확인

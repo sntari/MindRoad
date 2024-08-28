@@ -247,10 +247,8 @@ $(document).ready(function () {
 
         if (password.value.length == 0 || password.value.length >= 7) {
             document.getElementById("pw_len").style.display = 'none'; // 문자열 길이가 7 이상이면 경고 메시지를 숨김
-            document.querySelectorAll('.login__box')[4].style.padding = '1.125rem 1rem';
         } if (0 < password.value.length && password.value.length <= 6) {
             document.getElementById("pw_len").style.display = 'block'; // 문자열 길이가 6 이하일 때 경고 메시지를 표시
-            document.querySelectorAll('.login__box')[4].style.padding = '0.6rem 1rem';
         }
     });
 });
