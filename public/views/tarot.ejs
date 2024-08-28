@@ -1,19 +1,9 @@
-<div class="container">
-    <h1>타로 카드</h1>
-    <div class="tarot-spread">
-      <% for(let i=0; i<78; i++) { %>
-        <div class="card" data-card-id="<%= i %>">
-          <div class="card-inner">
-            <div class="card-back"></div>
-            <div class="card-front">카드 <%= i + 1 %></div>
-          </div>
-        </div>
-      <% } %>
-    </div>
-    <button id="spread-cards">카드 펼치기</button>
-    <div id="selected-card-info"></div>
-  </div>
-  
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>타로 카드</title>
   <style>
     .tarot-spread {
       width: 100%;
@@ -22,6 +12,7 @@
       margin: 50px auto;
       overflow: hidden;
     }
+
     .card {
       width: 120px;
       height: 180px;
@@ -31,24 +22,36 @@
       transition: all 0.5s ease-out;
       cursor: pointer;
     }
+
     .card-inner {
       width: 100%;
       height: 100%;
-      transition: transform 0.6s;
+      position: relative;
       transform-style: preserve-3d;
+      transition: transform 0.6s;
+      transform: rotateY(0deg);
     }
-    .card-back, .card-front {
+
+    .card-inner.flipped {
+      transform: rotateY(180deg);
+      /* 카드 앞면 보이도록 회전 */
+    }
+
+    .card-back,
+    .card-front {
       position: absolute;
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
       border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
     .card-back {
       background-image: url('/img/tarot-back.jpg');
       background-size: cover;
     }
+
     .card-front {
       background-color: white;
       transform: rotateY(180deg);
@@ -57,64 +60,223 @@
       justify-content: center;
       font-size: 16px;
     }
+
     #spread-cards {
       display: block;
       margin: 20px auto;
       padding: 10px 20px;
       font-size: 16px;
     }
+
     #selected-card-info {
       text-align: center;
       margin-top: 20px;
       font-size: 18px;
     }
+
+    .selected-cards-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .selected-card {
+      width: 120px;
+      height: 180px;
+      position: relative;
+      margin: 0 10px;
+      /* 카드 간의 간격 */
+    }
+
+    .selected-card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+      transform: rotateY(0deg);
+    }
+
+    .selected-card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .selected-card-back,
+    .selected-card-front {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .selected-card-back {
+      background-image: url('/img/tarot-back.jpg');
+      background-size: cover;
+    }
+
+    .selected-card-front {
+      background-color: white;
+      transform: rotateY(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
   </style>
-  
+</head>
+
+<body>
+  <div class="container">
+    <h1>타로 카드</h1>
+    <div class="tarot-spread">
+      <% for(let i=0; i<78; i++) { %>
+        <div class="card" data-card-id="<%= i %>">
+          <div class="card-inner">
+            <div class="card-back"></div>
+            <div class="card-front">
+              <!-- JavaScript에서 동적으로 이미지가 설정됩니다 -->
+            </div>
+          </div>
+        </div>
+        <% } %>
+    </div>
+    <button id="spread-cards">카드 펼치기</button>
+    <div id="selected-card-info"></div>
+
+    <!-- 선택된 카드 표시 영역 -->
+    <div class="selected-cards-container">
+      <div class="selected-card" id="selected-card-1">
+        <div class="selected-card-inner">
+          <div class="selected-card-back"></div>
+          <div class="selected-card-front"></div>
+        </div>
+      </div>
+      <div class="selected-card" id="selected-card-2">
+        <div class="selected-card-inner">
+          <div class="selected-card-back"></div>
+          <div class="selected-card-front"></div>
+        </div>
+      </div>
+      <div class="selected-card" id="selected-card-3">
+        <div class="selected-card-inner">
+          <div class="selected-card-back"></div>
+          <div class="selected-card-front"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const spread = document.querySelector('.tarot-spread');
-    const cards = spread.querySelectorAll('.card');
-    const spreadButton = document.getElementById('spread-cards');
-    const selectedCardInfo = document.getElementById('selected-card-info');
-    let isSpread = false;
-  
-    // 초기 카드 위치 설정 (모두 겹쳐져 있음)
-    cards.forEach((card, index) => {
-      card.style.left = '20px';
-      card.style.zIndex = 78 - index;
-    });
-  
-    // 카드 펼치기 버튼 이벤트
-    spreadButton.addEventListener('click', function() {
-      if (!isSpread) {
-        cards.forEach((card, index) => {
-          card.style.left = `${20 + index * 15}px`;
-          card.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+    document.addEventListener('DOMContentLoaded', function () {
+      const cardImageMap = {
+        // 카드 이미지 매핑 생략
+      };
+
+      const cards = document.querySelectorAll('.card');
+      const selectedCardsContainer = document.querySelector('.selected-cards-container');
+      const selectedCardInfo = document.getElementById('selected-card-info');
+      let selectedCards = []; // 선택된 카드 ID 저장
+      let isSpread = false; // 카드 펼치기 상태
+
+      // 카드 클릭 이벤트
+      cards.forEach((card) => {
+        card.addEventListener('click', function () {
+          const cardInner = card.querySelector('.card-inner');
+          const cardId = parseInt(card.getAttribute('data-card-id'));
+
+          // 카드 앞면 보이도록 설정
+          if (!cardInner.classList.contains('flipped')) {
+            if (selectedCards.length < 3) { // 최대 3개 선택 가능
+              cardInner.classList.add('flipped'); // 카드 뒤집기
+              selectedCards.push(cardId);
+              selectedCardInfo.textContent = `선택된 카드: ${selectedCards.join(', ')}`;
+
+              // 선택된 카드 표시
+              updateSelectedCards();
+            } else {
+              alert("최대 3개의 카드를 선택할 수 있습니다.");
+            }
+          } else {
+            // 이미 선택된 카드 클릭 시 해제
+            cardInner.classList.remove('flipped'); // 카드 다시 뒤집기
+            selectedCards = selectedCards.filter(id => id !== cardId);
+            selectedCardInfo.textContent = `선택된 카드: ${selectedCards.join(', ')}`;
+            updateSelectedCards();
+          }
+
+          // 선택된 카드를 위로 올리기
+          card.style.zIndex = 1000;
+          card.style.transform += ' translateY(-30px)';
         });
-        isSpread = true;
-        this.textContent = '카드 섞기';
-      } else {
-        cards.forEach((card, index) => {
-          card.style.left = '20px';
-          card.style.transform = 'rotate(0deg)';
+      });
+      // 카드 초기화
+      cards.forEach((card) => {
+        const cardInner = card.querySelector('.card-inner');
+        cardInner.classList.remove('flipped');
+      });
+
+      // 카드 펼치기 버튼 이벤트
+      document.getElementById('spread-cards').addEventListener('click', function () {
+        if (!isSpread) {
+          cards.forEach((card, index) => {
+            card.style.left = `${20 + index * 15}px`;
+            card.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+          });
+          isSpread = true;
+          this.textContent = '카드 섞기';
+        } else {
+          cards.forEach((card) => {
+            card.style.left = '20px';
+            card.style.transform = 'rotate(0deg)';
+          });
+          isSpread = false;
+          this.textContent = '카드 펼치기';
+        }
+      });
+
+      // 선택된 카드 업데이트 함수
+      function updateSelectedCards() {
+        const selectedCardElements = document.querySelectorAll('.selected-card');
+
+        selectedCards.forEach((cardId, index) => {
+          if (index < 3) { // 최대 3개까지만 처리
+            const selectedCardInner = selectedCardElements[index].querySelector('.selected-card-inner');
+            const selectedCardFront = selectedCardElements[index].querySelector('.selected-card-front');
+
+            // 이미지 설정
+            const img = document.createElement('img');
+            img.src = `/img/${cardImageMap[cardId]}`;
+            img.alt = `선택된 카드 ${cardId + 1}`;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+
+            // 이미지 로드 여부 확인
+            img.onload = () => {
+              selectedCardFront.innerHTML = ''; // 기존 내용 제거
+              selectedCardFront.appendChild(img); // 이미지 추가
+              selectedCardInner.classList.add('flipped'); // 카드 앞면 보이도록 설정
+            };
+
+            img.onerror = () => {
+              console.error(`이미지를 로드할 수 없습니다: /img/${cardImageMap[cardId]}`);
+              selectedCardFront.textContent = `카드 ${cardId + 1}`;
+              selectedCardInner.classList.add('flipped');
+            };
+          }
         });
-        isSpread = false;
-        this.textContent = '카드 펼치기';
+
+        // 선택된 카드가 3개 미만일 경우 나머지 카드들은 뒤집기
+        for (let i = selectedCards.length; i < 3; i++) {
+          const selectedCardInner = selectedCardElements[i].querySelector('.selected-card-inner');
+          selectedCardInner.classList.remove('flipped'); // 뒷면으로 설정
+          selectedCardElements[i].querySelector('.selected-card-front').innerHTML = ''; // 내용 제거
+        }
       }
     });
-  
-    // 카드 클릭 이벤트
-    spread.addEventListener('click', function(e) {
-      const card = e.target.closest('.card');
-      if (card && isSpread) {
-        const cardId = card.getAttribute('data-card-id');
-        card.querySelector('.card-inner').style.transform = 'rotateY(180deg)';
-        selectedCardInfo.textContent = `선택된 카드: ${parseInt(cardId) + 1}번`;
-  
-        // 선택된 카드를 위로 올리기
-        card.style.zIndex = 1000;
-        card.style.transform += ' translateY(-30px)';
-      }
-    });
-  });
   </script>
+</body>
+
+</html>
