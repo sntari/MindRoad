@@ -74,3 +74,13 @@ app.listen(3300, () => {
 });
 
 
+// 기존 코드 아래에 추가
+
+// 타로 카드 페이지 라우트
+app.get('/tarot', (req, res) => {
+  res.render('tarot', { 
+    title: '타로 카드', 
+    layout: 'template',
+    user: req.session.user 
+  });
+});

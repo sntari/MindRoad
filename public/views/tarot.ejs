@@ -1,39 +1,120 @@
-<header>
-    <h2>Tarot</h2>
-</header>
-<p>
-    Phasellus enim sapien, blandit ullamcorper elementum eu, condimentum eu elit.
-    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-    luctus elit eget interdum.
-</p>
-<section>
-    <div class="row">
-        <div class="col-4 col-6-medium col-12-small">
-            <a href="#" class="image fit"><img src="../img/pic01.jpg" alt=""></a>
+<div class="container">
+    <h1>타로 카드</h1>
+    <div class="tarot-spread">
+      <% for(let i=0; i<78; i++) { %>
+        <div class="card" data-card-id="<%= i %>">
+          <div class="card-inner">
+            <div class="card-back"></div>
+            <div class="card-front">카드 <%= i + 1 %></div>
+          </div>
         </div>
-        <div class="col-4 col-6-medium col-12-small">
-            <a href="#" class="image fit"><img src="../img/pic02.jpg" alt=""></a>
-        </div>
-        <div class="col-4 col-6-medium col-12-small">
-            <a href="#" class="image fit"><img src="../img/pic03.jpg" alt=""></a>
-        </div>
-        <div class="col-4 col-6-medium col-12-small">
-            <a href="#" class="image fit"><img src="../img/pic04.jpg" alt=""></a>
-        </div>
-        <div class="col-4 col-6-medium col-12-small">
-            <a href="#" class="image fit"><img src="../img/pic05.jpg" alt=""></a>
-        </div>
-        <div class="col-4 col-6-medium col-12-small">
-            <a href="#" class="image fit"><img src="../img/pic06.jpg" alt=""></a>
-        </div>
-        <div class="col-4 col-6-medium col-12-small">
-            <a href="#" class="image fit"><img src="../img/pic07.jpg" alt=""></a>
-        </div>
-        <div class="col-4 col-6-medium col-12-small">
-            <a href="#" class="image fit"><img src="../img/pic08.jpg" alt=""></a>
-        </div>
-        <div class="col-4 col-6-medium col-12-small">
-            <a href="#" class="image fit"><img src="../img/pic09.jpg" alt=""></a>
-        </div>
+      <% } %>
     </div>
-</section>
+    <button id="spread-cards">카드 펼치기</button>
+    <div id="selected-card-info"></div>
+  </div>
+  
+  <style>
+    .tarot-spread {
+      width: 100%;
+      height: 300px;
+      position: relative;
+      margin: 50px auto;
+      overflow: hidden;
+    }
+    .card {
+      width: 120px;
+      height: 180px;
+      position: absolute;
+      top: 60px;
+      left: 20px;
+      transition: all 0.5s ease-out;
+      cursor: pointer;
+    }
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .card-back, .card-front {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .card-back {
+      background-image: url('/img/tarot-back.jpg');
+      background-size: cover;
+    }
+    .card-front {
+      background-color: white;
+      transform: rotateY(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    #spread-cards {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    #selected-card-info {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const spread = document.querySelector('.tarot-spread');
+    const cards = spread.querySelectorAll('.card');
+    const spreadButton = document.getElementById('spread-cards');
+    const selectedCardInfo = document.getElementById('selected-card-info');
+    let isSpread = false;
+  
+    // 초기 카드 위치 설정 (모두 겹쳐져 있음)
+    cards.forEach((card, index) => {
+      card.style.left = '20px';
+      card.style.zIndex = 78 - index;
+    });
+  
+    // 카드 펼치기 버튼 이벤트
+    spreadButton.addEventListener('click', function() {
+      if (!isSpread) {
+        cards.forEach((card, index) => {
+          card.style.left = `${20 + index * 15}px`;
+          card.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+        });
+        isSpread = true;
+        this.textContent = '카드 섞기';
+      } else {
+        cards.forEach((card, index) => {
+          card.style.left = '20px';
+          card.style.transform = 'rotate(0deg)';
+        });
+        isSpread = false;
+        this.textContent = '카드 펼치기';
+      }
+    });
+  
+    // 카드 클릭 이벤트
+    spread.addEventListener('click', function(e) {
+      const card = e.target.closest('.card');
+      if (card && isSpread) {
+        const cardId = card.getAttribute('data-card-id');
+        card.querySelector('.card-inner').style.transform = 'rotateY(180deg)';
+        selectedCardInfo.textContent = `선택된 카드: ${parseInt(cardId) + 1}번`;
+  
+        // 선택된 카드를 위로 올리기
+        card.style.zIndex = 1000;
+        card.style.transform += ' translateY(-30px)';
+      }
+    });
+  });
+  </script>
