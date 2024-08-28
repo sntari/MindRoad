@@ -87,3 +87,9 @@ app.get('/tarot', (req, res) => {
     user: req.session.user 
   });
 });
+
+app.get('/mypage', (req, res) => {
+  res.render('mypage', {
+    user: req.session.user
+  });
+});

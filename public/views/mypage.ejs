@@ -25,11 +25,13 @@
             <p>계측기 형식의 그래프</p>
         </div>
         <div id="linegraph" class="img-container">
-            <img src="https://mblogthumb-phinf.pstatic.net/MjAyMzA2MjdfMjY0/MDAxNjg3ODI1NDM0NTU4.rmAN35Iw2T68t7GZXxV-mZVgBzlyrKGh-uibY-fcAP8g.B-hSHQMxdN-Jkxg94zqTmYYCH3RANCIQG3we7ZKEM78g.JPEG.parkamsterdam/IMG_4503.JPG?type=w800">
+            <img
+                src="https://mblogthumb-phinf.pstatic.net/MjAyMzA2MjdfMjY0/MDAxNjg3ODI1NDM0NTU4.rmAN35Iw2T68t7GZXxV-mZVgBzlyrKGh-uibY-fcAP8g.B-hSHQMxdN-Jkxg94zqTmYYCH3RANCIQG3we7ZKEM78g.JPEG.parkamsterdam/IMG_4503.JPG?type=w800">
             <p>꺾은 선 그래프</p>
         </div>
         <div id="piegraph" class="img-container">
-            <img src="https://i.namu.wiki/i/Jj1wBA8nihMdZlBl-PnRehWyp22_owdvssSQrEBPVB3QOsARPC_CjGRheHU7fAJeij7crSjsyAG0Guyr_BNRQQ.webp">
+            <img
+                src="https://i.namu.wiki/i/Jj1wBA8nihMdZlBl-PnRehWyp22_owdvssSQrEBPVB3QOsARPC_CjGRheHU7fAJeij7crSjsyAG0Guyr_BNRQQ.webp">
             <p>파이 그래프</p>
         </div>
         <div id="worrycategory" class="img-container">
@@ -40,30 +42,35 @@
 </div>
 
 <div id="info_r" class="tab-content" style="display:none">
-    <div class="form-container">
-        <div class="form-group">
-            <label for="user-id">ID</label>
-            <input type="text" id="user-id" value="" readonly>
+    <form id="login-in">
+        <div class="form-container">
+            <div class="form-group">
+                <label for="user-id">ID</label>
+                <% if(user){ %>
+                    <input type="text" id="user-id" name="mem_id" value="<%= user.NICKNAME %>" readonly>
+                    <% } %>
+            </div>
+            <div class="form-group">
+                <label for="nickname">닉네임</label>
+                <% if(user){ %>
+                    <input type="text" id="nickname" name="mem_id" placeholder="" value="<%= user.EMAIL %>" required>
+                    <% } %>
+            </div>
+            <div class="form-group">
+                <label for="password">현재 비밀번호</label>
+                <input type="password" id="password" name="mem_pw" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">바꿀 비밀번호</label>
+                <input type="password" id="confirm-password" name="new_pw" placeholder="New password" required>
+            </div>
+            <div class="form-group">
+                <input type="button" id="info_re" value="수정">
+            </div>
         </div>
-        <div class="form-group">
-            <label for="nickname">닉네임</label>
-            <input type="text" id="nickname" name="mem_id" placeholder="Email" value="" required>
-        </div>
-        <div class="form-group">
-            <label for="password">현재 비밀번호</label>
-            <input type="password" id="password" name="mem_pw" placeholder="Password" required>
-        </div>
-        <div class="form-group">
-            <label for="confirm-password">바꿀 비밀번호</label>
-            <input type="password" id="confirm-password" name="new_pw" placeholder="New password" required>
-        </div>
-        <div class="form-group">
-            <input type="button" value="수정">
-        </div>
-    </div>
+    </form>
 
     <div id="delete_ID" class="tab-content" style="display:none">
         <h2>delete ID</h2>
         <p>내용</p>
     </div>
-    <script src="../js/mypage.js"></script>
