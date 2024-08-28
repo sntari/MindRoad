@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectedCardInfo = document.getElementById('selected-card-info');
 
     let selectedCards = []; // 선택된 카드 ID 저장
+    let selectedCardname = []; // 선택된 카드 이름 저장
     let isSpread = false; // 카드 펼치기 상태
 
     // 카드 클릭 이벤트를 초기화하는 함수
@@ -96,25 +97,54 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // 선택된 카드를 Flask로 전송하는 함수
+    function sendSelectedCardsToFlask() {
+        fetch('/selected-cards', {  // URL 수정
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ selectedCards: selectedCardname }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
     // 카드 클릭 처리 함수
     function handleCardClick(card) {
         const cardInner = card.querySelector('.card-inner');
         const cardId = parseInt(card.getAttribute('data-card-id'));
+        const cardName = cardImageMap[cardId].replace('.jpg', ''); // 카드 이름 가져오기
 
         if (!cardInner.classList.contains('flipped')) {
             if (selectedCards.length < 3) {
-                cardInner.classList.add('flipped');
-                selectedCards.push(cardId);
-                selectedCardInfo.textContent = `선택된 카드: ${selectedCards.join(', ')}`;
-                updateSelectedCards();
+                if (!selectedCards.includes(cardId)) { // 이미 선택된 카드인지 확인
+                    cardInner.classList.add('flipped');
+                    selectedCards.push(cardId);
+                    selectedCardname.push(cardName); // 선택된 카드 이름 저장
+                    updateSelectedCards();
+
+                    if (selectedCards.length === 3) {
+                        sendSelectedCardsToFlask(); // 3개의 카드가 선택되면 Flask로 전송
+                    }
+                } else {
+                    alert("이 카드는 이미 선택되었습니다.");
+                }
             } else {
                 alert("최대 3개의 카드를 선택할 수 있습니다.");
             }
         } else {
-            cardInner.classList.remove('flipped');
-            selectedCards = selectedCards.filter(id => id !== cardId);
-            selectedCardInfo.textContent = `선택된 카드: ${selectedCards.join(', ')}`;
-            updateSelectedCards();
+            alert("한 번 선택한 카드는 되돌릴 수 없습니다.");
         }
 
         card.style.zIndex = 1000;
@@ -125,6 +155,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('spread-cards').addEventListener('click', function () {
         toggleCardSpread();
     });
+
+
     // 카드 펼치기/섞기 처리 함수
     function toggleCardSpread() {
         cards.forEach((card, index) => {
@@ -147,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedCardElements = document.querySelectorAll('.selected-card');
 
         selectedCards.forEach((cardId, index) => {
-            if (index < 3) { // 최대 3개까지만 처리
+            if (index <= 3) { // 최대 3개까지만 처리
                 const selectedCardInner = selectedCardElements[index].querySelector('.selected-card-inner');
                 const selectedCardFront = selectedCardElements[index].querySelector('.selected-card-front');
 
@@ -164,10 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     selectedCardFront.innerHTML = ''; // 기존 내용 제거
                     selectedCardFront.appendChild(img); // 이미지 추가
                     selectedCardInner.classList.add('flipped'); // 카드 앞면 보이도록 설정
-
-                    // 카드 이름에서 .jpg 제거
-                    const cardName = cardImageMap[cardId].replace('.jpg', '');
-                    console.log(`선택된 카드 이름: ${cardName}`); // 카드 이름 출력
                 };
 
                 img.onerror = () => {
@@ -189,3 +217,4 @@ document.addEventListener('DOMContentLoaded', function () {
     // 카드 클릭 이벤트 초기화
     initializeCardClickEvents();
 });
+

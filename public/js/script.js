@@ -1,5 +1,3 @@
-const apiKey = 'YOUR_API_KEY'; // 여기에 OpenAI API 키를 입력하세요.
-
 document.getElementById('chatInput').addEventListener('keydown', async function(event) {
     if (event.key === 'Enter' && this.value.trim() !== '') {
         const userMessage = this.value;
@@ -66,7 +64,7 @@ function getCurrentTime() {
 }
 
 // 서버에서 EJS로 세션에 있는 user 값을 전달
-const user = document.body.getAttribute('data-user');
+const user = "<%= user %>";
         
 // user 값이 없으면 .chat-wrapper 요소를 숨김
 if (!user) {
