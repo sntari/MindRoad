@@ -78,9 +78,9 @@ app.listen(3300, () => {
 
 // 타로 카드 페이지 라우트
 app.get('/tarot', (req, res) => {
-  res.render('tarot', { 
-    title: '타로 카드', 
+  res.render('tarot', {
+    title: '타로 카드',
     layout: 'template',
-    user: req.session.user 
+    user: req.session.user
   });
 });
