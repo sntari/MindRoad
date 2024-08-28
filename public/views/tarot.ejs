@@ -4,6 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <title>타로 카드</title>
+  <link rel="stylesheet" href="/public/css/tarot.css"> <!-- CSS 파일 경로 수정 -->
+</head>
+
+  <meta charset="UTF-8">
+  <title>타로 카드</title>
   <style>
     .tarot-spread {
       width: 100%;
@@ -171,7 +176,85 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const cardImageMap = {
-        // 카드 이미지 매핑 생략
+        
+        0: "The Fool.jpg",
+        1: "The Magician.jpg",
+        2: "The High Priestess.jpg",
+        3: "The Empress.jpg",
+        4: "The Emperor.jpg",
+        5: "The Hierophant.jpg",
+        6: "The Lovers.jpg",
+        7: "The Chariot.jpg",
+        8: "The Strength.jpg",
+        9: "The Hermit.jpg",
+        10: "Wheel of Fortune.jpg",
+        11: "Justice.jpg",
+        12: "The Hanged Man.jpg",
+        13: "Death.jpg",
+        14: "Temperance.jpg",
+        15: "The Devil.jpg",
+        16: "The Tower.jpg",
+        17: "The Star.jpg",
+        18: "The Moon.jpg",
+        19: "The Sun.jpg",
+        20: "Judgement.jpg",
+        21: "The World.jpg",
+        22: "Ace of Wands.jpg",
+        23: "Ace of Pentacles.jpg",
+        24: "Ace of Cups.jpg",
+        25: "Ace of Swords.jpg",
+        26: "Two of Wands.jpg",
+        27: "Two of Pentacles.jpg",
+        28: "Two of Cups.jpg",
+        29: "Two of Swords.jpg",
+        30: "Three of Wands.jpg",
+        31: "Three of Pentacles.jpg",
+        32: "Three of Cups.jpg",
+        33: "Three of Swords.jpg",
+        34: "Four of Wands.jpg",
+        35: "Four of Pentacles.jpg",
+        36: "Four of Cups.jpg",
+        37: "Four of Swords.jpg",
+        38: "Five of Wands.jpg",
+        39: "Five of Pentacles.jpg",
+        40: "Five of Cups.jpg",
+        41: "Five of Swords.jpg",
+        42: "Six of Wands.jpg",
+        43: "Six of Pentacles.jpg",
+        44: "Six of Cups.jpg",
+        45: "Six of Swords.jpg",
+        46: "Seven of Wands.jpg",
+        47: "Seven of pentacles.jpg",
+        48: "Seven of Cups.jpg",
+        49: "Seven of Swords.jpg",
+        50: "Eight of Wands.jpg",
+        51: "Eight of Pentacles.jpg",
+        52: "Eight of Cups.jpg",
+        53: "Eight of Swords.jpg",
+        54: "Nine of Wands.jpg",
+        55: "Nine of Pentacles.jpg",
+        56: "Nine of Cups.jpg",
+        57: "Nine of Swords.jpg",
+        58: "Ten of Wands.jpg",
+        59: "Ten of Pentacles.jpg",
+        60: "Ten of Cups.jpg",
+        61: "Ten of Swords.jpg",
+        62: "Page of Wands.jpg",
+        63: "Page of Pentacles.jpg",
+        64: "Page of Cups.jpg",
+        65: "Page of Swords.jpg",
+        66: "Knight of Wands.jpg",
+        67: "Knight of Pentacles.jpg",
+        68: "Knight of Cups.jpg",
+        69: "Knight of Swords.jpg",
+        70: "Queen of Wands.jpg",
+        71: "Queen of Pentacles.jpg",
+        72: "Queen of Cups.jpg",
+        73: "Queen of Swords.jpg",
+        74: "King of Wands.jpg",
+        75: "King of Pentacles.jpg",
+        76: "King of Cups.jpg",
+        77: "King of Swords.jpg"
       };
 
       const cards = document.querySelectorAll('.card');
