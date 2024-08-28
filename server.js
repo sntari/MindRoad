@@ -60,6 +60,9 @@ app.use(bodyParser.json());
 const memberRoutes = require('./routes/MemberRoutes');
 app.use('/member', memberRoutes);
 
+const myPageRoutes = require('./routes/myPageRoutes');
+app.use('/mypage', myPageRoutes);
+
 // 메인페이지
 app.get('/', (req, res) => {
   if (req.session.user) {
