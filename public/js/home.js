@@ -4,55 +4,42 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
-document.getElementById('chatInput').addEventListener('keydown', function (event) {
-	if (event.key === 'Enter' && this.value.trim() !== '') {
-		const message = this.value;
-		addUserMessage(message); // 사용자 메시지 추가
-		this.value = ''; // 입력창 초기화
-	}
+document.getElementById('chatInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && this.value.trim() !== '') {
+        const message = this.value;
+        addUserMessage(message); // 사용자 메시지 추가
+        this.value = ''; // 입력창 초기화
+    }
 });
 
-// 서버에서 EJS로 세션에 있는 user 값을 전달
-const user = document.body.getAttribute('data-user');
-
-// user 값이 없으면 .chat-wrapper 요소를 숨김
-if (!user) {
-	document.querySelector('.chat-wrapper').style.display = 'none';
-	document.querySelector('.not_login_main_page').style.display = 'block';
-} else {
-	document.querySelector('.chat-wrapper').style.display = 'block';
-	document.querySelector('.not_login_main_page').style.display = 'none';
-}
-
-
 function addUserMessage(message) {
-	const chatContent = document.getElementById('chatContent');
-	const userMessageElement = document.createElement('div');
-	userMessageElement.className = 'user-message';
-	userMessageElement.textContent = message;
-	chatContent.appendChild(userMessageElement);
+    const chatContent = document.getElementById('chatContent');
+    const userMessageElement = document.createElement('div');
+    userMessageElement.className = 'user-message';
+    userMessageElement.textContent = message;
+    chatContent.appendChild(userMessageElement);
 
-	// 스크롤을 맨 아래로 이동
-	chatContent.scrollTop = chatContent.scrollHeight;
+    // 스크롤을 맨 아래로 이동
+    chatContent.scrollTop = chatContent.scrollHeight;
 }
 
 function addBotMessage(message) {
-	const chatContent = document.getElementById('chatContent');
-	const botMessageElement = document.createElement('div');
-	botMessageElement.className = 'bot-message';
-	botMessageElement.textContent = message;
-	chatContent.appendChild(botMessageElement);
+    const chatContent = document.getElementById('chatContent');
+    const botMessageElement = document.createElement('div');
+    botMessageElement.className = 'bot-message';
+    botMessageElement.textContent = message;
+    chatContent.appendChild(botMessageElement);
 
-	// 스크롤을 맨 아래로 이동
-	chatContent.scrollTop = chatContent.scrollHeight;
+    // 스크롤을 맨 아래로 이동
+    chatContent.scrollTop = chatContent.scrollHeight;
 }
 
 // 예시: 챗봇이 응답하는 경우
 setTimeout(() => {
-	addBotMessage("저는 챗봇입니다! 무엇을 도와드릴까요?");
+    addBotMessage("저는 챗봇입니다! 무엇을 도와드릴까요?");
 }, 1000);
 
-(function ($) {
+(function($) {
 
 	var $window = $(window),
 		$body = $('body'),
@@ -62,199 +49,199 @@ setTimeout(() => {
 		$nav = $('#nav'), $nav_links = $nav.children('a');
 
 	// Breakpoints.
-	breakpoints({
-		xlarge: ['1281px', '1680px'],
-		large: ['981px', '1280px'],
-		medium: ['737px', '980px'],
-		small: ['361px', '736px'],
-		xsmall: [null, '360px']
-	});
+		breakpoints({
+			xlarge:  [ '1281px',  '1680px' ],
+			large:   [ '981px',   '1280px' ],
+			medium:  [ '737px',   '980px'  ],
+			small:   [ '361px',   '736px'  ],
+			xsmall:  [ null,      '360px'  ]
+		});
 
 	// Play initial animations on page load.
-	$window.on('load', function () {
-		window.setTimeout(function () {
-			$body.removeClass('is-preload');
-		}, 100);
-	});
+		$window.on('load', function() {
+			window.setTimeout(function() {
+				$body.removeClass('is-preload');
+			}, 100);
+		});
 
 	// Nav.
-	$nav_links
-		.on('click', function (event) {
+		$nav_links
+			.on('click', function(event) {
 
-			var href = $(this).attr('href');
+				var href = $(this).attr('href');
 
-			// Not a panel link? Bail.
-			if (href.charAt(0) != '#nav'
-				|| $panels.filter(href).length == 0)
-				return;
+				// Not a panel link? Bail.
+					if (href.charAt(0) != '#nav'
+					||	$panels.filter(href).length == 0)
+						return;
 
-			// Prevent default.
-			event.preventDefault();
-			event.stopPropagation();
+				// Prevent default.
+					event.preventDefault();
+					event.stopPropagation();
 
-			// Change panels.
-			if (window.location.hash != href)
-				window.location.hash = href;
+				// Change panels.
+					if (window.location.hash != href)
+						window.location.hash = href;
 
-		});
+			});
 
 	// Panels.
 
-	// Initialize.
-	(function () {
+		// Initialize.
+			(function() {
 
-		var $panel, $link;
+				var $panel, $link;
 
-		// Get panel, link.
-		if (window.location.hash) {
+				// Get panel, link.
+					if (window.location.hash) {
 
-			$panel = $panels.filter(window.location.hash);
-			$link = $nav_links.filter('[href="' + window.location.hash + '"]');
+				 		$panel = $panels.filter(window.location.hash);
+						$link = $nav_links.filter('[href="' + window.location.hash + '"]');
 
-		}
+					}
 
-		// No panel/link? Default to first.
-		if (!$panel
-			|| $panel.length == 0) {
+				// No panel/link? Default to first.
+					if (!$panel
+					||	$panel.length == 0) {
 
-			$panel = $panels.first();
-			$link = $nav_links.first();
+						$panel = $panels.first();
+						$link = $nav_links.first();
 
-		}
+					}
 
-		// Deactivate all panels except this one.
-		$panels.not($panel)
-			.addClass('inactive')
-			.hide();
+				// Deactivate all panels except this one.
+					$panels.not($panel)
+						.addClass('inactive')
+						.hide();
 
-		// Activate link.
-		$link
-			.addClass('active');
+				// Activate link.
+					$link
+						.addClass('active');
 
-		// Reset scroll.
-		$window.scrollTop(0);
+				// Reset scroll.
+					$window.scrollTop(0);
 
-	})();
+			})();
 
-	// Hashchange event.
-	$window.on('hashchange', function (event) {
+		// Hashchange event.
+			$window.on('hashchange', function(event) {
 
-		var $panel, $link;
+				var $panel, $link;
 
-		// Get panel, link.
-		if (window.location.hash) {
+				// Get panel, link.
+					if (window.location.hash) {
 
-			$panel = $panels.filter(window.location.hash);
-			$link = $nav_links.filter('[href="' + window.location.hash + '"]');
+				 		$panel = $panels.filter(window.location.hash);
+						$link = $nav_links.filter('[href="' + window.location.hash + '"]');
 
-			// No target panel? Bail.
-			if ($panel.length == 0)
-				return;
+						// No target panel? Bail.
+							if ($panel.length == 0)
+								return;
 
-		}
+					}
 
-		// No panel/link? Default to first.
-		else {
+				// No panel/link? Default to first.
+					else {
 
-			$panel = $panels.first();
-			$link = $nav_links.first();
+						$panel = $panels.first();
+						$link = $nav_links.first();
 
-		}
+					}
 
-		// Deactivate all panels.
-		$panels.addClass('inactive');
+				// Deactivate all panels.
+					$panels.addClass('inactive');
 
-		// Deactivate all links.
-		$nav_links.removeClass('active');
+				// Deactivate all links.
+					$nav_links.removeClass('active');
 
-		// Activate target link.
-		$link.addClass('active');
+				// Activate target link.
+					$link.addClass('active');
 
-		// Set max/min height.
-		$main
-			.css('max-height', $main.height() + 'px')
-			.css('min-height', $main.height() + 'px');
+				// Set max/min height.
+					$main
+						.css('max-height', $main.height() + 'px')
+						.css('min-height', $main.height() + 'px');
 
-		// Delay.
-		setTimeout(function () {
+				// Delay.
+					setTimeout(function() {
 
-			// Hide all panels.
-			$panels.hide();
+						// Hide all panels.
+							$panels.hide();
 
-			// Show target panel.
-			$panel.show();
+						// Show target panel.
+							$panel.show();
 
-			// Set new max/min height.
-			$main
-				.css('max-height', $panel.outerHeight() + 'px')
-				.css('min-height', $panel.outerHeight() + 'px');
+						// Set new max/min height.
+							$main
+								.css('max-height', $panel.outerHeight() + 'px')
+								.css('min-height', $panel.outerHeight() + 'px');
 
-			// Reset scroll.
-			$window.scrollTop(0);
+						// Reset scroll.
+							$window.scrollTop(0);
 
-			// Delay.
-			window.setTimeout(function () {
+						// Delay.
+							window.setTimeout(function() {
 
-				// Activate target panel.
-				$panel.removeClass('inactive');
+								// Activate target panel.
+									$panel.removeClass('inactive');
 
-				// Clear max/min height.
-				$main
-					.css('max-height', '')
-					.css('min-height', '');
+								// Clear max/min height.
+									$main
+										.css('max-height', '')
+										.css('min-height', '');
 
-				// IE: Refresh.
-				$window.triggerHandler('--refresh');
+								// IE: Refresh.
+									$window.triggerHandler('--refresh');
 
-				// Unlock.
-				locked = false;
+								// Unlock.
+									locked = false;
 
-			}, (breakpoints.active('small') ? 0 : 500));
+							}, (breakpoints.active('small') ? 0 : 500));
 
-		}, 250);
+					}, 250);
 
-	});
+			});
 
 	// IE: Fixes.
-	if (browser.name == 'ie') {
+		if (browser.name == 'ie') {
 
-		// Fix min-height/flexbox.
-		$window.on('--refresh', function () {
+			// Fix min-height/flexbox.
+				$window.on('--refresh', function() {
 
-			$wrapper.css('height', 'auto');
+					$wrapper.css('height', 'auto');
 
-			window.setTimeout(function () {
+					window.setTimeout(function() {
 
-				var h = $wrapper.height(),
-					wh = $window.height();
+						var h = $wrapper.height(),
+							wh = $window.height();
 
-				if (h < wh)
-					$wrapper.css('height', '100vh');
+						if (h < wh)
+							$wrapper.css('height', '100vh');
 
-			}, 0);
+					}, 0);
 
-		});
+				});
 
-		$window.on('resize load', function () {
-			$window.triggerHandler('--refresh');
-		});
+				$window.on('resize load', function() {
+					$window.triggerHandler('--refresh');
+				});
 
-		// Fix intro pic.
-		$('.panel.intro').each(function () {
+			// Fix intro pic.
+				$('.panel.intro').each(function() {
 
-			var $pic = $(this).children('.pic'),
-				$img = $pic.children('img');
+					var $pic = $(this).children('.pic'),
+						$img = $pic.children('img');
 
-			$pic
-				.css('background-image', 'url(' + $img.attr('src') + ')')
-				.css('background-size', 'cover')
-				.css('background-position', 'center');
+					$pic
+						.css('background-image', 'url(' + $img.attr('src') + ')')
+						.css('background-size', 'cover')
+						.css('background-position', 'center');
 
-			$img
-				.css('visibility', 'hidden');
+					$img
+						.css('visibility', 'hidden');
 
-		});
+				});
 
-	}
+		}
 
 })(jQuery);
