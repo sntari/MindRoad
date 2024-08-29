@@ -1,5 +1,3 @@
-const apiKey = 'YOUR_API_KEY'; // 여기에 OpenAI API 키를 입력하세요.
-
 document.getElementById('chatInput').addEventListener('keydown', async function(event) {
     if (event.key === 'Enter' && this.value.trim() !== '') {
         const userMessage = this.value;
