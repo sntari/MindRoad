@@ -1,0 +1,119 @@
+.tarot-spread {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    margin: 50px auto;
+    overflow: hidden;
+}
+
+.card {
+    width: 120px;
+    height: 180px;
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    transition: all 0.5s ease-out;
+    cursor: pointer;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    transform: rotateY(0deg);
+}
+
+.card-inner.flipped {
+    transform: rotateY(180deg);
+    /* 카드 앞면 보이도록 회전 */
+}
+
+.card-back,
+.card-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-back {
+    background-image: url('../img/tarot-back.jpg');
+    background-size: cover;
+}
+
+.card-front {
+    background-color: white;
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+#spread-cards {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#selected-card-info {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.selected-cards-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.selected-card {
+    width: 120px;
+    height: 180px;
+    position: relative;
+    margin: 0 10px;
+    /* 카드 간의 간격 */
+}
+
+.selected-card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    transform: rotateY(0deg);
+}
+
+.selected-card-inner.flipped {
+    transform: rotateY(180deg);
+}
+
+.selected-card-back,
+.selected-card-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.selected-card-back {
+    background-image: url('../img/tarot-back.jpg');
+    background-size: cover;
+}
+
+.selected-card-front {
+    background-color: white;
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
