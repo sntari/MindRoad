@@ -79,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
         76: "King of Cups.jpg",
         77: "King of Swords.jpg"
     };
-
     const cards = document.querySelectorAll('.card');
     const selectedCardsContainer = document.querySelector('.selected-cards-container');
     const selectedCardInfo = document.getElementById('selected-card-info');
@@ -99,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 선택된 카드를 Flask로 전송하는 함수
     function sendSelectedCardsToFlask() {
-        fetch('/selected-cards', {  // URL 수정
+        fetch('/selected-cards', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -121,41 +120,67 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 카드 클릭 처리 함수
+    // 카드 클릭 처리 함수
     function handleCardClick(card) {
         const cardInner = card.querySelector('.card-inner');
         const cardId = parseInt(card.getAttribute('data-card-id'));
         const cardName = cardImageMap[cardId].replace('.jpg', ''); // 카드 이름 가져오기
 
-        if (!cardInner.classList.contains('flipped')) {
-            if (selectedCards.length < 3) {
-                if (!selectedCards.includes(cardId)) { // 이미 선택된 카드인지 확인
-                    cardInner.classList.add('flipped');
-                    selectedCards.push(cardId);
-                    selectedCardname.push(cardName); // 선택된 카드 이름 저장
-                    updateSelectedCards();
+        // 이미 선택된 카드 상태이거나 3개 카드가 이미 선택된 경우 애니메이션 차단
+        if (selectedCards.length >= 3) {
+            alert("카드를 한 번 더 뽑을 수 없습니다.");
+            return; // 클릭 처리 중단
+        } else if (selectedCards.includes(cardId)) {
+            alert("이미 선택한 카드입니다.");
+            return; // 클릭 처리 중단
+        }
 
-                    if (selectedCards.length === 3) {
-                        sendSelectedCardsToFlask(); // 3개의 카드가 선택되면 Flask로 전송
-                    }
-                } else {
-                    alert("이 카드는 이미 선택되었습니다.");
-                }
-            } else {
-                alert("최대 3개의 카드를 선택할 수 있습니다.");
+        // 카드가 뒤집혀 있지 않을 때만 처리
+        if (!cardInner.classList.contains('flipped')) {
+            flipCard(card, cardId);
+            selectedCards.push(cardId);
+            selectedCardname.push(cardName); // 선택된 카드 이름 저장
+            updateSelectedCards();
+
+            if (selectedCards.length === 3) {
+                sendSelectedCardsToFlask(); // 3개의 카드가 선택되면 Flask로 전송
             }
-        } else {
-            alert("한 번 선택한 카드는 되돌릴 수 없습니다.");
         }
 
         card.style.zIndex = 1000;
         card.style.transform += ' translateY(-30px)';
     }
 
+    // 카드 뒤집기 함수
+    function flipCard(card, cardId) {
+        const cardInner = card.querySelector('.card-inner');
+        const cardFront = card.querySelector('.card-front');
+
+        // 이미지 설정
+        const img = document.createElement('img');
+        img.src = `/img/${cardImageMap[cardId]}`;
+        img.alt = `카드 ${cardId + 1}`;
+        img.style.width = '100%';
+        img.style.height = '100%';
+
+        // 이미지 로드 여부 확인
+        img.onload = () => {
+            cardFront.innerHTML = ''; // 기존 내용 제거
+            cardFront.appendChild(img); // 이미지 추가
+            cardInner.classList.add('flipped'); // 카드 앞면 보이도록 설정
+        };
+
+        img.onerror = () => {
+            console.error(`이미지를 로드할 수 없습니다: /img/${cardImageMap[cardId]}`);
+            cardFront.textContent = `카드 ${cardId + 1}`;
+            cardInner.classList.add('flipped');
+        };
+    }
+
     // 카드 펼치기 버튼 이벤트
     document.getElementById('spread-cards').addEventListener('click', function () {
         toggleCardSpread();
     });
-
 
     // 카드 펼치기/섞기 처리 함수
     function toggleCardSpread() {
@@ -179,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedCardElements = document.querySelectorAll('.selected-card');
 
         selectedCards.forEach((cardId, index) => {
-            if (index <= 3) { // 최대 3개까지만 처리
+            if (index < 3) { // 최대 3개까지만 처리
                 const selectedCardInner = selectedCardElements[index].querySelector('.selected-card-inner');
                 const selectedCardFront = selectedCardElements[index].querySelector('.selected-card-front');
 
@@ -189,7 +214,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 img.alt = `선택된 카드 ${cardId + 1}`;
                 img.style.width = '100%';
                 img.style.height = '100%';
-                img.style.objectFit = 'cover';
 
                 // 이미지 로드 여부 확인
                 img.onload = () => {
@@ -217,4 +241,3 @@ document.addEventListener('DOMContentLoaded', function () {
     // 카드 클릭 이벤트 초기화
     initializeCardClickEvents();
 });
-
