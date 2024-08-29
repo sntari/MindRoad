@@ -1,17 +1,3 @@
-/*
-	Astral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
-
-document.getElementById('chatInput').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter' && this.value.trim() !== '') {
-        const message = this.value;
-        addUserMessage(message); // 사용자 메시지 추가
-        this.value = ''; // 입력창 초기화
-    }
-});
-
 // 서버에서 EJS로 세션에 있는 user 값을 전달
 const user = document.body.getAttribute('data-user');
 
@@ -24,32 +10,102 @@ if (!user) {
 	document.querySelector('.not_login_main_page').style.display = 'none';
 }
 
-function addUserMessage(message) {
-    const chatContent = document.getElementById('chatContent');
-    const userMessageElement = document.createElement('div');
-    userMessageElement.className = 'user-message';
-    userMessageElement.textContent = message;
-    chatContent.appendChild(userMessageElement);
+document.addEventListener('DOMContentLoaded', function () {
+	const chatContent = document.getElementById('chatContent');
+	const chatInput = document.getElementById('chatInput');
+	const sendButton = document.getElementById('sendButton');
+	const apiKey = ''; // API 키를 여기에 입력하세요
 
-    // 스크롤을 맨 아래로 이동
-    chatContent.scrollTop = chatContent.scrollHeight;
-}
+	addMessage("안녕하세요! 무엇을 도와드릴까요?", false);
 
-function addBotMessage(message) {
-    const chatContent = document.getElementById('chatContent');
-    const botMessageElement = document.createElement('div');
-    botMessageElement.className = 'bot-message';
-    botMessageElement.textContent = message;
-    chatContent.appendChild(botMessageElement);
+	function addMessage(message, isUser) {
+		const messageDiv = document.createElement('div');
+		messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+		chatContent.appendChild(messageDiv);
 
-    // 스크롤을 맨 아래로 이동
-    chatContent.scrollTop = chatContent.scrollHeight;
-}
+		if (isUser) {
+			messageDiv.textContent = message;
+			scrollToBottom();
+		} else {
+			typeMessage(messageDiv, message);
+		}
+	}
 
-// 예시: 챗봇이 응답하는 경우
-setTimeout(() => {
-    addBotMessage("저는 챗봇입니다! 무엇을 도와드릴까요?");
-}, 1000);
+	function typeMessage(element, message) {
+		let i = 0;
+		const interval = setInterval(() => {
+			if (i < message.length) {
+				element.textContent += message.charAt(i);
+				i++;
+				scrollToBottom();
+			} else {
+				clearInterval(interval);
+			}
+		}, 10); // 타이핑 속도 조절 (밀리초 단위)
+	}
+
+	function scrollToBottom() {
+		setTimeout(() => {
+			chatContent.scrollTop = chatContent.scrollHeight;
+		}, 0); // 0ms 지연 시간
+	}
+
+	async function handleSend() {
+		const message = chatInput.value.trim();
+		if (message) {
+			addMessage(message, true);
+			chatInput.value = '';
+			try {
+				const botResponse = await getChatGPTResponse(message);
+				addMessage(botResponse, false);
+			} catch (error) {
+				addMessage("죄송합니다. 오류가 발생했습니다: " + error.message, false);
+			}
+		}
+	}
+
+	async function getChatGPTResponse(userMessage) {
+		const url = 'https://api.openai.com/v1/chat/completions';
+		const headers = {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${apiKey}`
+		};
+		const body = JSON.stringify({
+			model: "gpt-4", // 또는 "gpt-4" (접근 권한이 있는 경우)
+			messages: [
+				{ role: "system", content: "You are a helpful assistant." },
+				{ role: "user", content: userMessage }
+			]
+		});
+
+		try {
+			const response = await fetch(url, { method: 'POST', headers, body });
+
+			if (!response.ok) {
+				throw new Error(`HTTP 오류! 상태: ${response.status}`);
+			}
+
+			const data = await response.json();
+
+			if (data.choices && data.choices.length > 0) {
+				return data.choices[0].message.content;
+			} else {
+				throw new Error("유효하지 않은 API 응답 구조입니다.");
+			}
+		} catch (error) {
+			console.error("ChatGPT API에서 응답을 가져오는 중 오류 발생:", error);
+			throw error;
+		}
+	}
+
+	sendButton.addEventListener('click', handleSend);
+	chatInput.addEventListener('keypress', function (e) {
+		if (e.key === 'Enter') {
+			handleSend();
+		}
+	});
+});
+
 
 (function($) {
 
