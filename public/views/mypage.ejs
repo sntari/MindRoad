@@ -60,17 +60,48 @@
                 <label for="password">현재 비밀번호</label>
                 <input type="password" id="password" name="mem_pw" placeholder="Password" required>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="confirm-password">바꿀 비밀번호</label>
                 <input type="password" id="confirm-password" name="new_pw" placeholder="New password" required>
+            </div> -->
+
+            <div class="form-group" id="pw_box">
+                <label for="confirm-password">바꿀 비밀번호</label>
+                <input type="password" id="register_pw" name="new_pw" placeholder="Password" required>
+            </div>
+
+            <p id="pw_len">길이가 너무 짧습니다</p>
+
+            <div id="progress_bar">
+                <progress max="4" value="0" id="meter"></progress>
+                <p id="sample"></p>
             </div>
             <div class="form-group">
                 <input type="button" id="info_re" value="수정">
             </div>
         </div>
     </form>
-
+</div>
 <div id="delete_ID" class="tab-content" style="display:none">
-    <h2>delete ID</h2>
-    <p>내용</p>
+    <form id="id_del">
+        <div class="form-container">
+            <div class="form-group">
+                <label for="user-id">ID</label>
+                <% if(user){ %>
+                    <input type="text" id="user-id" name="mem_id" value="<%= user.EMAIL %>" readonly>
+                    <% } %>
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password2" name="mem_pw" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">비밀번호 확인</label>
+                <input type="password" id="del-password" name="new_pw" placeholder="New password" required>
+            </div>
+            <div class="form-group">
+                <input type="button" id="del_id" value="삭제">
+            </div>
+        </div>
+    </form>
 </div>

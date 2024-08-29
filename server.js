@@ -90,6 +90,8 @@ app.get('/tarot', (req, res) => {
 
 app.get('/mypage', (req, res) => {
   res.render('mypage', {
+    title: '마이 페이지',
+    layout: 'template',
     user: req.session.user
   });
 });
