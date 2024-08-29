@@ -46,9 +46,9 @@
 /* 그래프 작성 후 수정 */
 .graph-container canvas{
     float: center;
-    margin-left: 10px;
+    margin-left: 30px;
     margin-bottom: 10px;
-    width: 100%;
+    width: 600px;
     height: 600px;
 }
 
