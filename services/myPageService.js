@@ -1,5 +1,7 @@
 const mysql = require('../config/mysql'); // mysql.js 파일을 불러옴
 
+
+// 계정정보변경
 async function updateMemberInfo(mem_id, mem_nick, mem_pw, new_pw) {
     // 데이터베이스 연결 설정
     const connection = await mysql.getConnection(); // 데이터베이스 풀에서 연결 가져오기
@@ -19,6 +21,7 @@ async function updateMemberInfo(mem_id, mem_nick, mem_pw, new_pw) {
     }
 }
 
+// 계정 삭제
 async function del_member(mem_id, mem_pw, new_pw) {
     // 데이터베이스 연결 설정
     const connection = await mysql.getConnection(); // 데이터베이스 풀에서 연결 가져오기
@@ -32,7 +35,7 @@ async function del_member(mem_id, mem_pw, new_pw) {
         return result.affectedRows > 0;
     } catch (error) {
         console.error("Database update error:", error);  // 로그에 상세 오류 출력
-        throw error;  // 오류를 다시 던져서 상위 함수에서 처리하도록 함
+        return 1;
     } finally {
         connection.release(); // 풀에서 연결 반환
     }
