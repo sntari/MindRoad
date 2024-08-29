@@ -1,14 +1,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-gauge@0.1.8/dist/chartjs-gauge.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-gauge@0.1.8/dist/chartjs-gauge.min.js"></script>
-
 <div>
     <div style="display: flex;">
         <h2>(회원명) 님 환영합니다!</h2>
-        <h2>(회원명) 님 환영합니다!</h2>
         <div>
+
 
         </div>
     </div>
@@ -41,46 +38,39 @@
             <p>고민 카테고리</p>
         </div>
     </div> 
+    <div id="myinfoimg" class="myinfo-container">
+        <div id="gaugegraph" class="graph-container">
+            <canvas id="myGaugeChart" width="600px" height="600px"></canvas>
+            <p>계측기 형식의 그래프</p>
+        </div>
+        <div id="linegraph" class="graph-container">
+            <canvas id="myLineChart" width="600px" height="600px"></canvas>
+            <p>꺾은 선 그래프</p>
+        </div>
+        <div id="piegraph" class="graph-container">
+            <canvas id="myPieChart" width="600px" height="600px"></canvas>
+            <p>파이 그래프</p>
+        </div>
+        <div id="worrycategory" class="graph-container">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkwf9C42huD4YP1L5JAlLHHwaOHopI6M8fg&s">
+            <p>고민 카테고리</p>
+        </div>
+    </div> 
 </div>
 
 <div id="info_r" class="tab-content" style="display:none">
-    <form id="login-in">
+    <form id="info_rr">
         <div class="form-container">
             <div class="form-group">
                 <label for="user-id">ID</label>
                 <% if(user){ %>
-                    <input type="text" id="user-id" name="mem_id" value="<%= user.NICKNAME %>" readonly>
+                    <input type="text" id="user-id" name="mem_id" value="<%= user.EMAIL %>" readonly>
                     <% } %>
             </div>
             <div class="form-group">
                 <label for="nickname">닉네임</label>
                 <% if(user){ %>
-                    <input type="text" id="nickname" name="mem_id" placeholder="" value="<%= user.EMAIL %>" required>
-                    <% } %>
-            </div>
-            <div class="form-group">
-                <label for="password">현재 비밀번호</label>
-                <input type="password" id="password" name="mem_pw" placeholder="Password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">바꿀 비밀번호</label>
-                <input type="password" id="confirm-password" name="new_pw" placeholder="New password" required>
-            </div>
-            <div class="form-group">
-                <input type="button" id="info_re" value="수정">
-            </div>
-    <form id="login-in">
-        <div class="form-container">
-            <div class="form-group">
-                <label for="user-id">ID</label>
-                <% if(user){ %>
-                    <input type="text" id="user-id" name="mem_id" value="<%= user.NICKNAME %>" readonly>
-                    <% } %>
-            </div>
-            <div class="form-group">
-                <label for="nickname">닉네임</label>
-                <% if(user){ %>
-                    <input type="text" id="nickname" name="mem_id" placeholder="" value="<%= user.EMAIL %>" required>
+                    <input type="text" id="nickname" name="mem_nick" placeholder="" value="<%= user.NICKNAME %>" required>
                     <% } %>
             </div>
             <div class="form-group">
@@ -96,9 +86,12 @@
             </div>
         </div>
     </form>
-    </form>
-    </form>
 
+    <div id="delete_ID" class="tab-content" style="display:none">
+        <h2>delete ID</h2>
+        <p>내용</p>
+    </div>
+    <script src="../js/mypage.js"></script>
     <div id="delete_ID" class="tab-content" style="display:none">
         <h2>delete ID</h2>
         <p>내용</p>
