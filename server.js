@@ -60,6 +60,9 @@ app.use(bodyParser.json());
 const memberRoutes = require('./routes/MemberRoutes');
 app.use('/member', memberRoutes);
 
+const myPageRoutes = require('./routes/myPageRoutes');
+app.use('/mypage', myPageRoutes);
+
 // 메인페이지
 app.get('/', (req, res) => {
   if (req.session.user) {
@@ -78,9 +81,15 @@ app.listen(3300, () => {
 
 // 타로 카드 페이지 라우트
 app.get('/tarot', (req, res) => {
-  res.render('tarot', { 
-    title: '타로 카드', 
+  res.render('tarot', {
+    title: '타로 카드',
     layout: 'template',
-    user: req.session.user 
+    user: req.session.user
+  });
+});
+
+app.get('/mypage', (req, res) => {
+  res.render('mypage', {
+    user: req.session.user
   });
 });
