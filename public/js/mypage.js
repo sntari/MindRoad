@@ -6,14 +6,6 @@ function openTab(tabName) {
     }
     document.getElementById(tabName).style.display = "block";
 }
-function openTab(tabName) {
-    var i;
-    var x = document.getElementsByClassName("tab-content");
-    for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none";
-    }
-    document.getElementById(tabName).style.display = "block";
-}
 
 // 게이지 그래프
 document.addEventListener('DOMContentLoaded', function () {
@@ -46,44 +38,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // 꺾은 선 그래프
 const labels = ["January", "February", "March", "April", "May", "June"]; // 레이블 및 데이터 값 input 값으로 수정
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Sample Line Chart',
-                data: [65, 59, 80, 81, 56, 55], // 꺾은 선 그래프의 데이터 값
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }]
-        };
+const data = {
+    labels: labels,
+    datasets: [{
+        label: 'Sample Line Chart',
+        data: [65, 59, 80, 81, 56, 55], // 꺾은 선 그래프의 데이터 값
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+    }]
+};
 
-        // Line Chart 생성
-        const ctx = document.getElementById('myLineChart').getContext('2d');
-        const myLineChart = new Chart(ctx, {
-            type: 'line',
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: '꺾은 선 그래프 예시'
-                    }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true
-                    },
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+// Line Chart 생성
+const ctx = document.getElementById('myLineChart').getContext('2d');
+const myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: '꺾은 선 그래프 예시'
             }
-        });
+        },
+        scales: {
+            x: {
+                beginAtZero: true
+            },
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
 
 // 파이 그래프
 const pieData = {
@@ -100,50 +92,57 @@ const pieData = {
     }]
 };
 
+
+// 계정 정보 수정
 $(document).ready(function () {
     $('#info_re').on('click', function (event) {
-        const user = document.body.getAttribute('data-user.PW');
-        console.log(user);
         $('#info_rr').submit(); // 폼을 제출
     });
 
     $('#info_rr').submit(function (event) {
         const currentPw = document.getElementById('password').value;
         const newPw = document.getElementById('register_pw').value;
+        const Pw = document.getElementById('pw_check').value;
+
         console.log(currentPw);
         console.log(newPw);
-        
-        // event.preventDefault(); // 폼의 기본 제출 동작을 막음
-        // const formData = $(this).serialize();
-        // if (currentPw === newPw) {
-        //     console.log("이전 비번과 같습니다");
-        // } else {
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/mypage/info_r',
-        //         data: formData,
-        //         success: function (response) {
-        //             console.log("로그인성공", response);
-        //             window.location.href = '/';
-        //         },
-        //         error: function (xhr, status, error) {
-        //             console.log("로그인실패", xhr.responseText);
-        //         }
-        //     });
-        // }
+
+        event.preventDefault(); // 폼의 기본 제출 동작을 막음
+        const formData = $(this).serialize();
+        if (Pw === currentPw) {
+            console.log("비번은 맞아요");
+            if (Pw != newPw) {
+                console.log("이전비번과 달라요");
+                $.ajax({
+                    type: 'POST',
+                    url: '/mypage/info_r',
+                    data: formData,
+                    success: function (response) {
+                        console.log("로그인성공", response);
+                        window.location.href = '/';
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("로그인실패", xhr.responseText);
+                    }
+                });
+            }
+        } else {
+            console.log("이전비번과 같아요");
+
+        }
 
 
     });
 });
 
+
+// 계정 삭제
 $(document).ready(function () {
     $('#del_id').on('click', function (event) {
         $('#id_del').submit(); // 폼을 제출
     });
 
     $('#id_del').submit(function (event) {
-        
-        
         const currentPw = document.getElementById('password2').value;
         const newPw = document.getElementById('del-password').value;
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
@@ -155,13 +154,17 @@ $(document).ready(function () {
                 data: formData,
                 success: function (response) {
                     console.log("삭제성공", response);
+                    window.location.href = '/';
                 },
                 error: function (xhr, status, error) {
                     console.log("삭제실패", xhr.responseText);
                 }
             });
+        } else {
+            console.log("비번 틀림");
+
         }
-        
-        
+
+
     });
-    });
+});

@@ -51,29 +51,21 @@
             <div class="form-group">
                 <label for="nickname">닉네임</label>
                 <% if(user){ %>
-                    <input type="text" id="nickname" name="mem_nick" placeholder="" value="<%= user.NICKNAME %>" required>
+                    <input type="text" id="nickname" name="mem_nick" value="<%= user.NICKNAME %>" required>
                     <% } %>
             </div>
             <div class="form-group">
                 <label for="password">현재 비밀번호</label>
                 <input type="password" id="password" name="mem_pw" placeholder="Password" required>
             </div>
-            <!-- <div class="form-group">
-                <label for="confirm-password">바꿀 비밀번호</label>
-                <input type="password" id="confirm-password" name="new_pw" placeholder="New password" required>
-            </div> -->
-
             <div class="form-group" id="pw_box">
-                <label for="confirm-password">바꿀 비밀번호</label>
+                <label for="register_pw">바꿀 비밀번호</label>
+                <% if(user){ %>
+                <p id="pw_check" style="display: none;"><%= user.PW%></p>
+                <% } %>
                 <input type="password" id="register_pw" name="new_pw" placeholder="Password" required>
             </div>
 
-            <p id="pw_len">길이가 너무 짧습니다</p>
-
-            <div id="progress_bar">
-                <progress max="4" value="0" id="meter"></progress>
-                <p id="sample"></p>
-            </div>
             <div class="form-group">
                 <input type="button" id="info_re" value="수정">
             </div>
