@@ -26,6 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
             plugins: {
                 tooltip: { enabled: false }
             }
+        },
+        // 화살표 그리기
+        events: [],
+        animation: {
+            animateRotate: false,
+            animateScale: false
         }
     });
 });
