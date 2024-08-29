@@ -99,6 +99,23 @@ const pieData = {
         hoverOffset: 4
     }]
 };
+const pieCtx = document.getElementById('myPieChart').getContext('2d');
+const myPieChart = new Chart(pieCtx, {
+    type: 'pie',
+    data: pieData,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: '파이 그래프'
+            }
+        }
+    }
+});
 
 $(document).ready(function () {
     $('#info_re').on('click', function (event) {
