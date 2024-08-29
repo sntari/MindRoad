@@ -38,10 +38,12 @@
     display:inline-block;
     justify-content: center;
     align-items: center;
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 /* 그래프 작성 후 수정 */
-.graph-container img{
+.graph-container canvas{
     float: center;
     margin-left: 10px;
     margin-bottom: 10px;
