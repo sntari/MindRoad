@@ -40,18 +40,18 @@
 </div>
 
 <div id="info_r" class="tab-content" style="display:none">
-    <form id="login-in">
+    <form id="info_rr">
         <div class="form-container">
             <div class="form-group">
                 <label for="user-id">ID</label>
                 <% if(user){ %>
-                    <input type="text" id="user-id" name="mem_id" value="<%= user.NICKNAME %>" readonly>
+                    <input type="text" id="user-id" name="mem_id" value="<%= user.EMAIL %>" readonly>
                     <% } %>
             </div>
             <div class="form-group">
                 <label for="nickname">닉네임</label>
                 <% if(user){ %>
-                    <input type="text" id="nickname" name="mem_id" placeholder="" value="<%= user.EMAIL %>" required>
+                    <input type="text" id="nickname" name="mem_nick" placeholder="" value="<%= user.NICKNAME %>" required>
                     <% } %>
             </div>
             <div class="form-group">
@@ -66,7 +66,6 @@
                 <input type="button" id="info_re" value="수정">
             </div>
         </div>
-    </form>
     </form>
 
     <div id="delete_ID" class="tab-content" style="display:none">

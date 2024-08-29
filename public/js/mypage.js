@@ -6,6 +6,14 @@ function openTab(tabName) {
     }
     document.getElementById(tabName).style.display = "block";
 }
+function openTab(tabName) {
+    var i;
+    var x = document.getElementsByClassName("tab-content");
+    for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+    }
+    document.getElementById(tabName).style.display = "block";
+}
 
 // 게이지 그래프
 document.addEventListener('DOMContentLoaded', function () {
@@ -92,44 +100,31 @@ const pieData = {
     }]
 };
 
-const pieCtx = document.getElementById('myPieChart').getContext('2d');
-const myPieChart = new Chart(pieCtx, {
-    type: 'pie',
-    data: pieData,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: '파이 그래프 예시'
-            }
-        }
-    }
-});
-
 $(document).ready(function () {
     $('#info_re').on('click', function (event) {
-        $('#info_r').submit(); // 폼을 제출
+        $('#info_rr').submit(); // 폼을 제출
     });
 
-    $('#login-in').submit(function (event) {
+    $('#info_rr').submit(function (event) {
+        const currentPw = document.getElementById('password').value;
+        const newPw = document.getElementById('confirm-password').value;
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
-        $.ajax({
-            type: 'POST',
-            url: '/member/login',
-            data: formData,
-            success: function (response) {
-                console.log("로그인성공", response);
-                window.location.href = '/';
-            },
-            error: function (xhr, status, error) {
-                console.log("로그인실패", xhr.responseText);
-                document.getElementById("login_check").style.display = 'block';
-            }
-        });
+        if (currentPw === newPw) {
+            console.log("이전 비번과 같습니다");
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/mypage/info_r',
+                data: formData,
+                success: function (response) {
+                    console.log("로그인성공", response);
+                    window.location.href = '/';
+                },
+                error: function (xhr, status, error) {
+                    console.log("로그인실패", xhr.responseText);
+                }
+            });
+        }
     });
-});
+    });
