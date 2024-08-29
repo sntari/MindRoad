@@ -40,6 +40,7 @@
     align-items: center;
 }
 
+/* 그래프 작성 후 수정 */
 .graph-container img{
     float: center;
     margin-left: 10px;
