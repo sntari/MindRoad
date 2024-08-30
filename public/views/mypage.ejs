@@ -3,7 +3,9 @@
 
 <div>
     <div style="display: flex;">
+        <% if(user){ %>
         <h2> <%= user.NICKNAME %> 님 환영합니다!</h2>
+        <% } %>
         <div>
 
         </div>
@@ -84,7 +86,11 @@
                     <% } %>
                         <input type="password" id="register_pw2" name="new_pw" placeholder="Password" required>
             </div>
-            <p style="color: red;">비상</p>
+            <p id="mypage_error1" style="color: red; font-size: 17px;"></p>
+            <div id="progress_bar2">
+                <progress max="4" value="0" id="meter2"></progress>
+                <p id="mypage_error3" style="color: red; font-size: 17px;"></p>
+            </div>
             <div class="form-group">
                 <input type="button" id="info_re" value="수정">
             </div>
@@ -109,6 +115,7 @@
                 <label for="confirm-password">비밀번호 확인</label>
                 <input type="password" id="del-password" name="new_pw" placeholder="New password" required>
             </div>
+            <p id="mypage_error2" style="color: red; font-size: 20px;"></p>
             <div class="form-group">
                 <input type="button" id="del_id" value="삭제">
             </div>

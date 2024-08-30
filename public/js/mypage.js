@@ -7,7 +7,7 @@ function openTab(tabName) {
     document.getElementById(tabName).style.display = "block";
 }
 
-window.onload = function() {
+window.onload = function () {
     const ctx = document.getElementById('myGaugeChart').getContext('2d');
     new Chart(ctx, {
         type: 'doughnut',
@@ -146,9 +146,8 @@ $(document).ready(function () {
 
     $('#info_rr').submit(function (event) {
         const currentPw = document.getElementById('password').value;
-        const newPw = document.getElementById('register_pw').value;
-        const Pw = document.getElementById('pw_check').value;
-
+        const newPw = document.getElementById('register_pw2').value;
+        const Pw = document.getElementById('pw_check').innerHTML;
 
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
@@ -160,7 +159,7 @@ $(document).ready(function () {
         if (Pw === currentPw) {
             console.log("비번은 맞아요");
             if (Pw != newPw) {
-                console.log("이전비번과 달라요");
+                document.getElementById('mypage_error1').innerHTML = "";
                 $.ajax({
                     type: 'POST',
                     url: '/mypage/info_r',
@@ -174,11 +173,10 @@ $(document).ready(function () {
                     }
                 });
             } else {
-                console.log("이전비번과 같아요");
+                document.getElementById('mypage_error1').innerHTML = "이전 비밀번호와 같습니다";
             }
         } else {
-            console.log("비번이 틀렸어");
-
+            document.getElementById('mypage_error1').innerHTML = "현재 비밀번호가 일치하지 않습니다";
         }
 
 
@@ -196,9 +194,6 @@ $(document).ready(function () {
         const currentPw = document.getElementById('password2').value;
         const newPw = document.getElementById('del-password').value;
         const Pw = document.getElementById('pw_check').innerHTML;
-        console.log(currentPw);
-        console.log(newPw);
-        console.log(Pw);
 
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
@@ -209,9 +204,17 @@ $(document).ready(function () {
                 url: '/mypage/del_id',
                 data: formData,
                 success: function (response) {
-                    console.log("삭제성공", response);
-                    console.log("삭제성공", response);
-                    window.location.href = '/';
+                    // 로그아웃
+                    $.ajax({
+                        type: 'GET',
+                        url: '/mypage/logout',
+                        success: function (response) {
+                            window.location.href = '/';
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("로그아웃실패", xhr.responseText);
+                        }
+                    });
                 },
                 error: function (xhr, status, error) {
                     console.log("삭제실패", xhr.responseText);
@@ -219,10 +222,48 @@ $(document).ready(function () {
                 }
             });
         } else {
-            console.log("비번 틀림");
-
+            document.getElementById('mypage_error2').innerHTML = "비밀번호가 일치하지 않습니다";
         }
 
 
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("register_pw2").addEventListener("input", function () {
+        const password = this.value;
+        const meter = document.getElementById("meter2");
+        const errorText = document.getElementById("mypage_error3");
+
+        let strength = 0;
+
+        // 비밀번호 보안 강도 체크
+        if (password.length >= 8) strength++; // 길이가 8자 이상
+        if (/[A-Z]/.test(password)) strength++; // 대문자 포함
+        if (/[0-9]/.test(password)) strength++; // 숫자 포함
+        if (/[\W_]/.test(password)) strength++; // 특수 문자 포함
+
+        // 프로그래스 바와 텍스트 업데이트
+        meter.value = strength;
+
+        switch (strength) {
+            case 0:
+            case 1:
+                errorText.textContent = "보안 강도: 매우 약함";
+                errorText.style.color = "red";
+                break;
+            case 2:
+                errorText.textContent = "보안 강도: 약함";
+                errorText.style.color = "orange";
+                break;
+            case 3:
+                errorText.textContent = "보안 강도: 보통";
+                errorText.style.color = "blue";
+                break;
+            case 4:
+                errorText.textContent = "보안 강도: 강함";
+                errorText.style.color = "green";
+                break;
+        }
     });
 });
