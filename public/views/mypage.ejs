@@ -3,7 +3,7 @@
 
 <div>
     <div style="display: flex;">
-        <h2>(회원명) 님 환영합니다!</h2>
+        <h2> <%= user.NICKNAME %> 님 환영합니다!</h2>
         <div>
 
         </div>
@@ -44,9 +44,9 @@
     <form id="info_rr">
         <div class="form-container">
             <div class="form-group">
-                <label for="user-id">ID</label>
+                <label for="user-id2">ID</label>
                 <% if(user){ %>
-                    <input type="text" id="user-id" name="mem_id" value="<%= user.EMAIL %>" readonly>
+                    <input type="text" id="user-id2" name="mem_id" value="<%= user.EMAIL %>" readonly>
                     <% } %>
             </div>
             <div class="form-group">
@@ -84,7 +84,7 @@
                     <% } %>
                         <input type="password" id="register_pw2" name="new_pw" placeholder="Password" required>
             </div>
-
+            <p style="color: red;">비상</p>
             <div class="form-group">
                 <input type="button" id="info_re" value="수정">
             </div>

@@ -1,69 +1,77 @@
-// 백그라운드 및 로그인폼 지정
-const modal = document.querySelector(".background");
-const re = document.querySelector(".login__register");
-const cr = document.querySelector(".login__create");
+// ---------------------------------------------- 로그인 후 오류가 뜨는 구문들 로그인시 사용못하게 막아둠 -----------------------------------------------------
 
-// 회원가입/ 로그인폼 아이디 선택자로 지정
-const signup = document.getElementById("sign-up");
-const signin = document.getElementById("sign-in");
-loginin = document.getElementById("login-in");
-loginup = document.getElementById("login-up");
+const user_data = document.body.getAttribute('data-user');
+if (!user_data) {
+    // 백그라운드 및 로그인폼 지정
+    const modal = document.querySelector(".background");
+    const re = document.querySelector(".login__register");
+    const cr = document.querySelector(".login__create");
 
-// background show 클래스 추가
-function show() {
-    modal.classList.add("show");
-}
+    // 회원가입/ 로그인폼 아이디 선택자로 지정
+    const signup = document.getElementById("sign-up");
+    const signin = document.getElementById("sign-in");
+    loginin = document.getElementById("login-in");
+    loginup = document.getElementById("login-up");
 
-// background show 클래스 제거
-function remove() {
-    modal.classList.remove("show");
-}
+    // background show 클래스 추가
+    function show() {
+        modal.classList.add("show");
+    }
 
-// 클릭 시 로그인 창을 보여줌
-document.querySelector("#show").addEventListener("click", show);
+    // background show 클래스 제거
+    function remove() {
+        modal.classList.remove("show");
+    }
 
-// 모달창 외부 클릭 시 닫히게 하는 코드
-modal.addEventListener("click", (event) => {
-    // 클릭된 요소가 modalContent가 아니라면 모달을 닫고/ 로그인폼으로 지정
-    if (!re.contains(event.target) && !cr.contains(event.target)) {
-        remove();
+    // 클릭 시 로그인 창을 보여줌
+    document.querySelector("#show").addEventListener("click", show);
+    // 모달창 외부 클릭 시 닫히게 하는 코드
+    modal.addEventListener("click", (event) => {
+        // 클릭된 요소가 modalContent가 아니라면 모달을 닫고/ 로그인폼으로 지정
+        if (!re.contains(event.target) && !cr.contains(event.target)) {
+            remove();
+            loginin.classList.remove("none");
+            loginup.classList.remove("block");
+
+            loginin.classList.add("block");
+            loginup.classList.add("none");
+        }
+    });
+
+    // 로그인창 / 회원가입 창 클래스 속성 추가/제거
+    signup.addEventListener("click", () => {
+        loginin.classList.remove("block");
+        loginup.classList.remove("none");
+
+        loginin.classList.add("none");
+        loginup.classList.add("block");
+
+
+        document.getElementById('mem_id').value = '';	 // 로그인 input 값 초기화
+        document.getElementById('mem_pw').value = ''; // 로그인 input 값 초기화
+    })
+    signin.addEventListener("click", () => {
         loginin.classList.remove("none");
         loginup.classList.remove("block");
-
+    
         loginin.classList.add("block");
         loginup.classList.add("none");
-    }
-});
+        document.getElementById('register_id').value = '';	 // 회원가입 input 값 초기화
+        document.getElementById('register_nick').value = ''; // 회원가입 input 값 초기화
+        document.getElementById('register_pw').value = '';   // 회원가입 input 값 초기화
+        document.getElementById("pw_len").style.display = 'none'; 					 // 비밀번호 보안강도 초기화
+        document.querySelectorAll('.login__box')[4].style.padding = '1.125rem 1rem'; // 비밀번호 보안강도 초기화
+        document.getElementById("sample").innerText = ""; 							 // 비밀번호 보안강도 초기화
+        document.getElementById("register_nick_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
+        document.getElementById("register_id_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
+        strengthBar.value = 0;
+    })
+    
+}
+// ---------------------------------------------- 로그인 후 오류가 뜨는 구문들 로그인시 사용못하게 막아둠 -----------------------------------------------------
 
-// 로그인창 / 회원가입 창 클래스 속성 추가/제거
-signup.addEventListener("click", () => {
-    loginin.classList.remove("block");
-    loginup.classList.remove("none");
-
-    loginin.classList.add("none");
-    loginup.classList.add("block");
 
 
-    document.getElementById('mem_id').value = '';	 // 로그인 input 값 초기화
-    document.getElementById('mem_pw').value = ''; // 로그인 input 값 초기화
-})
-
-signin.addEventListener("click", () => {
-    loginin.classList.remove("none");
-    loginup.classList.remove("block");
-
-    loginin.classList.add("block");
-    loginup.classList.add("none");
-    document.getElementById('register_id').value = '';	 // 회원가입 input 값 초기화
-    document.getElementById('register_nick').value = ''; // 회원가입 input 값 초기화
-    document.getElementById('register_pw').value = '';   // 회원가입 input 값 초기화
-    document.getElementById("pw_len").style.display = 'none'; 					 // 비밀번호 보안강도 초기화
-    document.querySelectorAll('.login__box')[4].style.padding = '1.125rem 1rem'; // 비밀번호 보안강도 초기화
-    document.getElementById("sample").innerText = ""; 							 // 비밀번호 보안강도 초기화
-    document.getElementById("register_nick_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
-    document.getElementById("register_id_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
-    strengthBar.value = 0;
-})
 
 // EMAIL 중복체크
 let checkEmail = 0;
