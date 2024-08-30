@@ -41,10 +41,27 @@ async function del_member(mem_id, mem_pw, new_pw) {
     }
 }
 
-
+// 로그인
+async function loginUser(mem_id, new_pw) {
+    const connection = await mysql.connect();
+    
+    try {
+        if(mem_id != ""){
+            const query = 'SELECT * FROM MEMBERS WHERE EMAIL = ? AND PW = ?';
+            const [rows] = await connection.promise().query(query, [mem_id, new_pw]);
+            return rows;
+        }else{
+            return 0;
+        }
+    } catch (error) {
+        throw error;
+    } finally {
+        connection.end();
+    }
+}
 
 module.exports = {
     updateMemberInfo,
     del_member,
-    
+    loginUser,
 };

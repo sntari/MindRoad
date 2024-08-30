@@ -109,7 +109,6 @@ const myPieChart = new Chart(pieCtx, {
     }
 });
 
-
 // 계정 정보 수정
 $(document).ready(function () {
     $('#info_re').on('click', function (event) {
@@ -118,14 +117,18 @@ $(document).ready(function () {
 
     $('#info_rr').submit(function (event) {
         const currentPw = document.getElementById('password').value;
-        const newPw = document.getElementById('register_pw').value;
-        const Pw = document.getElementById('pw_check').value;
+        const newPw = document.getElementById('register_pw2').value;
+        const Pw = document.getElementById('pw_check').innerHTML;
 
-        console.log(currentPw);
-        console.log(newPw);
+
 
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
+        console.log(Pw);
+        console.log(currentPw);
+        console.log(newPw);
+
+
         if (Pw === currentPw) {
             console.log("비번은 맞아요");
             if (Pw != newPw) {
@@ -142,9 +145,11 @@ $(document).ready(function () {
                         console.log("로그인실패", xhr.responseText);
                     }
                 });
+            } else {
+                console.log("이전비번과 같아요");
             }
         } else {
-            console.log("이전비번과 같아요");
+            console.log("비번이 틀렸어");
 
         }
 
@@ -162,16 +167,31 @@ $(document).ready(function () {
     $('#id_del').submit(function (event) {
         const currentPw = document.getElementById('password2').value;
         const newPw = document.getElementById('del-password').value;
+        const Pw = document.getElementById('pw_check').innerHTML;
+        console.log(currentPw);
+        console.log(newPw);
+        console.log(Pw);
+
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
-        if (currentPw === newPw) {
+        if (currentPw == newPw && newPw == Pw) {
             $.ajax({
                 type: 'POST',
                 url: '/mypage/del_id',
                 data: formData,
                 success: function (response) {
                     console.log("삭제성공", response);
-                    window.location.href = '/';
+                    // 로그아웃
+                    $.ajax({
+                        type: 'GET',
+                        url: '/mypage/logout',
+                        success: function (response) {
+                            window.location.href = '/';
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("삭제실패", xhr.responseText);
+                        }
+                    });
                 },
                 error: function (xhr, status, error) {
                     console.log("삭제실패", xhr.responseText);
