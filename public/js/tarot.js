@@ -84,11 +84,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectedCardInfo = document.getElementById('selected-card-info');
     const spreadButton = document.getElementById('spread-cards');
 
-    let selectedCards = []; // 선택된 카드 ID 저장
-    let selectedCardname = []; // 선택된 카드 이름 저장
-    let isSpread = false; // 카드 펼치기 상태
+    let selectedCards = [];
+    let selectedCardname = [];
+    let isSpread = false;
 
-    // 카드 클릭 이벤트를 초기화하는 함수
     function initializeCardClickEvents() {
         cards.forEach((card) => {
             card.addEventListener('click', function () {
@@ -97,33 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
-    // 선택된 카드를 Flask로 전송하는 함수
-    function sendSelectedCardsToFlask() {
-        fetch('/selected-cards', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ selectedCards: selectedCardname }),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
-
-    // 카드 클릭 처리 함수
     function handleCardClick(card) {
-        const cardInner = card.querySelector('.card-inner');
         const cardId = parseInt(card.getAttribute('data-card-id'));
         const cardName = cardImageMap[cardId].replace('.jpg', '');
 
@@ -137,47 +110,54 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (!cardInner.classList.contains('flipped')) {
-            flipCard(card, cardId);
-            selectedCards.push(cardId);
-            selectedCardname.push(cardName);
-            updateSelectedCards();
+        selectedCards.push(cardId);
+        selectedCardname.push(cardName);
 
-            if (selectedCards.length === 3) {
-                sendSelectedCardsToFlask();
-                spreadButton.disabled = true;
-            }
+        // 선택된 카드 숨기기
+        card.style.display = 'none';
+
+        updateSelectedCards();
+
+        if (selectedCards.length === 3) {
+            sendSelectedCardsToFlask();
+            spreadButton.disabled = true;
         }
 
-        card.style.zIndex = 1000;
-        card.style.transform += ' translateY(-30px)';
         updateSpreadButton();
     }
 
-    // 카드 뒤집기 함수
-    function flipCard(card, cardId) {
-        const cardInner = card.querySelector('.card-inner');
-        const cardFront = card.querySelector('.card-front');
+    function updateSelectedCards() {
+        const selectedCardElements = document.querySelectorAll('.selected-card');
 
-        const img = document.createElement('img');
-        img.src = `/img/${cardImageMap[cardId]}`;
-        img.alt = `카드 ${cardId + 1}`;
-        img.style.width = '100%';
-        img.style.height = '100%';
+        selectedCards.forEach((cardId, index) => {
+            if (index < 3) {
+                const selectedCardInner = selectedCardElements[index].querySelector('.selected-card-inner');
+                const selectedCardFront = selectedCardElements[index].querySelector('.selected-card-front');
 
-        img.onload = () => {
-            cardFront.innerHTML = '';
-            cardFront.appendChild(img);
-            cardInner.classList.add('flipped');
-        };
+                const img = document.createElement('img');
+                img.src = `/img/${cardImageMap[cardId]}`;
+                img.alt = `선택된 카드 ${cardId + 1}`;
+                img.style.width = '100%';
+                img.style.height = '100%';
 
-        img.onerror = () => {
-            console.error(`이미지를 로드할 수 없습니다: /img/${cardImageMap[cardId]}`);
-            cardFront.textContent = `카드 ${cardId + 1}`;
-            cardInner.classList.add('flipped');
-        };
+                img.onload = () => {
+                    selectedCardFront.innerHTML = '';
+                    selectedCardFront.appendChild(img);
+                    selectedCardInner.classList.add('flipped');
+
+                    // 선택된 카드 영역에서 카드 펼치기 애니메이션
+                    selectedCardElements[index].style.transform = `translateX(${index * 120}px)`;
+                    selectedCardElements[index].style.transition = 'transform 0.5s ease';
+                };
+
+                img.onerror = () => {
+                    console.error(`이미지를 로드할 수 없습니다: /img/${cardImageMap[cardId]}`);
+                    selectedCardFront.textContent = `카드 ${cardId + 1}`;
+                    selectedCardInner.classList.add('flipped');
+                };
+            }
+        });
     }
-
     // 카드 펼치기/섞기 버튼 이벤트
     spreadButton.addEventListener('click', function () {
         if (!isSpread) {
@@ -264,37 +244,40 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-
     // 카드 초기화 함수
     function resetCards() {
         selectedCards = [];
         selectedCardname = [];
 
-        // 카드 상태 초기화
         cards.forEach((card) => {
             const cardInner = card.querySelector('.card-inner');
-            cardInner.classList.remove('flipped'); // 카드 뒤집기 초기화
-            card.style.zIndex = ''; // z-index 초기화
-            card.style.transform = 'rotate(0deg)'; // 회전 초기화
-            card.style.left = '20px'; // 원래 위치로 초기화
-            card.querySelector('.card-front').innerHTML = ''; // 카드 앞면 내용 초기화
+            cardInner.classList.remove('flipped');
+            card.style.zIndex = '';
+            card.style.transform = 'rotate(0deg)';
+            card.style.left = '20px';
+            card.style.display = ''; // 숨겨진 카드들을 다시 표시
+            card.querySelector('.card-front').innerHTML = '';
         });
 
-        // 펼치기 상태 초기화
         if (isSpread) {
-            toggleCardSpread(); // 카드 펼치기 상태 되돌리기
+            toggleCardSpread();
         }
 
-        // isSpread 상태를 false로 설정
         isSpread = false;
 
-        // 선택된 카드 정보 초기화
-        updateSelectedCards();
+        const selectedCardElements = document.querySelectorAll('.selected-card');
+        selectedCardElements.forEach((element, index) => {
+            const selectedCardInner = element.querySelector('.selected-card-inner');
+            selectedCardInner.classList.remove('flipped');
+            element.querySelector('.selected-card-front').innerHTML = '';
+            element.style.transform = ''; // 선택된 카드 영역 초기화
+            element.style.transition = '';
+        });
 
-        // 버튼 상태 업데이트
-        spreadButton.disabled = false; // 버튼 활성화
-        spreadButton.textContent = '카드 펼치기'; // 버튼 텍스트 초기화
+        spreadButton.disabled = false;
+        spreadButton.textContent = '카드 펼치기';
     }
+
 
     // 초기화 버튼 클릭 이벤트
     const drawAgainButton = document.getElementById('draw-again');
