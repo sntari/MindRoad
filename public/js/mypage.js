@@ -109,7 +109,6 @@ const myPieChart = new Chart(pieCtx, {
     }
 });
 
-
 // 계정 정보 수정
 $(document).ready(function () {
     $('#info_re').on('click', function (event) {
@@ -123,11 +122,14 @@ $(document).ready(function () {
         const newPw = document.getElementById('register_pw').value;
         const Pw = document.getElementById('pw_check').value;
 
-        console.log(currentPw);
-        console.log(newPw);
 
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
+        console.log(Pw);
+        console.log(currentPw);
+        console.log(newPw);
+
+
         if (Pw === currentPw) {
             console.log("비번은 맞아요");
             if (Pw != newPw) {
@@ -144,52 +146,11 @@ $(document).ready(function () {
                         console.log("로그인실패", xhr.responseText);
                     }
                 });
+            } else {
+                console.log("이전비번과 같아요");
             }
         } else {
-            console.log("이전비번과 같아요");
-
-        }
-
-
-    });
-});
-
-$(document).ready(function () {
-    $('#del_id').on('click', function (event) {
-        $('#id_del').submit(); // 폼을 제출
-    });
-
-    $('#id_del').submit(function (event) {
-        
-        
-        const currentPw = document.getElementById('password2').value;
-        const newPw = document.getElementById('register_pw').value;
-        const Pw = document.getElementById('pw_check').value;
-
-        console.log(currentPw);
-        console.log(newPw);
-
-        event.preventDefault(); // 폼의 기본 제출 동작을 막음
-        const formData = $(this).serialize();
-        if (Pw === currentPw) {
-            console.log("비번은 맞아요");
-            if (Pw != newPw) {
-                console.log("이전비번과 달라요");
-                $.ajax({
-                    type: 'POST',
-                    url: '/mypage/info_r',
-                    data: formData,
-                    success: function (response) {
-                        console.log("로그인성공", response);
-                        window.location.href = '/';
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("로그인실패", xhr.responseText);
-                    }
-                });
-            }
-        } else {
-            console.log("이전비번과 같아요");
+            console.log("비번이 틀렸어");
 
         }
 
@@ -207,9 +168,14 @@ $(document).ready(function () {
     $('#id_del').submit(function (event) {
         const currentPw = document.getElementById('password2').value;
         const newPw = document.getElementById('del-password').value;
+        const Pw = document.getElementById('pw_check').innerHTML;
+        console.log(currentPw);
+        console.log(newPw);
+        console.log(Pw);
+
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
-        if (currentPw === newPw) {
+        if (currentPw == newPw && newPw == Pw) {
             $.ajax({
                 type: 'POST',
                 url: '/mypage/del_id',
