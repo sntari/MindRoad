@@ -1,5 +1,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-gauge@0.1.8/dist/chartjs-gauge.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gaugeJS/dist/gauge.min.js"></script>
+
+
 
 <div>
     <div style="display: flex;">
@@ -22,8 +25,10 @@
     <h2>myinfo</h2>
     <p>내용</p>
     <div id="myinfoimg" class="myinfo-container">
-        <div id="gaugegraph" class="graph-container">
-            <canvas id="myGaugeChart"></canvas>
+        <div id="gauge-container" class="graph-container">
+            <div id="gauge-text" style="font-size: 80px;">100</div>
+            <!-- 게이지 그래프를 표시할 canvas 요소 -->
+            <canvas id="gauge"></canvas>
             <p>계측기 형식의 그래프</p>
         </div>
         <div id="piegraph" class="graph-container">
@@ -35,11 +40,10 @@
             <p>꺾은 선 그래프</p>
         </div>
         <div id="worrycategory" class="graph-container">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkwf9C42huD4YP1L5JAlLHHwaOHopI6M8fg&s"
-                width="600px" height="600px">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkwf9C42huD4YP1L5JAlLHHwaOHopI6M8fg&s" width="600px" height="600px">
             <p>고민 카테고리</p>
         </div>
-    </div>
+    </div> 
 </div>
 
 <div id="info_r" class="tab-content" style="display:none">
@@ -64,9 +68,9 @@
             <div class="form-group" id="pw_box">
                 <label for="register_pw">바꿀 비밀번호</label>
                 <% if(user){ %>
-                    <p id="pw_check" style="display: none;"><%= user.PW%></p>
-                    <% } %>
-                        <input type="password" id="register_pw2" name="new_pw" placeholder="Password" required>
+                <p id="pw_check" style="display: none;"><%= user.PW%></p>
+                <% } %>
+                <input type="password" id="register_pw" name="new_pw" placeholder="Password" required>
             </div>
             <p id="mypage_error1" style="color: red; font-size: 17px;"></p>
             <div id="progress_bar2">
@@ -103,6 +107,3 @@
         </div>
     </form>
 </div>
-<script>
-    
-</script>
