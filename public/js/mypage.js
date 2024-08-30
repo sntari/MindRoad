@@ -14,7 +14,7 @@ window.onload = function() {
         data: {
             datasets: [{
                 data: [20, 80], // 여기에 실제 데이터 값을 넣으세요.
-                backgroundColor: ['#4caf50', 'red'],
+                backgroundColor: ['red', '#4caf50'],
                 borderWidth: 0
             }]
         },
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
         type: 'doughnut',
         data: {
             datasets: [{
-                data: [20, 80], // 여기에 실제 데이터 값을 넣으세요.
+                data: [40, 60], // 여기에 실제 데이터 값을 넣으세요.
                 backgroundColor: ['#4caf50', 'red'],
                 borderWidth: 0
             }]
@@ -64,15 +64,15 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // 꺾은 선 그래프
-const labels = ["January", "February", "March", "April", "May", "June"]; // 레이블 및 데이터 값 input 값으로 수정
+const labels = ["최초 상담일", "2회차", "3회차", "4회차", "5회차", "최근"]; // 레이블 및 데이터 값 input 값으로 수정
 const data = {
     labels: labels,
     datasets: [{
-        label: 'Sample Line Chart',
-        data: [65, 59, 80, 81, 56, 55], // 꺾은 선 그래프의 데이터 값
+        label: '상담 기록에 따른 우울도 추이',
+        data: [65, 59, 70, 31, 45, 15], // 꺾은 선 그래프의 데이터 값
         fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
+        borderColor: 'rgb(75, 140, 192)',
+        tension: 0.4
     }]
 };
 
