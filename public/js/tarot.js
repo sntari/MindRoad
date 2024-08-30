@@ -80,21 +80,26 @@ document.addEventListener('DOMContentLoaded', function () {
         77: "King of Swords.jpg"
     };
     const cards = document.querySelectorAll('.card');
-    const selectedCardsContainer = document.querySelector('.selected-cards-container');
-    const selectedCardInfo = document.getElementById('selected-card-info');
     const spreadButton = document.getElementById('spread-cards');
 
     let selectedCards = [];
     let selectedCardname = [];
     let isSpread = false;
+    let selectedCategory = null;
 
     function initializeCardClickEvents() {
         cards.forEach((card) => {
             card.addEventListener('click', function () {
+                if (!selectedCategory) {
+                    alert('카테고리를 선택하지 않았습니다!');
+                    resetCards();
+                    return;
+                }
                 handleCardClick(card);
             });
         });
     }
+
 
     function handleCardClick(card) {
         const cardId = parseInt(card.getAttribute('data-card-id'));
@@ -244,10 +249,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // 카드 초기화 함수
+    // 카테고리 버튼 클릭 이벤트 초기화
+    const categoryButtons = document.querySelectorAll('.category-button');
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            selectedCategory = this.textContent;
+        });
+    });
+
     function resetCards() {
         selectedCards = [];
         selectedCardname = [];
+        selectedCategory = null;
 
         cards.forEach((card) => {
             const cardInner = card.querySelector('.card-inner');
@@ -276,23 +291,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         spreadButton.disabled = false;
         spreadButton.textContent = '카드 펼치기';
-    }
 
+        // 카테고리 버튼 초기화
+        categoryButtons.forEach(btn => btn.classList.remove('active'));
+    }
 
     // 초기화 버튼 클릭 이벤트
     const drawAgainButton = document.getElementById('draw-again');
     drawAgainButton.addEventListener('click', resetCards);
-
-    // 카테고리 버튼 클릭 이벤트 초기화
-    const categoryButtons = document.querySelectorAll('.category-button');
-    categoryButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            // 모든 버튼에서 active 클래스 제거
-            categoryButtons.forEach(btn => btn.classList.remove('active'));
-            // 클릭된 버튼에 active 클래스 추가
-            this.classList.add('active');
-        });
-    });
 
 
     // 카드 클릭 이벤트 초기화
