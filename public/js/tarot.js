@@ -92,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
             card.addEventListener('click', function () {
                 if (!selectedCategory) {
                     alert('카테고리를 선택하지 않았습니다!');
-                    resetCards();
                     return;
                 }
                 handleCardClick(card);
@@ -107,11 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (selectedCards.length >= 3) {
             alert("이미 3장의 카드를 선택했습니다.");
-            return;
-        }
-
-        if (selectedCards.includes(cardId)) {
-            alert("이미 선택한 카드입니다.");
             return;
         }
 
