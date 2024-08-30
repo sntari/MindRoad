@@ -87,6 +87,28 @@ document.addEventListener('DOMContentLoaded', function () {
     let isSpread = false;
     let selectedCategory = null;
 
+    const moneyButtons = document.querySelectorAll('.money-button');
+    const psychologicalButton = document.getElementById('psychological-button');
+
+    // 기본 버튼 설정
+    moneyButtons.forEach(button => {
+        button.classList.remove('active'); // 모든 버튼에서 active 클래스 제거
+    });
+    moneyButtons[0].classList.add('active'); // 첫 번째 버튼을 활성화 상태로 설정
+
+    // 카테고리 버튼 클릭 이벤트 초기화
+    moneyButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            // "심리" 버튼은 클릭 불가
+            if (this === psychologicalButton) {
+                alert('이 버튼은 클릭할 수 없습니다.');
+                return;
+            }
+            moneyButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
     function initializeCardClickEvents() {
         cards.forEach((card) => {
             card.addEventListener('click', function () {
@@ -99,6 +121,40 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function sendSelectedCardsToFlask() {
+        const interpretationContent = document.getElementById('interpretationContent');
+        interpretationContent.innerHTML = `
+            <p>선택된 카드: ${selectedCardname.join(', ')}</p>
+        `;
+
+        // 카드 해석창으로 스크롤 이동
+        scrollToInterpretation();
+
+        // Flask로 데이터 전송
+        const selectedCategory = selectedCategory; // 현재 선택된 카테고리 가져오기
+        const data = {
+            user_input: selectedCategory,
+            cards: selectedCardname
+        };
+
+        // AJAX 요청
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/interpret', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // 성공적으로 응답을 받았을 때
+                const response = JSON.parse(xhr.responseText);
+                console.log('Success:', response);
+            } else if (xhr.readyState === 4) {
+                // 오류 처리
+                console.error('Error:', xhr.statusText);
+            }
+        };
+
+        xhr.send(JSON.stringify(data)); // JSON 데이터 전송
+    }
 
     function handleCardClick(card) {
         const cardId = parseInt(card.getAttribute('data-card-id'));
@@ -289,6 +345,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // 카테고리 버튼 초기화
         categoryButtons.forEach(btn => btn.classList.remove('active'));
     }
+
 
     // 초기화 버튼 클릭 이벤트
     const drawAgainButton = document.getElementById('draw-again');
