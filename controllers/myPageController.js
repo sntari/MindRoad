@@ -16,8 +16,7 @@ async function info_r(req, res) {
 // 계정 삭제 및 로그아웃 기능을 포함한 async 함수
 async function del_id(req, res) {
     const { mem_id, mem_pw, new_pw } = req.body;
-    await myPageService.del_member(mem_id, mem_pw, new_pw);
-    const ddd = await myPageService.loginUser(mem_id, mem_pw);
+    const ddd = await myPageService.del_member(mem_id, mem_pw, new_pw);
     if (ddd > 0) {
         res.status(200).send({ success: true });
     } else {
