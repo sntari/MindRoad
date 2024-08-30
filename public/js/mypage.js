@@ -8,13 +8,14 @@ function openTab(tabName) {
 }
 
 window.onload = function () {
+window.onload = function () {
     const ctx = document.getElementById('myGaugeChart').getContext('2d');
     new Chart(ctx, {
         type: 'doughnut',
         data: {
             datasets: [{
                 data: [20, 80], // 여기에 실제 데이터 값을 넣으세요.
-                backgroundColor: ['#4caf50', 'red'],
+                backgroundColor: ['red', '#4caf50'],
                 borderWidth: 0
             }]
         },
@@ -34,45 +35,16 @@ window.onload = function () {
     });
 };
 
-// 게이지 그래프
-document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('myGaugeChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            datasets: [{
-                data: [20, 80], // 여기에 실제 데이터 값을 넣으세요.
-                backgroundColor: ['#4caf50', 'red'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            rotation: -Math.PI * 28.75,
-            circumference: Math.PI * 57.5,
-            cutout: '50%',
-            plugins: {
-                tooltip: { enabled: false }
-            }
-        },
-        // 화살표 그리기
-        events: [],
-        animation: {
-            animateRotate: false,
-            animateScale: false
-        }
-    });
-});
-
 // 꺾은 선 그래프
-const labels = ["January", "February", "March", "April", "May", "June"]; // 레이블 및 데이터 값 input 값으로 수정
+const labels = ["최초 상담일", "2회차", "3회차", "4회차", "5회차", "최근"]; // 레이블 및 데이터 값 input 값으로 수정
 const data = {
     labels: labels,
     datasets: [{
-        label: 'Sample Line Chart',
-        data: [65, 59, 80, 81, 56, 55], // 꺾은 선 그래프의 데이터 값
+        label: '상담 기록에 따른 우울도 추이',
+        data: [65, 59, 70, 31, 45, 15], // 꺾은 선 그래프의 데이터 값
         fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
+        borderColor: 'rgb(75, 140, 192)',
+        tension: 0.4
     }]
 };
 
@@ -109,7 +81,7 @@ const pieData = {
     labels: ['Red', 'Blue', 'Yellow'], // 레이블 추후 수정
     datasets: [{
         label: '파이 그래프 예시',
-        data: [300, 50, 100], // 데이터 값
+        data: [60, 30, 10], // 데이터 값
         backgroundColor: [
             'rgb(255, 99, 132)',
             'rgb(54, 162, 235)',
@@ -139,13 +111,13 @@ const myPieChart = new Chart(pieCtx, {
 // 계정 정보 수정
 $(document).ready(function () {
     $('#info_re').on('click', function (event) {
-        const user = document.body.getAttribute('data-user.PW');
-        console.log(user);
         $('#info_rr').submit(); // 폼을 제출
     });
 
     $('#info_rr').submit(function (event) {
         const currentPw = document.getElementById('password').value;
+        const newPw = document.getElementById('register_pw2').value;
+        const Pw = document.getElementById('pw_check').innerHTML;
         const newPw = document.getElementById('register_pw2').value;
         const Pw = document.getElementById('pw_check').innerHTML;
 
@@ -159,6 +131,7 @@ $(document).ready(function () {
         if (Pw === currentPw) {
             console.log("비번은 맞아요");
             if (Pw != newPw) {
+                document.getElementById('mypage_error1').innerHTML = "";
                 document.getElementById('mypage_error1').innerHTML = "";
                 $.ajax({
                     type: 'POST',
@@ -174,8 +147,10 @@ $(document).ready(function () {
                 });
             } else {
                 document.getElementById('mypage_error1').innerHTML = "이전 비밀번호와 같습니다";
+                document.getElementById('mypage_error1').innerHTML = "이전 비밀번호와 같습니다";
             }
         } else {
+            document.getElementById('mypage_error1').innerHTML = "현재 비밀번호가 일치하지 않습니다";
             document.getElementById('mypage_error1').innerHTML = "현재 비밀번호가 일치하지 않습니다";
         }
 
@@ -201,9 +176,19 @@ $(document).ready(function () {
             $.ajax({
                 type: 'POST',
                 url: '/mypage/del_id',
-                url: '/mypage/del_id',
                 data: formData,
                 success: function (response) {
+                    // 로그아웃
+                    $.ajax({
+                        type: 'GET',
+                        url: '/mypage/logout',
+                        success: function (response) {
+                            window.location.href = '/';
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("로그아웃실패", xhr.responseText);
+                        }
+                    });
                     // 로그아웃
                     $.ajax({
                         type: 'GET',
@@ -218,10 +203,10 @@ $(document).ready(function () {
                 },
                 error: function (xhr, status, error) {
                     console.log("삭제실패", xhr.responseText);
-                    console.log("삭제실패", xhr.responseText);
                 }
             });
         } else {
+            document.getElementById('mypage_error2').innerHTML = "비밀번호가 일치하지 않습니다";
             document.getElementById('mypage_error2').innerHTML = "비밀번호가 일치하지 않습니다";
         }
 
@@ -229,41 +214,47 @@ $(document).ready(function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("register_pw2").addEventListener("input", function () {
-        const password = this.value;
-        const meter = document.getElementById("meter2");
-        const errorText = document.getElementById("mypage_error3");
+document.addEventListener('DOMContentLoaded', function () {
+    var opts = {
+        angle: 0.0, // 게이지의 스팬 (각도)
+        lineWidth: 0.2, // 게이지의 선 두께
+        radiusScale: 0.57, // 상대적인 반지름 크기
+        pointer: {
+            length: 0.6, // 화살표의 길이 (게이지 반지름에 대한 비율)
+            strokeWidth: 0.035, // 화살표의 두께
+            color: '#000000' // 화살표 색상
+        },
+        limitMax: false, // 최대값 제한 사용 여부
+        limitMin: false, // 최소값 제한 사용 여부
+        colorStart: 'orange', // 게이지의 시작 색상
+        colorStop: 'red', // 게이지의 끝 색상
+        strokeColor: 'green', // 게이지의 테두리 색상
+        generateGradient: true, // 색상 그라데이션 생성 여부
+        highDpiSupport: true, // 고해상도 지원 여부
+        // 구간별 색상 적용
+        staticZones: [
+            {strokeStyle: "green", min: 0, max: 20 }, // 구간 0-20: 녹색
+            {strokeStyle: "lime", min: 21, max: 40 }, // 구간 21-40: 라임색
+            {strokeStyle: "yellow", min: 41, max: 60 }, // 구간 41-60: 노란색
+            {strokeStyle: "orange", min: 61, max: 80 }, // 구간 61-80: 주황색
+            {strokeStyle: "red", min: 81, max: 100 } // 구간 81-100: 빨간색
+        ],
+    };
 
-        let strength = 0;
+    var target = document.getElementById('gauge'); // canvas 요소 선택
+    var gauge = new Gauge(target).setOptions(opts); // Gauge 객체 생성 및 옵션 설정
+    gauge.maxValue = 100; // 최대값 설정
+    gauge.setMinValue(0); // 최소값 설정
+    gauge.animationSpeed = 32; // 애니메이션 속도 설정
 
-        // 비밀번호 보안 강도 체크
-        if (password.length >= 8) strength++; // 길이가 8자 이상
-        if (/[A-Z]/.test(password)) strength++; // 대문자 포함
-        if (/[0-9]/.test(password)) strength++; // 숫자 포함
-        if (/[\W_]/.test(password)) strength++; // 특수 문자 포함
+    var currentValue = 71; // 현재 값 설정
+    gauge.set(currentValue); // 현재 값 적용
 
-        // 프로그래스 바와 텍스트 업데이트
-        meter.value = strength;
+    // 현재 값을 텍스트로 표시
+    function updateGaugeText(value) {
+        var gaugeText = document.getElementById('gauge-text');
+        gaugeText.textContent = value;
+    }
 
-        switch (strength) {
-            case 0:
-            case 1:
-                errorText.textContent = "보안 강도: 매우 약함";
-                errorText.style.color = "red";
-                break;
-            case 2:
-                errorText.textContent = "보안 강도: 약함";
-                errorText.style.color = "orange";
-                break;
-            case 3:
-                errorText.textContent = "보안 강도: 보통";
-                errorText.style.color = "blue";
-                break;
-            case 4:
-                errorText.textContent = "보안 강도: 강함";
-                errorText.style.color = "green";
-                break;
-        }
-    });
+    updateGaugeText(currentValue); // 현재 값 텍스트 업데이트
 });
