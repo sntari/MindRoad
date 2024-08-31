@@ -7,11 +7,12 @@
 </head>
 <body>
 
-  <div class="user-modebtns">
-    <button class="user-button active">일반</button>
-    <button class="user-button" id="psychological-button" disabled>심리</button>
+  <div id="userButtons">
+    <button class="userButton active">일반</button>
+    <button class="userButton" id="psychological-button" disabled>심리</button>
   </div>
-  <div class="category-buttons">
+
+  <div id="category-buttons">
     <button class="category-button">오늘의 운세</button>
     <button class="category-button">연애</button>
     <button class="category-button">금전</button>
@@ -21,10 +22,10 @@
   <div class="container">
     
     <% 
-      // 카드 ID 배열 생성
+      // 카드 ID 배열 생성 및 섞기
       let cardIds = Array.from({ length: 78 }, (_, i) => i);
-      
-      // Fisher-Yates Shuffle 알고리즘으로 섞기
+
+      // Fisher-Yates Shuffle 알고리즘으로 카드 섞기
       for (let i = cardIds.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [cardIds[i], cardIds[j]] = [cardIds[j], cardIds[i]];
@@ -52,33 +53,26 @@
     <div id="selected-card-info"></div>
 
     <div class="selected-cards-container">
-      <div class="selected-card" id="selected-card-1">
-        <div class="selected-card-inner">
-          <div class="selected-card-back"></div>
-          <div class="selected-card-front"></div>
+      <% for (let i = 1; i <= 3; i++) { %>
+        <div class="selected-card" id="selected-card-<%= i %>">
+          <div class="selected-card-inner">
+            <div class="selected-card-back"></div>
+            <div class="selected-card-front"></div>
+          </div>
         </div>
-      </div>
-      <div class="selected-card" id="selected-card-2">
-        <div class="selected-card-inner">
-          <div class="selected-card-back"></div>
-          <div class="selected-card-front"></div>
-        </div>
-      </div>
-      <div class="selected-card" id="selected-card-3">
-        <div class="selected-card-inner">
-          <div class="selected-card-back"></div>
-          <div class="selected-card-front"></div>
-        </div>
-      </div>
+      <% } %>
     </div>
   </div>
+
   <script src="../js/tarot.js"></script>
+  
   <br>
-<div class="interpretation-wrapper">
-  <div class="interpretation-header">카드 해석</div>
-  <div id="interpretationContent" class="interpretation-content">
+  <div class="interpretation-wrapper">
+    <div class="interpretation-header">카드 해석</div>
+    <div id="interpretationContent" class="interpretation-content">
       <!-- 카드 해석 내용이 여기에 동적으로 추가됩니다 -->
+    </div>
   </div>
-</div>
+  
 </body>
 </html>
