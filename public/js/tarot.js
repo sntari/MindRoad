@@ -87,24 +87,35 @@ document.addEventListener('DOMContentLoaded', function () {
     let isSpread = false;
     let selectedCategory = null;
 
-    const moneyButtons = document.querySelectorAll('.money-button');
+    // 서버의 세션에서 가져온 reason 값
+    const reason = '<%= session.reason || "" %>';
+    const userButtons = document.querySelectorAll('.user-button');
     const psychologicalButton = document.getElementById('psychological-button');
 
     // 기본 버튼 설정
-    moneyButtons.forEach(button => {
+    userButtons.forEach(button => {
         button.classList.remove('active'); // 모든 버튼에서 active 클래스 제거
     });
-    moneyButtons[0].classList.add('active'); // 첫 번째 버튼을 활성화 상태로 설정
+    userButtons[0].classList.add('active'); // 첫 번째 버튼을 활성화 상태로 설정
 
+    // reason 값에 따라 심리 버튼 활성화
+    // rason 있을때 활성화
+    if (reason) {
+        psychologicalButton.classList.add(active);
+    } else {
+        psychologicalButton.classList.add(disable);
+        psychologicalButton.disable = true;
+    }
+    
     // 카테고리 버튼 클릭 이벤트 초기화
-    moneyButtons.forEach(button => {
+    userButtons.forEach(button => {
         button.addEventListener('click', function () {
             // "심리" 버튼은 클릭 불가
             if (this === psychologicalButton) {
                 alert('이 버튼은 클릭할 수 없습니다.');
                 return;
             }
-            moneyButtons.forEach(btn => btn.classList.remove('active'));
+            userButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
         });
     });
@@ -112,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function initializeCardClickEvents() {
         cards.forEach((card) => {
             card.addEventListener('click', function () {
-                if (!selectedCategory) {
+                if (!psychologicalButton.classList.contains("active") && !selectedCategory) {
                     alert('카테고리를 선택하지 않았습니다!');
                     resetCards();
                     return;
@@ -134,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Flask로 데이터 전송
         const selectedCategory = selectedCategory; // 현재 선택된 카테고리 가져오기
         const data = {
-            user_input: selectedCategory,
+            user_select: selectedCategory,
             cards: selectedCardname
         };
 
