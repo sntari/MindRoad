@@ -26,6 +26,10 @@
     display: block;
 }
 
+#myinfo {
+    border-top: peachpuff solid 3px;
+}
+
 .myinfo-container {
     margin: 0 auto;
     overflow: hidden;
@@ -42,12 +46,14 @@
     align-items: center;
     margin-left: 10px;
     margin-bottom: 10px;
+    color: #000;
 }
 
 #gauge {
     width: 100%;
     height: 100%;
 }
+
 /* 그래프 작성 후 수정 */
 /* .graph-container canvas {
     float: center;
