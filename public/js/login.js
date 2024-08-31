@@ -260,3 +260,11 @@ $(document).ready(function () {
         }
     });
 });
+
+// 로그인 폼에서 엔터 키를 눌렀을 때 Sign In 버튼 클릭
+$('#login-in').on('keyup', function (event) {
+    if (event.key === "Enter") { // 엔터 키가 눌렸는지 확인
+        event.preventDefault(); // 기본 폼 제출 방지
+        $('#l-link').click(); // Sign In 버튼 클릭
+    }
+});
