@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
         77: "King of Swords.jpg"
     };
 
+
     const cards = document.querySelectorAll('.card');
     const spreadButton = document.getElementById('spread-cards');
     const categoryButtons = document.querySelectorAll('.category-button');
@@ -88,59 +89,61 @@ document.addEventListener('DOMContentLoaded', function () {
     const drawAgainButton = document.getElementById('draw-again');
 
     let selectedCards = [];
-    let selectedCardname = [];
+    let selectedCardNames = [];
     let isSpread = false;
     let selectedCategory = null;
 
-    // 서버의 세션에서 가져온 reason 값 (서버에서 전달받아야 합니다)
+    // 서버의 세션에서 가져온 reason 값
     const reason = '<%= session.reason || "" %>';
 
+    initializeButtons();
+    initializeCardClickEvents();
+    updateSpreadButton();
+
     function initializeButtons() {
-        // 카테고리 버튼 클릭 이벤트
         categoryButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                categoryButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                selectedCategory = this.textContent;
-                console.log('Selected category:', selectedCategory);  // 디버깅용
-            });
+            button.addEventListener('click', () => handleCategoryClick(button));
         });
 
-        // 사용자 버튼 클릭 이벤트
         userButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                if (this === psychologicalButton && !reason) {
-                    alert('이 버튼은 현재 사용할 수 없습니다.');
-                    return;
-                }
-                userButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-            });
+            button.addEventListener('click', () => handleUserButtonClick(button));
         });
 
-        // 심리 버튼 초기 상태 설정
-        if (reason) {
-            psychologicalButton.classList.remove('disabled');
-            psychologicalButton.disabled = false;
-        } else {
-            psychologicalButton.classList.add('disabled');
-            psychologicalButton.disabled = true;
+        togglePsychologicalButton();
+    }
+
+    function handleCategoryClick(button) {
+        categoryButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        selectedCategory = button.textContent;
+        console.log('Selected category:', selectedCategory); // 디버깅용
+    }
+
+    function handleUserButtonClick(button) {
+        if (button === psychologicalButton && !reason) {
+            alert('이 버튼은 현재 사용할 수 없습니다.');
+            return;
         }
+        userButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+    }
+
+    function togglePsychologicalButton() {
+        psychologicalButton.disabled = !reason;
+        psychologicalButton.classList.toggle('disabled', !reason);
     }
 
     function initializeCardClickEvents() {
-        cards.forEach((card) => {
-            card.addEventListener('click', function () {
-                if (!selectedCategory) {
-                    alert('카테고리를 먼저 선택해주세요!');
-                    return;
-                }
-                handleCardClick(card);
-            });
+        cards.forEach(card => {
+            card.addEventListener('click', () => handleCardClick(card));
         });
     }
 
     function handleCardClick(card) {
+        if (!selectedCategory) {
+            alert('카테고리를 먼저 선택해주세요!');
+            return;
+        }
         const cardId = parseInt(card.getAttribute('data-card-id'));
         const cardName = cardImageMap[cardId].replace('.jpg', '');
 
@@ -149,16 +152,9 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (selectedCards.includes(cardId)) {
-            alert("이미 선택한 카드입니다.");
-            return;
-        }
-
         selectedCards.push(cardId);
-        selectedCardname.push(cardName);
-
+        selectedCardNames.push(cardName);
         card.style.display = 'none';
-
         updateSelectedCards();
 
         if (selectedCards.length === 3) {
@@ -174,31 +170,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
         selectedCards.forEach((cardId, index) => {
             if (index < 3) {
-                const selectedCardInner = selectedCardElements[index].querySelector('.selected-card-inner');
-                const selectedCardFront = selectedCardElements[index].querySelector('.selected-card-front');
-
-                const img = document.createElement('img');
-                img.src = `/img/${cardImageMap[cardId]}`;
-                img.alt = `선택된 카드 ${cardId + 1}`;
-                img.style.width = '100%';
-                img.style.height = '100%';
-
-                img.onload = () => {
-                    selectedCardFront.innerHTML = '';
-                    selectedCardFront.appendChild(img);
-                    selectedCardInner.classList.add('flipped');
-
-                    // selectedCardElements[index].style.transform = `translateX(${index * 120}px)`;
-                    selectedCardElements[index].style.transition = 'transform 0.5s ease';
-                };
-
-                img.onerror = () => {
-                    console.error(`이미지를 로드할 수 없습니다: /img/${cardImageMap[cardId]}`);
-                    selectedCardFront.textContent = `카드 ${cardId + 1}`;
-                    selectedCardInner.classList.add('flipped');
-                };
+                const selectedCardElement = selectedCardElements[index];
+                updateSelectedCardElement(selectedCardElement, cardId);
             }
         });
+    }
+
+    function updateSelectedCardElement(selectedCardElement, cardId) {
+        const selectedCardInner = selectedCardElement.querySelector('.selected-card-inner');
+        const selectedCardFront = selectedCardElement.querySelector('.selected-card-front');
+
+        const img = document.createElement('img');
+        img.src = `/img/${cardImageMap[cardId]}`;
+        img.alt = `선택된 카드 ${cardId + 1}`;
+        img.style.width = '100%';
+        img.style.height = '100%';
+
+        img.onload = () => {
+            selectedCardFront.innerHTML = '';
+            selectedCardFront.appendChild(img);
+            selectedCardInner.classList.add('flipped');
+            selectedCardElement.style.transition = 'transform 0.5s ease';
+        };
+
+        img.onerror = () => {
+            console.error(`이미지를 로드할 수 없습니다: /img/${cardImageMap[cardId]}`);
+            selectedCardFront.textContent = `카드 ${cardId + 1}`;
+            selectedCardInner.classList.add('flipped');
+        };
     }
 
     spreadButton.addEventListener('click', function () {
@@ -206,11 +205,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('카테고리를 먼저 선택해주세요!');
             return;
         }
-        if (!isSpread) {
-            toggleCardSpread();
-        } else {
-            shuffleCards();
-        }
+        isSpread ? shuffleCards() : toggleCardSpread();
         updateSpreadButton();
     });
 
@@ -218,13 +213,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function toggleCardSpread() {
         cards.forEach((card, index) => {
-            if (!isSpread) {
-                card.style.left = `${20 + index * 15}px`;
-                card.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
-            } else {
-                card.style.left = '20px';
-                card.style.transform = 'rotate(0deg)';
-            }
+            card.style.left = isSpread ? '20px' : `${20 + index * 15}px`;
+            card.style.transform = isSpread ? 'rotate(0deg)' : `rotate(${Math.random() * 10 - 5}deg)`;
         });
         isSpread = !isSpread;
     }
@@ -233,73 +223,72 @@ document.addEventListener('DOMContentLoaded', function () {
         const unselectedCards = Array.from(cards).filter(card => !selectedCards.includes(parseInt(card.getAttribute('data-card-id'))));
         for (let i = unselectedCards.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [unselectedCards[i].style.left, unselectedCards[j].style.left] = [unselectedCards[j].style.left, unselectedCards[i].style.left];
-            [unselectedCards[i].style.transform, unselectedCards[j].style.transform] = [unselectedCards[j].style.transform, unselectedCards[i].style.transform];
+            swapCardStyles(unselectedCards[i], unselectedCards[j]);
         }
+    }
+
+    function swapCardStyles(cardA, cardB) {
+        [cardA.style.left, cardB.style.left] = [cardB.style.left, cardA.style.left];
+        [cardA.style.transform, cardB.style.transform] = [cardB.style.transform, cardA.style.transform];
     }
 
     function updateSpreadButton() {
         if (selectedCards.length === 3) {
             spreadButton.textContent = '카드 선택 완료';
             spreadButton.disabled = true;
-        } else if (isSpread) {
-            spreadButton.textContent = '카드 섞기';
         } else {
-            spreadButton.textContent = '카드 펼치기';
+            spreadButton.textContent = isSpread ? '카드 섞기' : '카드 펼치기';
         }
     }
 
     function resetCards() {
         selectedCards = [];
-        selectedCardname = [];
+        selectedCardNames = [];
         selectedCategory = null;
         categoryButtons.forEach(btn => btn.classList.remove('active'));
 
-        cards.forEach((card) => {
-            const cardInner = card.querySelector('.card-inner');
-            cardInner.classList.remove('flipped');
-            card.style.zIndex = '';
-            card.style.transform = 'rotate(0deg)';
-            card.style.left = '20px';
-            card.style.display = '';
-            card.querySelector('.card-front').innerHTML = '';
-        });
+        cards.forEach(card => resetCard(card));
 
         if (isSpread) {
             toggleCardSpread();
         }
 
         isSpread = false;
-
-        const selectedCardElements = document.querySelectorAll('.selected-card');
-        selectedCardElements.forEach((element) => {
-            const selectedCardInner = element.querySelector('.selected-card-inner');
-            selectedCardInner.classList.remove('flipped');
-            element.querySelector('.selected-card-front').innerHTML = '';
-            element.style.transform = '';
-            element.style.transition = '';
-        });
-
-        spreadButton.disabled = false;
-        spreadButton.textContent = '카드 펼치기';
-
-        categoryButtons.forEach(btn => btn.classList.remove('active'));
+        resetSelectedCards();
+        updateSpreadButton();
     }
 
-    // 초기화 함수 호출
-    initializeButtons();
-    initializeCardClickEvents();
-    updateSpreadButton();
+    function resetCard(card) {
+        const cardInner = card.querySelector('.card-inner');
+        cardInner.classList.remove('flipped');
+        card.style.zIndex = '';
+        card.style.transform = 'rotate(0deg)';
+        card.style.left = '20px';
+        card.style.display = '';
+        card.querySelector('.card-front').innerHTML = '';
+    }
+
+    function resetSelectedCards() {
+        const selectedCardElements = document.querySelectorAll('.selected-card');
+
+        selectedCardElements.forEach(selectedCardElement => {
+            const selectedCardInner = selectedCardElement.querySelector('.selected-card-inner');
+            selectedCardInner.classList.remove('flipped');
+            selectedCardElement.querySelector('.selected-card-front').innerHTML = '';
+            selectedCardElement.style.transform = '';
+            selectedCardElement.style.transition = '';
+        });
+    }
 
     function sendSelectedCardsToFlask() {
         const interpretationContent = document.getElementById('interpretationContent');
         interpretationContent.innerHTML = `
-            <p>선택된 카드: ${selectedCardname.join(', ')}</p>
+            <p>선택된 카드: ${selectedCardNames.join(', ')}</p>
         `;
 
         const data = {
             user_select: selectedCategory,
-            cards: selectedCardname
+            cards: selectedCardNames
         };
 
         fetch('/api/interpret', {

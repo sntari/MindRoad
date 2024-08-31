@@ -1,3 +1,4 @@
+/* 타로 카드 스프레드 컨테이너 */
 .tarot-spread {
     width: 100%;
     height: 300px;
@@ -6,6 +7,7 @@
     overflow: hidden;
 }
 
+/* 카드 스타일 */
 .card {
     width: 120px;
     height: 180px;
@@ -29,6 +31,7 @@
     transform: rotateY(180deg);
 }
 
+/* 카드 뒷면 및 앞면 스타일 */
 .card-back,
 .card-front {
     position: absolute;
@@ -53,23 +56,27 @@
     font-size: 16px;
 }
 
+/* 버튼 컨테이너 스타일 */
 .button-container {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
-#draw-again, #spread-cards {
+#draw-again,
+#spread-cards {
     padding: 10px 20px;
     font-size: 16px;
 }
 
+/* 선택된 카드 정보 스타일 */
 #selected-card-info {
     text-align: center;
     margin-top: 20px;
     font-size: 18px;
 }
 
+/* 선택된 카드 컨테이너 스타일 */
 .selected-cards-container {
     display: flex;
     justify-content: center;
@@ -96,6 +103,7 @@
     transform: rotateY(180deg);
 }
 
+/* 선택된 카드 앞면 스타일 */
 .selected-card-front {
     position: absolute;
     width: 100%;
@@ -103,10 +111,6 @@
     backface-visibility: hidden;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-
-.selected-card-front {
     background-color: white;
     transform: rotateY(180deg);
     display: flex;
@@ -115,6 +119,7 @@
     font-size: 16px;
 }
 
+/* 활성화된 버튼 스타일 */
 .category-button.active {
     background-color: rebeccapurple;
     color: white;
@@ -125,6 +130,7 @@
     color: white;
 }
 
+/* 해석 결과 표시 영역 스타일 */
 .interpretation-wrapper {
     font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
     border: 1px solid #ddd;
@@ -153,9 +159,12 @@
     max-height: 350px;
     overflow-y: auto;
     -ms-overflow-style: none;
+    /* Internet Explorer 및 Edge */
     scrollbar-width: none;
+    /* Firefox */
 }
 
 .interpretation-content::-webkit-scrollbar {
     display: none;
+    /* Chrome, Safari, Opera */
 }
