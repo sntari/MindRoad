@@ -79,92 +79,65 @@ document.addEventListener('DOMContentLoaded', function () {
         76: "King of Cups.jpg",
         77: "King of Swords.jpg"
     };
+
     const cards = document.querySelectorAll('.card');
     const spreadButton = document.getElementById('spread-cards');
+    const categoryButtons = document.querySelectorAll('.category-button');
+    const userButtons = document.querySelectorAll('.user-button');
+    const psychologicalButton = document.getElementById('psychological-button');
+    const drawAgainButton = document.getElementById('draw-again');
 
     let selectedCards = [];
     let selectedCardname = [];
     let isSpread = false;
     let selectedCategory = null;
 
-    // 서버의 세션에서 가져온 reason 값
+    // 서버의 세션에서 가져온 reason 값 (서버에서 전달받아야 합니다)
     const reason = '<%= session.reason || "" %>';
-    const userButtons = document.querySelectorAll('.user-button');
-    const psychologicalButton = document.getElementById('psychological-button');
 
-    // 기본 버튼 설정
-    userButtons.forEach(button => {
-        button.classList.remove('active'); // 모든 버튼에서 active 클래스 제거
-    });
-    userButtons[0].classList.add('active'); // 첫 번째 버튼을 활성화 상태로 설정
-
-    // reason 값에 따라 심리 버튼 활성화
-    // rason 있을때 활성화
-    if (reason) {
-        psychologicalButton.classList.add(active);
-    } else {
-        psychologicalButton.classList.add(disable);
-        psychologicalButton.disable = true;
-    }
-    
-    // 카테고리 버튼 클릭 이벤트 초기화
-    userButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            // "심리" 버튼은 클릭 불가
-            if (this === psychologicalButton) {
-                alert('이 버튼은 클릭할 수 없습니다.');
-                return;
-            }
-            userButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
+    function initializeButtons() {
+        // 카테고리 버튼 클릭 이벤트
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                selectedCategory = this.textContent;
+                console.log('Selected category:', selectedCategory);  // 디버깅용
+            });
         });
-    });
+
+        // 사용자 버튼 클릭 이벤트
+        userButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                if (this === psychologicalButton && !reason) {
+                    alert('이 버튼은 현재 사용할 수 없습니다.');
+                    return;
+                }
+                userButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // 심리 버튼 초기 상태 설정
+        if (reason) {
+            psychologicalButton.classList.remove('disabled');
+            psychologicalButton.disabled = false;
+        } else {
+            psychologicalButton.classList.add('disabled');
+            psychologicalButton.disabled = true;
+        }
+    }
 
     function initializeCardClickEvents() {
         cards.forEach((card) => {
             card.addEventListener('click', function () {
-                if (!psychologicalButton.classList.contains("active") && !selectedCategory) {
-                    alert('카테고리를 선택하지 않았습니다!');
+                if (!selectedCategory) {
+                    alert('카테고리를 먼저 선택해주세요!');
                     return;
                 }
                 handleCardClick(card);
             });
         });
-    }
-
-    function sendSelectedCardsToFlask() {
-        const interpretationContent = document.getElementById('interpretationContent');
-        interpretationContent.innerHTML = `
-            <p>선택된 카드: ${selectedCardname.join(', ')}</p>
-        `;
-
-        // 카드 해석창으로 스크롤 이동
-        scrollToInterpretation();
-
-        // Flask로 데이터 전송
-        const selectedCategory = selectedCategory; // 현재 선택된 카테고리 가져오기
-        const data = {
-            user_select: selectedCategory,
-            cards: selectedCardname
-        };
-
-        // AJAX 요청
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/api/interpret', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                // 성공적으로 응답을 받았을 때
-                const response = JSON.parse(xhr.responseText);
-                console.log('Success:', response);
-            } else if (xhr.readyState === 4) {
-                // 오류 처리
-                console.error('Error:', xhr.statusText);
-            }
-        };
-
-        xhr.send(JSON.stringify(data)); // JSON 데이터 전송
     }
 
     function handleCardClick(card) {
@@ -179,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedCards.push(cardId);
         selectedCardname.push(cardName);
 
-        // 선택된 카드 숨기기
         card.style.display = 'none';
 
         updateSelectedCards();
@@ -211,8 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     selectedCardFront.appendChild(img);
                     selectedCardInner.classList.add('flipped');
 
-                    // 선택된 카드 영역에서 카드 펼치기 애니메이션
-                    selectedCardElements[index].style.transform = `translateX(${index * 120}px)`;
+                    // selectedCardElements[index].style.transform = `translateX(${index * 120}px)`;
                     selectedCardElements[index].style.transition = 'transform 0.5s ease';
                 };
 
@@ -224,8 +195,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    // 카드 펼치기/섞기 버튼 이벤트
+
     spreadButton.addEventListener('click', function () {
+        if (!selectedCategory) {
+            alert('카테고리를 먼저 선택해주세요!');
+            return;
+        }
         if (!isSpread) {
             toggleCardSpread();
         } else {
@@ -234,7 +209,8 @@ document.addEventListener('DOMContentLoaded', function () {
         updateSpreadButton();
     });
 
-    // 카드 펼치기 함수
+    drawAgainButton.addEventListener('click', resetCards);
+
     function toggleCardSpread() {
         cards.forEach((card, index) => {
             if (!isSpread) {
@@ -248,7 +224,6 @@ document.addEventListener('DOMContentLoaded', function () {
         isSpread = !isSpread;
     }
 
-    // 카드 섞기 함수
     function shuffleCards() {
         const unselectedCards = Array.from(cards).filter(card => !selectedCards.includes(parseInt(card.getAttribute('data-card-id'))));
         for (let i = unselectedCards.length - 1; i > 0; i--) {
@@ -258,7 +233,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // 버튼 텍스트 업데이트 함수
     function updateSpreadButton() {
         if (selectedCards.length === 3) {
             spreadButton.textContent = '카드 선택 완료';
@@ -270,60 +244,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-
-    // 선택된 카드 업데이트 함수
-    function updateSelectedCards() {
-        const selectedCardElements = document.querySelectorAll('.selected-card');
-
-        selectedCards.forEach((cardId, index) => {
-            if (index < 3) { // 최대 3개까지만 처리
-                const selectedCardInner = selectedCardElements[index].querySelector('.selected-card-inner');
-                const selectedCardFront = selectedCardElements[index].querySelector('.selected-card-front');
-
-                // 이미지 설정
-                const img = document.createElement('img');
-                img.src = `/img/${cardImageMap[cardId]}`;
-                img.alt = `선택된 카드 ${cardId + 1}`;
-                img.style.width = '100%';
-                img.style.height = '100%';
-
-                // 이미지 로드 여부 확인
-                img.onload = () => {
-                    selectedCardFront.innerHTML = ''; // 기존 내용 제거
-                    selectedCardFront.appendChild(img); // 이미지 추가
-                    selectedCardInner.classList.add('flipped'); // 카드 앞면 보이도록 설정
-                };
-
-                img.onerror = () => {
-                    console.error(`이미지를 로드할 수 없습니다: /img/${cardImageMap[cardId]}`);
-                    selectedCardFront.textContent = `카드 ${cardId + 1}`;
-                    selectedCardInner.classList.add('flipped');
-                };
-            }
-        });
-
-        // 선택된 카드가 3개 미만일 경우 나머지 카드들은 뒤집기
-        for (let i = selectedCards.length; i < 3; i++) {
-            const selectedCardInner = selectedCardElements[i].querySelector('.selected-card-inner');
-            selectedCardInner.classList.remove('flipped'); // 뒷면으로 설정
-            selectedCardElements[i].querySelector('.selected-card-front').innerHTML = ''; // 내용 제거
-        }
-    }
-
-    // 카테고리 버튼 클릭 이벤트 초기화
-    const categoryButtons = document.querySelectorAll('.category-button');
-    categoryButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            categoryButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            selectedCategory = this.textContent;
-        });
-    });
-
     function resetCards() {
         selectedCards = [];
         selectedCardname = [];
         selectedCategory = null;
+        categoryButtons.forEach(btn => btn.classList.remove('active'));
 
         cards.forEach((card) => {
             const cardInner = card.querySelector('.card-inner');
@@ -331,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
             card.style.zIndex = '';
             card.style.transform = 'rotate(0deg)';
             card.style.left = '20px';
-            card.style.display = ''; // 숨겨진 카드들을 다시 표시
+            card.style.display = '';
             card.querySelector('.card-front').innerHTML = '';
         });
 
@@ -342,28 +267,50 @@ document.addEventListener('DOMContentLoaded', function () {
         isSpread = false;
 
         const selectedCardElements = document.querySelectorAll('.selected-card');
-        selectedCardElements.forEach((element, index) => {
+        selectedCardElements.forEach((element) => {
             const selectedCardInner = element.querySelector('.selected-card-inner');
             selectedCardInner.classList.remove('flipped');
             element.querySelector('.selected-card-front').innerHTML = '';
-            element.style.transform = ''; // 선택된 카드 영역 초기화
+            element.style.transform = '';
             element.style.transition = '';
         });
 
         spreadButton.disabled = false;
         spreadButton.textContent = '카드 펼치기';
 
-        // 카테고리 버튼 초기화
         categoryButtons.forEach(btn => btn.classList.remove('active'));
     }
 
-
-    // 초기화 버튼 클릭 이벤트
-    const drawAgainButton = document.getElementById('draw-again');
-    drawAgainButton.addEventListener('click', resetCards);
-
-
-    // 카드 클릭 이벤트 초기화
+    // 초기화 함수 호출
+    initializeButtons();
     initializeCardClickEvents();
     updateSpreadButton();
+
+    function sendSelectedCardsToFlask() {
+        const interpretationContent = document.getElementById('interpretationContent');
+        interpretationContent.innerHTML = `
+            <p>선택된 카드: ${selectedCardname.join(', ')}</p>
+        `;
+
+        const data = {
+            user_select: selectedCategory,
+            cards: selectedCardname
+        };
+
+        fetch('/api/interpret', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // 여기에 해석 결과를 표시하는 로직을 추가하세요
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
 });

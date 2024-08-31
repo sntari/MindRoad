@@ -27,7 +27,6 @@
 
 .card-inner.flipped {
     transform: rotateY(180deg);
-    /* 카드 앞면 보이도록 회전 */
 }
 
 .card-back,
@@ -55,9 +54,9 @@
 }
 
 .button-container {
-    display: flex; /* Flexbox 사용 */
-    justify-content: center; /* 중앙 정렬 */
-    gap: 20px; /* 버튼 간의 간격 조정 */
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 #draw-again, #spread-cards {
@@ -82,7 +81,6 @@
     height: 180px;
     position: relative;
     margin: 0 10px;
-    /* 카드 간의 간격 */
 }
 
 .selected-card-inner {
@@ -98,7 +96,6 @@
     transform: rotateY(180deg);
 }
 
-.selected-card-back,
 .selected-card-front {
     position: absolute;
     width: 100%;
@@ -108,10 +105,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.selected-card-back {
-    background-image: url('../img/tarot-back.jpg');
-    background-size: cover;
-}
 
 .selected-card-front {
     background-color: white;
@@ -123,46 +116,46 @@
 }
 
 .category-button.active {
-    background-color: rebeccapurple; /* 원하는 색상으로 변경 */
-    color: white; /* 텍스트 색상 변경 */
+    background-color: rebeccapurple;
+    color: white;
 }
 
-.money-button.active {
+.userButton.active {
     background-color: palevioletred;
     color: white;
 }
 
 .interpretation-wrapper {
-    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; /* 폰트 설정 */
-    border: 1px solid #ddd; /* 테두리 */
-    border-radius: 8px; /* 모서리 둥글게 */
-    overflow: hidden; /* 내용 넘침 방지 */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-    background-color: #fff; /* 배경 색상 */
-    max-width: 600px; /* 최대 너비 설정 */
-    margin: 20px auto; /* 자동 중앙 정렬 */
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    max-width: 600px;
+    margin: 20px auto;
 }
 
 .interpretation-header {
-    background-color: #E7AF9E; /* 헤더 배경 색상 */
-    color: white; /* 텍스트 색상 */
-    padding: 10px; /* 패딩 */
-    text-align: center; /* 가운데 정렬 */
-    font-size: 18px; /* 폰트 크기 */
-    font-weight: bold; /* 두껍게 */
+    background-color: #E7AF9E;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .interpretation-content {
-    padding: 10px; /* 내부 여백 */
-    font-size: 16px; /* 본문 크기 */
-    line-height: 1.6; /* 줄 간격 */
-    color: #333; /* 글자 색상 */
-    max-height: 350px; /* 최대 높이 설정 */
-    overflow-y: auto; /* 세로 스크롤 가능 */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    max-height: 350px;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .interpretation-content::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
 }
