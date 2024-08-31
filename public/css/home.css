@@ -22,13 +22,16 @@
     background-color: #fff;
 }
 
-.chat-container::-webkit-scrollbar {
+.chat-container::-webkit-scrollbar,
+.chat-content::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
 }
 
 .chat-content {
     display: flex;
     flex-direction: column;
+    height: auto;
+    overflow-y: auto;
 }
 .message {
     max-width: 80%;
