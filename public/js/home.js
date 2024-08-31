@@ -156,8 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Panels.
 
 		// Initialize.
-			(function() {
-
+			$(window).ready(() => {
 				var $panel, $link;
 
 				// Get panel, link.
@@ -189,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				// Reset scroll.
 					$window.scrollTop(0);
 
-			})();
+			})
 
 		// Hashchange event.
 			$window.on('hashchange', function(event) {
