@@ -7,33 +7,32 @@ function openTab(tabName) {
     document.getElementById(tabName).style.display = "block";
 }
 
-window.onload = function () {
-window.onload = function () {
-    const ctx = document.getElementById('myGaugeChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            datasets: [{
-                data: [20, 80], // 여기에 실제 데이터 값을 넣으세요.
-                backgroundColor: ['red', '#4caf50'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            rotation: -Math.PI * 28.75,
-            circumference: Math.PI * 57.5,
-            cutout: '50%',
-            plugins: {
-                tooltip: { enabled: false }
-            }
-        },
-        events: [],
-        animation: {
-            animateRotate: false,
-            animateScale: false
-        }
-    });
-};
+// window.onload = function () {
+//     const ctx = document.getElementById('myGaugeChart').getContext('2d');
+//     new Chart(ctx, {
+//         type: 'doughnut',
+//         data: {
+//             datasets: [{
+//                 data: [20, 80], // 여기에 실제 데이터 값을 넣으세요.
+//                 backgroundColor: ['red', '#4caf50'],
+//                 borderWidth: 0
+//             }]
+//         },
+//         options: {
+//             rotation: -Math.PI * 28.75,
+//             circumference: Math.PI * 57.5,
+//             cutout: '50%',
+//             plugins: {
+//                 tooltip: { enabled: false }
+//             }
+//         },
+//         events: [],
+//         animation: {
+//             animateRotate: false,
+//             animateScale: false
+//         }
+//     });
+// };
 
 // 꺾은 선 그래프
 const labels = ["최초 상담일", "2회차", "3회차", "4회차", "5회차", "최근"]; // 레이블 및 데이터 값 input 값으로 수정
@@ -49,6 +48,7 @@ const data = {
 };
 
 // Line Chart 생성
+
 const ctx = document.getElementById('myLineChart').getContext('2d');
 const myLineChart = new Chart(ctx, {
     type: 'line',
@@ -214,7 +214,9 @@ $(document).ready(function () {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', gaugeGraphUpdate);
+gaugeGraphUpdate();
+function gaugeGraphUpdate() {
     var opts = {
         angle: 0.0, // 게이지의 스팬 (각도)
         lineWidth: 0.2, // 게이지의 선 두께
@@ -257,4 +259,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     updateGaugeText(currentValue); // 현재 값 텍스트 업데이트
-});
+}
