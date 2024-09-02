@@ -17,6 +17,7 @@
 
 <div class="mypage_button">
     <button class="mypage_tab" onclick="openTab('myinfo')">내 상태</button>
+    <button class="mypage_tab" onclick="openTab('survey')">자가진단</button>
     <button class="mypage_tab" onclick="openTab('info_r')">회원정보수정</button>
     <button class="mypage_tab" onclick="openTab('delete_ID')">계정탈퇴</button>
 </div>
@@ -46,6 +47,49 @@
             <div id="worry-text">일반고민</div>
         </div>
     </div> 
+</div>
+
+<div id="survey" class="tab-content" style="display: none;">
+    <form id="depression-survey">
+        <div>
+            <h3>우울증상 설문지</h3>
+            <p>지난 2주일 동안 당신은 다음의 문제들로 인해서 얼마나 자주 방해를 받았습니까?</p>
+        </div>
+        <!-- 문항 1 -->
+        <div>
+            <label>1. 일 또는 여가 활동을 하는데 흥미나 즐거움을 느끼지 못함</label><br>
+            <li><label for="q1"><input type="radio" name="q1" value="0"> 전혀 방해받지 않았다</label></li><br>
+            <input type="radio" name="q1" value="1"> 며칠동안 방해받았다<br>
+            <input type="radio" name="q1" value="2"> 7일 이상 방해받았다<br>
+            <input type="radio" name="q1" value="3"> 거의 매일 방해받았다<br>
+        </div>
+        <!-- 문항 2 -->
+        <div>
+            <label>2. 기분이 가라앉거나, 우울하거나, 희망이 없음</label><br>
+            <label><input type="radio" name="q2" value="0"> 전혀 방해받지 않았다</label><br>
+            <label><input type="radio" name="q2" value="1"> 며칠동안 방해받았다</label><br>
+            <label><input type="radio" name="q2" value="2"> 7일 이상 방해받았다</label><br>
+            <label><input type="radio" name="q2" value="3"> 거의 매일 방해받았다</label><br>
+        </div>
+        <!-- 문항 3 -->
+        <div>
+            <label>3. 잠이 들거나 계속 잠을 자는 것이 어려움. 또는 잠을 너무 많이 잠</label><br>
+            <input type="radio" name="q3" value="0"><br>
+            <label><input type="radio" name="q3" value="1"></label><br>
+            <label><input type="radio" name="q3" value="2"> 7일 이상 방해받았다</label><br>
+            <label><input type="radio" name="q3" value="3"> 거의 매일 방해받았다</label><br>
+        </div>
+        <!-- 다른 문항들도 동일한 방식으로 추가 -->
+    
+        <!-- 합계 점수 및 결과 -->
+        <div>
+            <button type="button" onclick="depressionScore()">결과 확인</button>
+        </div>
+        <div id="score-result">
+            <p>합계 점수: <span id="total-score">0</span></p>
+            <p>결과: <span id="result-text"></span></p>
+        </div>
+    </form>
 </div>
 
 <div id="info_r" class="tab-content" style="display:none">

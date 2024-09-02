@@ -56,45 +56,6 @@ function gaugeGraphUpdate() {
     updateGaugeText(currentValue); // 현재 값 텍스트 업데이트
 }
 
-// 꺾은 선 그래프
-const labels = ["최초 상담일", "2회차", "3회차", "4회차", "5회차", "최근"]; // 레이블 및 데이터 값 input 값으로 수정
-const data = {
-    labels: labels,
-    datasets: [{
-        label: '상담 기록에 따른 우울도 추이',
-        data: [65, 59, 70, 31, 45, 15], // 꺾은 선 그래프의 데이터 값
-        fill: false,
-        borderColor: 'rgb(75, 140, 192)',
-        tension: 0.4
-    }]
-};
-const ctx = document.getElementById('myLineChart').getContext('2d');
-const myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: ""
-            }
-        },
-        scales: {
-            x: {
-                beginAtZero: true
-            },
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
-
 // 파이 그래프
 const pieData = {
     labels: [
@@ -128,6 +89,57 @@ const myPieChart = new Chart(pieCtx, {
     }
 });
 
+// 꺾은 선 그래프
+const labels = ["최초 상담일", "2회차", "3회차", "4회차", "5회차", "최근"]; // 레이블 및 데이터 값 input 값으로 수정
+const data = {
+    labels: labels,
+    datasets: [{
+        label: '상담 기록에 따른 우울도 추이',
+        font: {
+            size:24
+        },
+        data: [65, 59, 70, 31, 45, 15], // 꺾은 선 그래프의 데이터 값
+        fill: false,
+        borderColor: 'rgb(75, 140, 192)',
+        tension: 0.4
+    }]
+};
+const ctx = document.getElementById('myLineChart').getContext('2d');
+const myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: data,
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top',
+            },
+            title: {
+                display: true,
+            }
+        },
+        scales: {
+            x: {
+                beginAtZero: true,
+                ticks: {
+                    font: {
+                        size: 24
+                    }
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    font: {
+                        size: 24
+                    }
+                }
+            }
+        }
+    }
+});
+
 // 고민 카테고리
 document.addEventListener('DOMContentLoaded', function() {
     var worryCategory = "일반고민"; // 추후 해당 값을 모델에서 입력받음
@@ -136,6 +148,36 @@ document.addEventListener('DOMContentLoaded', function() {
     var worryTextElement = document.getElementById('worry-text');
     worryTextElement.textContent = worryCategory;
 });
+
+function depressionScore() {
+    let totalScore = 0;
+    
+    // 각 문항에 대해 선택된 값을 합산
+    for (let i = 1; i <= 9; i++) {
+        const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selectedOption) {
+            totalScore += parseInt(selectedOption.value, 10);
+        }
+    }
+    // 합계 점수 표시
+    document.getElementById('total-score').textContent = totalScore;
+
+    // 점수에 따른 결과 텍스트
+    let resultText = '';
+    if (totalScore <= 4) {
+        resultText = '정상';
+    } else if (totalScore <= 9) {
+        resultText = '경미한 수준의 우울함';
+    } else if (totalScore <= 14) {
+        resultText = '중간 수준의 우울함';
+    } else if (totalScore <= 19) {
+        resultText = '약간 심한 수준의 우울함';
+    } else if (totalScore <= 27) {
+        resultText = '심한 수준의 우울함';
+    }
+    // 결과 텍스트 표시
+    document.getElementById('result-text').textContent = resultText;
+}
 
 
 // 계정 정보 수정
