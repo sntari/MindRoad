@@ -1,3 +1,34 @@
+
+document.addEventListener('DOMContentLoaded', function () {
+    const tarotSpread = document.querySelector('.tarot-spread');
+    let isDragging = false;
+    let startX;
+    let scrollLeft;
+
+    tarotSpread.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX - tarotSpread.offsetLeft;
+        scrollLeft = tarotSpread.scrollLeft;
+    });
+
+    tarotSpread.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
+
+    tarotSpread.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    tarotSpread.addEventListener('mousemove', (e) => {
+        if (!isDragging) return; // 드래깅 중이 아닐 경우 종료
+        e.preventDefault();
+        const x = e.pageX - tarotSpread.offsetLeft;
+        const walk = (x - startX) * 10; // 스크롤 속도 조절
+
+        tarotSpread.scrollLeft = scrollLeft - walk;
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     const cardImageMap = {
         0: "The Fool.jpg",
@@ -260,6 +291,9 @@ document.addEventListener('DOMContentLoaded', function () {
         isSpread = false;
         resetSelectedCards();
         updateSpreadButton();
+
+        // 초기화 시 spreadButton 활성화
+        spreadButton.disabled = false; // 추가된 부분
     }
 
     function resetCard(card) {
@@ -295,20 +329,32 @@ document.addEventListener('DOMContentLoaded', function () {
             cards: selectedCardNames
         };
 
-        fetch('/api/interpret', {
+        fetch('http://localhost:7000/api/interpret', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // 여기에 해석 결과를 표시하는 로직을 추가하세요
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            const p = document.createElement('p');
+            if (data.answer.text){
+                
+                p.innerText = `타로 해설: ${data.answer.text}`;
+                interpretationContent.appendChild(p);
+
+            } else if (data.text){
+                interpretationContent.innerHTML += `
+                    <p>오류 발생: ${data.error}</p>
+                `;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     }
+
+
 });
