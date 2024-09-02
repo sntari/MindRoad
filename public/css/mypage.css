@@ -157,3 +157,23 @@ body {
 #nickname {
     color: #777777;
 }
+
+/* 프로그래스바 */
+#meter2 {
+    appearance: none;
+    width: 220px;
+    display: block;
+    margin-top: 17px;
+    margin-left: 26px;
+    margin-bottom: 22px;
+}
+
+#meter2::-webkit-progress-bar {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+
+#meter2[value]::-webkit-progress-value {
+    transition: width 0.5s;
+}
