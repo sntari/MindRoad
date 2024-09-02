@@ -1,3 +1,9 @@
+/* 공통 스타일 */
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 .mypage_button {
     text-align: center;
     margin-top: 50px;
@@ -9,7 +15,8 @@
     padding: 10px 20px;
     border: none;
     cursor: pointer;
-    margin: 5px 100px;
+    margin: 5px auto;
+    display: inline-block;
 }
 
 .tab-content {
@@ -27,47 +34,85 @@
 }
 
 #myinfo {
+    display: block;
     border-top: peachpuff solid 3px;
 }
 
-.myinfo-container {
+/* 반응형 레이아웃 */
 .myinfo-container {
     margin: 0 auto;
-    overflow: hidden;
     padding-top: 10px;
-    width: 1300px;
-    align-items: center;
+    max-width: 100%;
+    height: auto;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .graph-container {
-    width: 600px;
-    height: 600px;
-    display: inline-block;
+    width: 650px;
+    height: 100%;
     display: inline-block;
     justify-content: center;
     align-items: center;
-    margin-left: 10px;
-    margin-bottom: 10px;
+    margin: 10px auto;
+    padding-bottom: 30px;
     color: #000;
 }
 
-#gauge {
-    width: 100%;
-    height: 100%;
+#gauge-container {
+    padding-top: 50px;
+    border-right: 2px solid #E7AF9E;
 }
 
-/* 그래프 작성 후 수정 */
-/* .graph-container canvas {
-    float: center;
-    margin-left: 30px;
-    margin-bottom: 10px;
-    width: 600px;
+#gauge{
+    width: 100%;
+    height: 488px;
+}
+
+#gauge-text {
+    padding-top: 20px;
+    color: #333;
+    font-size: 2em;
+}
+
+#piegraph{
+    padding-top: 20px;
+}
+
+#linegraph{
+    width: 100%;
     height: 600px;
-}  */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top : 2px solid #E7AF9E;
+}
+
+#myLineChart {
+    width: 100%;
+}
+
+#worryCategory{
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-top: 2px solid #E7AF9E;
+}
+
+#worry-text{
+    color: #333;
+    font-size: 3em;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
 
 /* 수정 */
 .form-container {
-    width: 600px;
+    max-width: 90%;
     padding: 20px;
     margin: 0 auto;
     text-align: center;
@@ -82,9 +127,6 @@
     margin-bottom: 15px;
 }
 
-
-
-
 .form-group input[type="text"],
 .form-group input[type="password"],
 .form-group input[type="button"] {
@@ -93,12 +135,6 @@
     box-sizing: border-box;
     color: #777777;
     border-radius: 0.5rem;
-
-    /* 셀에 테두리 추가 */
-    color: #777777;
-    border-radius: 0.5rem;
-
-    /* 셀에 테두리 추가 */
 }
 
 
