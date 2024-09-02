@@ -11,6 +11,7 @@ if (!user) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+	console.log(user);
 	const chatContent = document.getElementById('chatContent');
 	const chatInput = document.getElementById('chatInput');
 	const sendButton = document.getElementById('sendButton');
@@ -85,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (data.error) {
 				throw new Error(data.error);
 			}
-
+			console.log(data);
 			return data.answer;
 		} catch (error) {
 			console.error("Flask 서버에서 응답을 가져오는 중 오류 발생:", error);

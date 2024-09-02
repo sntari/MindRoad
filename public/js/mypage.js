@@ -7,32 +7,54 @@ function openTab(tabName) {
     document.getElementById(tabName).style.display = "block";
 }
 
-// window.onload = function () {
-//     const ctx = document.getElementById('myGaugeChart').getContext('2d');
-//     new Chart(ctx, {
-//         type: 'doughnut',
-//         data: {
-//             datasets: [{
-//                 data: [20, 80], // 여기에 실제 데이터 값을 넣으세요.
-//                 backgroundColor: ['red', '#4caf50'],
-//                 borderWidth: 0
-//             }]
-//         },
-//         options: {
-//             rotation: -Math.PI * 28.75,
-//             circumference: Math.PI * 57.5,
-//             cutout: '50%',
-//             plugins: {
-//                 tooltip: { enabled: false }
-//             }
-//         },
-//         events: [],
-//         animation: {
-//             animateRotate: false,
-//             animateScale: false
-//         }
-//     });
-// };
+// 게이지 그래프
+document.addEventListener('DOMContentLoaded', gaugeGraphUpdate);
+gaugeGraphUpdate();
+function gaugeGraphUpdate() {
+    var opts = {
+        angle: 0.0, // 게이지의 스팬 (각도)
+        lineWidth: 0.2, // 게이지의 선 두께
+        radiusScale: 0.5, // 상대적인 반지름 크기
+        pointer: {
+            length: 0.6, // 화살표의 길이 (게이지 반지름에 대한 비율)
+            strokeWidth: 0.035, // 화살표의 두께
+            color: '#000000' // 화살표 색상
+        },
+        limitMax: false, // 최대값 제한 사용 여부
+        limitMin: false, // 최소값 제한 사용 여부
+        colorStart: 'orange', // 게이지의 시작 색상
+        colorStop: 'red', // 게이지의 끝 색상
+        strokeColor: 'green', // 게이지의 테두리 색상
+        generateGradient: true, // 색상 그라데이션 생성 여부
+        highDpiSupport: true, // 고해상도 지원 여부
+
+        // 구간별 색상 적용
+        staticZones: [
+            {strokeStyle: "green", min: 0, max: 20 }, // 구간 0-20: 녹색
+            {strokeStyle: "lime", min: 21, max: 40 }, // 구간 21-40: 라임색
+            {strokeStyle: "yellow", min: 41, max: 60 }, // 구간 41-60: 노란색
+            {strokeStyle: "orange", min: 61, max: 80 }, // 구간 61-80: 주황색
+            {strokeStyle: "red", min: 81, max: 100 } // 구간 81-100: 빨간색
+        ],
+    };
+
+    var target = document.getElementById('gauge'); // canvas 요소 선택
+    var gauge = new Gauge(target).setOptions(opts); // Gauge 객체 생성 및 옵션 설정
+    gauge.maxValue = 100; // 최대값 설정
+    gauge.setMinValue(0); // 최소값 설정
+    gauge.animationSpeed = 32; // 애니메이션 속도 설정
+
+    var currentValue = 71; // 현재 값 설정
+    gauge.set(currentValue); // 현재 값 적용
+
+    // 현재 값을 텍스트로 표시
+    function updateGaugeText(value) {
+        var gaugeText = document.getElementById('gauge-text');
+        gaugeText.textContent = value;
+    }
+
+    updateGaugeText(currentValue); // 현재 값 텍스트 업데이트
+}
 
 // 꺾은 선 그래프
 const labels = ["최초 상담일", "2회차", "3회차", "4회차", "5회차", "최근"]; // 레이블 및 데이터 값 input 값으로 수정
@@ -46,9 +68,6 @@ const data = {
         tension: 0.4
     }]
 };
-
-// Line Chart 생성
-
 const ctx = document.getElementById('myLineChart').getContext('2d');
 const myLineChart = new Chart(ctx, {
     type: 'line',
@@ -62,7 +81,7 @@ const myLineChart = new Chart(ctx, {
             },
             title: {
                 display: true,
-                text: '꺾은 선 그래프 예시'
+                text: ""
             }
         },
         scales: {
@@ -78,14 +97,16 @@ const myLineChart = new Chart(ctx, {
 
 // 파이 그래프
 const pieData = {
-    labels: ['Red', 'Blue', 'Yellow'], // 레이블 추후 수정
+    labels: [
+        '긍정', '부정', '중립'
+    ],
     datasets: [{
-        label: '파이 그래프 예시',
-        data: [60, 30, 10], // 데이터 값
+        label: '감정 분포도',
+        data: [0.1, 0.2, 0.7], // 데이터 값 예시
         backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
-            'rgb(255, 205, 86)'
+            'rgb(54, 162, 235)',  // 긍정
+            'rgb(255, 205, 86)',  // 부정
+            'rgb(75, 192, 192)',  // 중립
         ],
         hoverOffset: 4
     }]
@@ -101,12 +122,21 @@ const myPieChart = new Chart(pieCtx, {
                 position: 'top',
             },
             title: {
-                display: true,
-                text: '파이 그래프'
+                display: true
             }
         }
     }
 });
+
+// 고민 카테고리
+document.addEventListener('DOMContentLoaded', function() {
+    var worryCategory = "일반고민"; // 추후 해당 값을 모델에서 입력받음
+
+    // 분석 결과에 따라 worry-text 요소의 내용을 설정
+    var worryTextElement = document.getElementById('worry-text');
+    worryTextElement.textContent = worryCategory;
+});
+
 
 // 계정 정보 수정
 $(document).ready(function () {
