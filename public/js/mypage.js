@@ -190,8 +190,6 @@ $(document).ready(function () {
         const currentPw = document.getElementById('password').value;
         const newPw = document.getElementById('register_pw2').value;
         const Pw = document.getElementById('pw_check').innerHTML;
-        const newPw = document.getElementById('register_pw2').value;
-        const Pw = document.getElementById('pw_check').innerHTML;
 
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
@@ -202,8 +200,8 @@ $(document).ready(function () {
 
         if (Pw === currentPw) {
             console.log("비번은 맞아요");
-            if (Pw != newPw) {
-                document.getElementById('mypage_error1').innerHTML = "";
+            if (Pw != newPw && strength >= 7) {                 // 비밀번호 길이
+            if (Pw != newPw && strength >= 7) {                 // 비밀번호 길이
                 document.getElementById('mypage_error1').innerHTML = "";
                 $.ajax({
                     type: 'POST',
@@ -218,11 +216,9 @@ $(document).ready(function () {
                     }
                 });
             } else {
-                document.getElementById('mypage_error1').innerHTML = "이전 비밀번호와 같습니다";
-                document.getElementById('mypage_error1').innerHTML = "이전 비밀번호와 같습니다";
+                document.getElementById('mypage_error1').innerHTML = "이전 비밀번호와 같거나 너무 짧습니다";
             }
         } else {
-            document.getElementById('mypage_error1').innerHTML = "현재 비밀번호가 일치하지 않습니다";
             document.getElementById('mypage_error1').innerHTML = "현재 비밀번호가 일치하지 않습니다";
         }
 
@@ -261,17 +257,6 @@ $(document).ready(function () {
                             console.log("로그아웃실패", xhr.responseText);
                         }
                     });
-                    // 로그아웃
-                    $.ajax({
-                        type: 'GET',
-                        url: '/mypage/logout',
-                        success: function (response) {
-                            window.location.href = '/';
-                        },
-                        error: function (xhr, status, error) {
-                            console.log("로그아웃실패", xhr.responseText);
-                        }
-                    });
                 },
                 error: function (xhr, status, error) {
                     console.log("삭제실패", xhr.responseText);
@@ -279,9 +264,105 @@ $(document).ready(function () {
             });
         } else {
             document.getElementById('mypage_error2').innerHTML = "비밀번호가 일치하지 않습니다";
-            document.getElementById('mypage_error2').innerHTML = "비밀번호가 일치하지 않습니다";
         }
 
 
     });
+});
+
+let strength2 = 0;
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("register_pw2").addEventListener("input", function () {
+        const password = this.value;
+        const meter = document.getElementById("meter2");
+        const errorText = document.getElementById("mypage_error3");
+
+        strength2 = 0;
+
+        // 비밀번호 보안 강도 체크
+        if (/[A-Z]+/.test(password)) strength2++; // 대문자 포함
+        if (/[a-z]+/.test(password)) strength2++; // 소문자 포함
+        if (/[0-9]/.test(password)) strength2++; // 숫자 포함
+        if (/[\W_]/.test(password)) strength2++; // 특수 문자 포함
+
+        // 프로그래스 바와 텍스트 업데이트
+        meter.value = strength2;
+
+        switch (strength2) {
+            case 0:
+                errorText.textContent = "";
+                break;
+            case 1:
+                errorText.textContent = "보안 강도: 매우 약함";
+                errorText.style.color = "red";
+                break;
+            case 2:
+                errorText.textContent = "보안 강도: 약함";
+                errorText.style.color = "orange";
+                break;
+            case 3:
+                errorText.textContent = "보안 강도: 보통";
+                errorText.style.color = "yellowgreen";
+                break;
+            case 4:
+                errorText.textContent = "보안 강도: 강함";
+                errorText.style.color = "green";
+                break;
+        }
+    });
+});
+document.addEventListener('DOMContentLoaded', gaugeGraphUpdate);
+gaugeGraphUpdate();
+function gaugeGraphUpdate() {
+    var opts = {
+        angle: 0.0, // 게이지의 스팬 (각도)
+        lineWidth: 0.2, // 게이지의 선 두께
+        radiusScale: 0.5, // 상대적인 반지름 크기
+        pointer: {
+            length: 0.6, // 화살표의 길이 (게이지 반지름에 대한 비율)
+            strokeWidth: 0.035, // 화살표의 두께
+            color: '#000000' // 화살표 색상
+        },
+        limitMax: false, // 최대값 제한 사용 여부
+        limitMin: false, // 최소값 제한 사용 여부
+        colorStart: 'orange', // 게이지의 시작 색상
+        colorStop: 'red', // 게이지의 끝 색상
+        strokeColor: 'green', // 게이지의 테두리 색상
+        generateGradient: true, // 색상 그라데이션 생성 여부
+        highDpiSupport: true, // 고해상도 지원 여부
+        // 구간별 색상 적용
+        staticZones: [
+            { strokeStyle: "green", min: 0, max: 20 }, // 구간 0-20: 녹색
+            { strokeStyle: "lime", min: 21, max: 40 }, // 구간 21-40: 라임색
+            { strokeStyle: "yellow", min: 41, max: 60 }, // 구간 41-60: 노란색
+            { strokeStyle: "orange", min: 61, max: 80 }, // 구간 61-80: 주황색
+            { strokeStyle: "red", min: 81, max: 100 } // 구간 81-100: 빨간색
+        ],
+    };
+
+    var target = document.getElementById('gauge'); // canvas 요소 선택
+    var gauge = new Gauge(target).setOptions(opts); // Gauge 객체 생성 및 옵션 설정
+    gauge.maxValue = 100; // 최대값 설정
+    gauge.setMinValue(0); // 최소값 설정
+    gauge.animationSpeed = 32; // 애니메이션 속도 설정
+
+    var currentValue = 71; // 현재 값 설정
+    gauge.set(currentValue); // 현재 값 적용
+
+    // 현재 값을 텍스트로 표시
+    function updateGaugeText(value) {
+        var gaugeText = document.getElementById('gauge-text');
+        gaugeText.textContent = value;
+    }
+
+    updateGaugeText(currentValue); // 현재 값 텍스트 업데이트
+}
+
+// 고민 카테고리
+document.addEventListener('DOMContentLoaded', function () {
+    var worryCategory = "일반고민"; // 추후 해당 값을 모델에서 입력받음
+
+    // 분석 결과에 따라 worry-text 요소의 내용을 설정
+    var worryTextElement = document.getElementById('worry-text');
+    worryTextElement.textContent = worryCategory;
 });
