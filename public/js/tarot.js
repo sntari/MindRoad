@@ -291,20 +291,30 @@ document.addEventListener('DOMContentLoaded', function () {
             cards: selectedCardNames
         };
 
-        fetch('/api/interpret', {
+        fetch('http://localhost:7000/api/interpret', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // 여기에 해석 결과를 표시하는 로직을 추가하세요
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            const p = document.createElement('p');
+            if (data.answer.text){
+                
+                p.innerText = `타로 해설: ${data.answer.text}`;
+                interpretationContent.appendChild(p);
+
+            } else if (data.text){
+                interpretationContent.innerHTML += `
+                    <p>오류 발생: ${data.error}</p>
+                `;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     }
 });
