@@ -4,7 +4,7 @@
     height: 300px;
     position: relative;
     margin: 50px auto;
-    overflow: hidden;
+    overflow: auto;
 }
 
 /* 카드 스타일 */
@@ -138,7 +138,6 @@
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    max-width: 600px;
     margin: 20px auto;
 }
 
@@ -147,13 +146,13 @@
     color: white;
     padding: 10px;
     text-align: center;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: bold;
 }
 
 .interpretation-content {
     padding: 10px;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.6;
     color: #333;
     max-height: 350px;
@@ -168,3 +167,4 @@
     display: none;
     /* Chrome, Safari, Opera */
 }
+
