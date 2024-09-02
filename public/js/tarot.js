@@ -1,3 +1,33 @@
+
+document.addEventListener('DOMContentLoaded', function () {
+    const tarotSpread = document.querySelector('.tarot-spread');
+    let isDragging = false;
+    let startX;
+    let scrollLeft;
+
+    tarotSpread.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX - tarotSpread.offsetLeft;
+        scrollLeft = tarotSpread.scrollLeft;
+    });
+
+    tarotSpread.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
+
+    tarotSpread.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    tarotSpread.addEventListener('mousemove', (e) => {
+        if (!isDragging) return; // 드래깅 중이 아닐 경우 종료
+        e.preventDefault();
+        const x = e.pageX - tarotSpread.offsetLeft;
+        const walk = (x - startX) * 10; // 스크롤 속도 조절
+        tarotSpread.scrollLeft = scrollLeft - walk;
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     const cardImageMap = {
         0: "The Fool.jpg",
@@ -311,4 +341,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error:', error);
             });
     }
+
+    
 });
