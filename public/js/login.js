@@ -209,7 +209,6 @@ $(document).ready(function () {
 let strength = 0;
 const password = document.querySelector("#register_pw")
 const strengthBar = document.querySelector("#meter")
-var display = document.querySelector(".textbox")
 password.addEventListener("keyup", function () {
     checkPassword(password.value);
 });
@@ -247,6 +246,7 @@ function checkPassword(password) {
             break
         case 0:
             document.getElementById("sample").innerText = "";
+            break;
     }
 }
 $(document).ready(function () {
