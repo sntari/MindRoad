@@ -3,8 +3,19 @@
     width: 100%;
     height: 300px;
     position: relative;
-    margin: 50px auto;
-    overflow: auto;
+    margin-top: 0;
+    margin-bottom: 20px;
+    overflow: hidden; /* 기본적으로 스크롤 숨김 */
+}
+
+/* 크롬, 사파리, 엣지용 스크롤바 숨기기 */
+.tarot-spread::-webkit-scrollbar {
+    display: none; /* 스크롤바 숨기기 */
+}
+
+/* 파이어폭스용 스크롤바 숨기기 */
+.tarot-spread {
+    scrollbar-width: none; /* Firefox */
 }
 
 /* 카드 스타일 */
@@ -156,6 +167,7 @@
     line-height: 1.6;
     color: #333;
     max-height: 350px;
+
     overflow-y: auto;
     -ms-overflow-style: none;
     /* Internet Explorer 및 Edge */
