@@ -21,11 +21,12 @@
     <button class="mypage_tab" onclick="openTab('delete_ID')">계정탈퇴</button>
 </div>
 
-<div id="myinfo" class="tab-content" style="display:block">
-    <h2>myinfo</h2>
-    <p>내용</p>
+<div id="myinfo" class="tab-content">
     <div id="myinfoimg" class="myinfo-container">
         <div id="gauge-container" class="graph-container">
+            <% if(user){ %>
+            <h3> <%= user.NICKNAME %> 님의 최근 우울도</h3>
+            <% } %>
             <div id="gauge-text" style="font-size: 80px;">100</div>
             <!-- 게이지 그래프를 표시할 canvas 요소 -->
             <canvas id="gauge"></canvas>
@@ -37,9 +38,11 @@
         </div>
         <div id="linegraph" class="graph-container">
             <canvas id="myLineChart"></canvas>
-            <p>꺾은 선 그래프</p>
         </div>
-        <div id="worrycategory" class="graph-container">
+        <div id="worryCategory" class="graph-container">
+            <% if(user){ %>
+            <h3> <%= user.NICKNAME %> 님의 주요 고민요소</h3>
+            <% } %>
             <div id="worry-text">일반고민</div>
             <p>고민 카테고리</p>
         </div>
