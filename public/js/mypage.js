@@ -128,7 +128,7 @@ $(document).ready(function () {
 
         if (Pw === currentPw) {
             console.log("비번은 맞아요");
-            if (Pw != newPw) {
+            if (Pw != newPw && strength >= 7) {                 // 비밀번호 길이
                 document.getElementById('mypage_error1').innerHTML = "";
                 $.ajax({
                     type: 'POST',
@@ -143,7 +143,7 @@ $(document).ready(function () {
                     }
                 });
             } else {
-                document.getElementById('mypage_error1').innerHTML = "이전 비밀번호와 같습니다";
+                document.getElementById('mypage_error1').innerHTML = "이전 비밀번호와 같거나 너무 짧습니다";
             }
         } else {
             document.getElementById('mypage_error1').innerHTML = "현재 비밀번호가 일치하지 않습니다";
@@ -197,6 +197,47 @@ $(document).ready(function () {
     });
 });
 
+let strength2 = 0;
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("register_pw2").addEventListener("input", function () {
+        const password = this.value;
+        const meter = document.getElementById("meter2");
+        const errorText = document.getElementById("mypage_error3");
+
+        strength2 = 0;
+
+        // 비밀번호 보안 강도 체크
+        if (/[A-Z]+/.test(password)) strength2++; // 대문자 포함
+        if (/[a-z]+/.test(password)) strength2++; // 소문자 포함
+        if (/[0-9]/.test(password)) strength2++; // 숫자 포함
+        if (/[\W_]/.test(password)) strength2++; // 특수 문자 포함
+
+        // 프로그래스 바와 텍스트 업데이트
+        meter.value = strength2;
+
+        switch (strength2) {
+            case 0:
+                errorText.textContent = "";
+                break;
+            case 1:
+                errorText.textContent = "보안 강도: 매우 약함";
+                errorText.style.color = "red";
+                break;
+            case 2:
+                errorText.textContent = "보안 강도: 약함";
+                errorText.style.color = "orange";
+                break;
+            case 3:
+                errorText.textContent = "보안 강도: 보통";
+                errorText.style.color = "yellowgreen";
+                break;
+            case 4:
+                errorText.textContent = "보안 강도: 강함";
+                errorText.style.color = "green";
+                break;
+        }
+    });
+});
 document.addEventListener('DOMContentLoaded', gaugeGraphUpdate);
 gaugeGraphUpdate();
 function gaugeGraphUpdate() {
@@ -218,11 +259,11 @@ function gaugeGraphUpdate() {
         highDpiSupport: true, // 고해상도 지원 여부
         // 구간별 색상 적용
         staticZones: [
-            {strokeStyle: "green", min: 0, max: 20 }, // 구간 0-20: 녹색
-            {strokeStyle: "lime", min: 21, max: 40 }, // 구간 21-40: 라임색
-            {strokeStyle: "yellow", min: 41, max: 60 }, // 구간 41-60: 노란색
-            {strokeStyle: "orange", min: 61, max: 80 }, // 구간 61-80: 주황색
-            {strokeStyle: "red", min: 81, max: 100 } // 구간 81-100: 빨간색
+            { strokeStyle: "green", min: 0, max: 20 }, // 구간 0-20: 녹색
+            { strokeStyle: "lime", min: 21, max: 40 }, // 구간 21-40: 라임색
+            { strokeStyle: "yellow", min: 41, max: 60 }, // 구간 41-60: 노란색
+            { strokeStyle: "orange", min: 61, max: 80 }, // 구간 61-80: 주황색
+            { strokeStyle: "red", min: 81, max: 100 } // 구간 81-100: 빨간색
         ],
     };
 
@@ -245,7 +286,7 @@ function gaugeGraphUpdate() {
 }
 
 // 고민 카테고리
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var worryCategory = "일반고민"; // 추후 해당 값을 모델에서 입력받음
 
     // 분석 결과에 따라 worry-text 요소의 내용을 설정
