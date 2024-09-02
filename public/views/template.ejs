@@ -28,7 +28,7 @@
 
 </head>
 
-<body class="is-preload" data-user="<%= user %>">
+<body class="is-preload" data-user="<%= user ? user.NICKNAME : '' %>">
 	<%- include('login') %>
 		<!-- Wrapper-->
 		<div id="wrapper">
