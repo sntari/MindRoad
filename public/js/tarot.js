@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         const x = e.pageX - tarotSpread.offsetLeft;
         const walk = (x - startX) * 10; // 스크롤 속도 조절
+
         tarotSpread.scrollLeft = scrollLeft - walk;
     });
 });
@@ -286,6 +287,9 @@ document.addEventListener('DOMContentLoaded', function () {
         isSpread = false;
         resetSelectedCards();
         updateSpreadButton();
+
+        // 초기화 시 spreadButton 활성화
+        spreadButton.disabled = false; // 추가된 부분
     }
 
     function resetCard(card) {
@@ -338,5 +342,5 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    
+
 });
