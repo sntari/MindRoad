@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
     worryTextElement.textContent = worryCategory;
 });
 
-function depressionScore() {
+function calculateScore() {
     let totalScore = 0;
     
     // 각 문항에 대해 선택된 값을 합산
@@ -157,6 +157,8 @@ function depressionScore() {
         const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
         if (selectedOption) {
             totalScore += parseInt(selectedOption.value, 10);
+        } else {
+            console.warn(`이봐요 ${i}번 선택 안했수다.`);
         }
     }
     // 합계 점수 표시
@@ -310,9 +312,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-document.addEventListener('DOMContentLoaded', gaugeGraphUpdate);
-gaugeGraphUpdate();
-function gaugeGraphUpdate() {
+document.addEventListener('DOMContentLoaded', () => {
+    const userInfoDiv = document.getElementById("userInfo");
+    const userId = userInfoDiv.getAttribute("mem_Id")
+        .then(response => response.json())
+        .then(data => {
+            const currentValue = data.score; // 서버에서 가져온 감정 점수 사용
+            gaugeGraphUpdate(currentValue); // 그래프 업데이트
+        })
+        .catch(error => console.error('Error fetching emotion score:', error));
+
+});function gaugeGraphUpdate(currentValue) {
     var opts = {
         angle: 0.0, // 게이지의 스팬 (각도)
         lineWidth: 0.2, // 게이지의 선 두께
@@ -345,7 +355,6 @@ function gaugeGraphUpdate() {
     gauge.setMinValue(0); // 최소값 설정
     gauge.animationSpeed = 32; // 애니메이션 속도 설정
 
-    var currentValue = 71; // 현재 값 설정
     gauge.set(currentValue); // 현재 값 적용
 
     // 현재 값을 텍스트로 표시
@@ -353,15 +362,5 @@ function gaugeGraphUpdate() {
         var gaugeText = document.getElementById('gauge-text');
         gaugeText.textContent = value;
     }
-
     updateGaugeText(currentValue); // 현재 값 텍스트 업데이트
 }
-
-// 고민 카테고리
-document.addEventListener('DOMContentLoaded', function () {
-    var worryCategory = "일반고민"; // 추후 해당 값을 모델에서 입력받음
-
-    // 분석 결과에 따라 worry-text 요소의 내용을 설정
-    var worryTextElement = document.getElementById('worry-text');
-    worryTextElement.textContent = worryCategory;
-});
