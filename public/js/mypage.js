@@ -30,11 +30,11 @@ function gaugeGraphUpdate() {
 
         // 구간별 색상 적용
         staticZones: [
-            {strokeStyle: "green", min: 0, max: 20 }, // 구간 0-20: 녹색
-            {strokeStyle: "lime", min: 21, max: 40 }, // 구간 21-40: 라임색
-            {strokeStyle: "yellow", min: 41, max: 60 }, // 구간 41-60: 노란색
-            {strokeStyle: "orange", min: 61, max: 80 }, // 구간 61-80: 주황색
-            {strokeStyle: "red", min: 81, max: 100 } // 구간 81-100: 빨간색
+            { strokeStyle: "green", min: 0, max: 20 }, // 구간 0-20: 녹색
+            { strokeStyle: "lime", min: 21, max: 40 }, // 구간 21-40: 라임색
+            { strokeStyle: "yellow", min: 41, max: 60 }, // 구간 41-60: 노란색
+            { strokeStyle: "orange", min: 61, max: 80 }, // 구간 61-80: 주황색
+            { strokeStyle: "red", min: 81, max: 100 } // 구간 81-100: 빨간색
         ],
     };
 
@@ -57,37 +57,58 @@ function gaugeGraphUpdate() {
 }
 
 // 파이 그래프
-const pieData = {
-    labels: [
-        '긍정', '부정', '중립'
-    ],
-    datasets: [{
-        label: '감정 분포도',
-        data: [0.1, 0.2, 0.7], // 데이터 값 예시
-        backgroundColor: [
-            'rgb(54, 162, 235)',  // 긍정
-            'rgb(255, 205, 86)',  // 부정
-            'rgb(75, 192, 192)',  // 중립
-        ],
-        hoverOffset: 4
-    }]
-};
-const pieCtx = document.getElementById('myPieChart').getContext('2d');
-const myPieChart = new Chart(pieCtx, {
-    type: 'pie',
-    data: pieData,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true
-            }
+let good = 1;
+let bad = 1;
+let center = 1;
+
+document.addEventListener('DOMContentLoaded', function () {
+    const nickname = document.getElementById('nickname').value;
+    $.ajax({
+        type: 'POST',
+        url: '/mypage/pie_info',
+        data: { nickname: nickname },
+        success: function (response) {
+            good = parseFloat(response.pie.average_good);
+            bad = parseFloat(response.pie.average_bad);
+            center = parseFloat(response.pie.average_center);
+            const pieData = {
+                labels: [
+                    '긍정', '부정', '중립'
+                ],
+                datasets: [{
+                    label: '감정 분포도',
+                    data: [good, bad, center], // 데이터 값 예시
+                    backgroundColor: [
+                        'rgb(54, 162, 235)',  // 긍정
+                        'rgb(255, 51, 0)',  // 부정
+                        'rgb(245, 245, 7)',  // 중립
+                    ],
+                    hoverOffset: 4
+                }]
+            };
+            const pieCtx = document.getElementById('myPieChart').getContext('2d');
+            const myPieChart = new Chart(pieCtx, {
+                type: 'pie',
+                data: pieData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true
+                        }
+                    }
+                }
+            });
+        },
+        error: function (xhr, status, error) {
+            console.log("긍부중실패", xhr.responseText);
         }
-    }
+    });
 });
+
 
 // 꺾은 선 그래프
 const labels = ["최초 상담일", "2회차", "3회차", "4회차", "5회차", "최근"]; // 레이블 및 데이터 값 input 값으로 수정
@@ -96,7 +117,7 @@ const data = {
     datasets: [{
         label: '상담 기록에 따른 우울도 추이',
         font: {
-            size:24
+            size: 24
         },
         data: [65, 59, 70, 31, 45, 15], // 꺾은 선 그래프의 데이터 값
         fill: false,
@@ -141,7 +162,7 @@ const myLineChart = new Chart(ctx, {
 });
 
 // 고민 카테고리
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var worryCategory = "일반고민"; // 추후 해당 값을 모델에서 입력받음
 
     // 분석 결과에 따라 worry-text 요소의 내용을 설정
@@ -151,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function calculateScore() {
     let totalScore = 0;
-    
+
     // 각 문항에 대해 선택된 값을 합산
     for (let i = 1; i <= 9; i++) {
         const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
@@ -322,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error fetching emotion score:', error));
 
-});function gaugeGraphUpdate(currentValue) {
+}); function gaugeGraphUpdate(currentValue) {
     var opts = {
         angle: 0.0, // 게이지의 스팬 (각도)
         lineWidth: 0.2, // 게이지의 선 두께
@@ -364,3 +385,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateGaugeText(currentValue); // 현재 값 텍스트 업데이트
 }
+
+const Pw = document.getElementById('pw_check').innerHTML;
