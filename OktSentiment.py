@@ -75,7 +75,7 @@ class Sentiment:
 
     def align_morpheme(self, morpheme):
         aligned = [f"{elem[0]}/{self._convert_pos_tag(elem[1])}" for elem in morpheme]
-        # print(f"정렬된 형태소 분석 결과: {aligned}")  # 정렬된 형태소 분석 결과 출력
+        print(f"정렬된 형태소 분석 결과: {aligned}")  # 정렬된 형태소 분석 결과 출력
         return aligned
 
     # 감정 분석 계산을 수행
