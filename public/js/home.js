@@ -33,7 +33,25 @@ document.addEventListener('DOMContentLoaded', function () {
 	function createMessage() {
 		const messageDiv = document.createElement('div');
 		messageDiv.className = 'message bot-message';
-		messageDiv.innerText = 'loading...';
+		// messageDiv.innerText = 'loading...';
+		const loading = document.createElement('div');
+		loading.className = 'loading';
+		messageDiv.appendChild(loading);
+		chatContent.appendChild(messageDiv);
+		return messageDiv;
+	}
+
+	// function updateMessage(chatContent, message) {
+
+	// }
+
+	function createMessage() {
+		const messageDiv = document.createElement('div');
+		messageDiv.className = 'message bot-message';
+		// messageDiv.innerText = 'loading...';
+		const loading = document.createElement('div');
+		loading.className = 'loading';
+		messageDiv.appendChild(loading);
 		chatContent.appendChild(messageDiv);
 		return messageDiv;
 	}
@@ -86,8 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			const botMessage = createMessage(); //add
 			try {
 				const botResponse = await getFlaskResponse(message);
-				// addMessage(botResponse, false); //remove
-				typeMessage(botMessage, botResponse); //add
+				// addMessage(botResponse, false);
+				typeMessage(botMessage, botResponse.answer);
 			} catch (error) {
 				// addMessage("죄송합니다. 오류가 발생했습니다: " + error.message, false); //remove
 				typeMessage(botMessage, "죄송합니다. 오류가 발생했습니다: " + error.message);
