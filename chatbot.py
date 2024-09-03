@@ -106,7 +106,7 @@ class ChatBot:
             print("Error processing input:", e)
             return {"error": f"Error processing input: {str(e)}"}
 # API 키를 파일에서 읽어오기
-def load_api_key(file_path='c:/Users/SMHRD/api.txt'):
+def load_api_key(file_path='C:\Users\smhrd\Documents\카카오톡 받은 파일\\api.txt'):
     try:
         with open(file_path, 'r') as file:
             return file.read().strip()
