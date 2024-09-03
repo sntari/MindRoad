@@ -41,6 +41,7 @@ app.use((req, res, next) => {
 
 // ejs를 템플릿 엔진으로 사용하도록 설정
 app.use(expressLayouts);
+app.use(express.json());
 
 // ejs를 템플릿 엔진으로 사용하도록 설정
 app.set('view engine', 'ejs');
@@ -62,6 +63,9 @@ app.use('/member', memberRoutes);
 
 const myPageRoutes = require('./routes/myPageRoutes');
 app.use('/mypage', myPageRoutes);
+
+const Chatbotsave = require('./routes/ChatbotRoutes');
+app.use('/chatbot', Chatbotsave)
 
 // 메인페이지
 app.get('/', (req, res) => {
