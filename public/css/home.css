@@ -72,3 +72,18 @@
     border-radius: 20px;
     cursor: pointer;
 }
+
+div.loading {
+    margin: 0 35px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 5px solid white;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+
+    animation: rotate 1s linear infinite;
+} @keyframes rotate {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
