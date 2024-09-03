@@ -72,3 +72,10 @@
     border-radius: 20px;
     cursor: pointer;
 }
+
+div.loading {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
