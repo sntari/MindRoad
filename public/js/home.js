@@ -72,8 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			const botMessage = createMessage(); //add
 			try {
 				const botResponse = await getFlaskResponse(message);
-				// addMessage(botResponse, false); //remove
-				typeMessage(botMessage, botResponse); //add
+				addMessage(botResponse, false);
 			} catch (error) {
 				// addMessage("죄송합니다. 오류가 발생했습니다: " + error.message, false); //remove
 				typeMessage(botMessage, "죄송합니다. 오류가 발생했습니다: " + error.message);
@@ -104,10 +103,33 @@ document.addEventListener('DOMContentLoaded', function () {
 				throw new Error(data.error);
 			}
 			console.log(data);
-			return data.answer;
+			return data;
 		} catch (error) {
 			console.error("Flask 서버에서 응답을 가져오는 중 오류 발생:", error);
 			throw error;
+		}
+	}
+
+	async function saveChatbotResponseToNodeServer(data) {
+		const url = '/chatbot/saveChatbotResponse';
+		const headers = {
+			'Content-Type': 'application/json'
+		};
+		const body = JSON.stringify({
+			user: data.user,
+			questions: data.input,
+			sentiment: data.sentiment
+		});
+
+		try {
+			const response = await fetch(url, { method: 'POST', headers, body });
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			const result = await response.json();
+			console.log('Chatbot response saved:', result);
+		} catch (error) {
+			console.error('Error saving chatbot response to Node server:', error);
 		}
 	}
 
