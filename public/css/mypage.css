@@ -177,3 +177,46 @@ body {
 #meter2[value]::-webkit-progress-value {
     transition: width 0.5s;
 }
+
+
+#depression-survey table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+#depression-survey th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+#depression-survey th {
+    background-color: #f2f2f2;
+}
+#depression-survey td {
+    position: relative;
+}
+#depression-survey label {
+    cursor: pointer; /* 클릭 가능한 포인터 추가 */
+    font-size: 24px; /* 심볼의 크기 설정 */
+}
+/* 라디오 버튼 숨기기 */
+#depression-survey input[type="radio"] {
+    display: none;
+}
+/* 심볼 스타일 */
+#depression-survey label::before {
+    content: "○"; /* 기본 심볼 */
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    border-radius: 50%;
+    font-size: 24px;
+    color: #333;
+}
+/* 라디오 버튼 선택 시 심볼 변경 */
+#depression-survey input[type="radio"]:checked + label::before {
+    content: "●"; /* 선택된 심볼 */
+    color: #007bff; /* 선택된 심볼의 색상 */
+}
