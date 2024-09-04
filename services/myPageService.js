@@ -41,16 +41,15 @@ async function del_member(mem_id, mem_pw, new_pw) {
     }
 }
 
-// 로그인
+// 마이페이지 로그인 테스트
 async function loginUser(mem_id, new_pw) {
     const connection = await mysql.connect();
-    
     try {
-        if(mem_id != ""){
+        if (mem_id != "") {
             const query = 'SELECT * FROM MEMBERS WHERE EMAIL = ? AND PW = ?';
             const [rows] = await connection.promise().query(query, [mem_id, new_pw]);
             return rows;
-        }else{
+        } else {
             return 0;
         }
     } catch (error) {
@@ -60,8 +59,54 @@ async function loginUser(mem_id, new_pw) {
     }
 }
 
+// 파이차트 긍부중
+async function mypage_AVG(user) {
+    let connection;
+    try {
+        // 데이터베이스 연결
+        connection = await mysql.getConnection();
+
+        // SELECT 쿼리 정의
+        const query = `
+            SELECT
+            GOOD AS recent_good,
+            BAD AS recent_bad,
+            CENTER AS recent_center
+            FROM SCORE_DATA
+            WHERE nickname = ? AND id = (
+            SELECT MAX(id)
+            FROM SCORE_DATA
+            WHERE nickname = ?
+            )
+        `;
+
+        // 쿼리 실행
+        const [rows] = await connection.execute(query, [user, user]);
+
+        // 결과 반환        
+        if (rows.length > 0) {
+            return {
+                average_good: rows[0].recent_good,
+                average_bad: rows[0].recent_bad,
+                average_center: rows[0].recent_center
+            };
+        } else {
+            return { average_good: 33, average_bad: 33, average_center: 34 };
+        }
+    } catch (error) {
+        console.error('Error retrieving chatbot sentiment averages:', error);
+        throw error;
+    } finally {
+        // 연결 종료
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
 module.exports = {
     updateMemberInfo,
     del_member,
     loginUser,
+    mypage_AVG,
 };
