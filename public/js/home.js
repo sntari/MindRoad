@@ -1,5 +1,6 @@
 // 서버에서 EJS로 세션에 있는 user 값을 전달
 const user = document.body.getAttribute('data-user');
+let reason;
 
 // user 값이 없으면 .chat-wrapper 요소를 숨김
 if (!user) {
@@ -76,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			try {
 				const botResponse = await getFlaskResponse(message);
 				if(botResponse.isProblem){
+					reason = botResponse.input
 					await saveChatbotResponseToNodeServer(botResponse);
 				}
 				typeMessage(botMessage, botResponse.answer);

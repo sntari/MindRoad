@@ -124,9 +124,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let isSpread = false;
     let selectedCategory = null;
 
-    // 서버의 세션에서 가져온 reason 값
-    const reason = '<%= session.reason || "" %>';
-
     initializeButtons();
     initializeCardClickEvents();
     updateSpreadButton();
@@ -322,7 +319,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const data = {
             user_select: selectedCategory,
-            cards: selectedCardNames
+            cards: selectedCardNames,
+            user_input : reason
         };
 
         fetch('http://localhost:7000/api/interpret', {
