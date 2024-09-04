@@ -22,18 +22,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		const messageDiv = document.createElement('div');
 		messageDiv.className = 'message bot-message';
 		// messageDiv.innerText = 'loading...';
-		chatContent.appendChild(messageDiv);
-		return messageDiv;
-	}
-
-	// function updateMessage(chatContent, message) {
-
-	// }
-
-	function createMessage() {
-		const messageDiv = document.createElement('div');
-		messageDiv.className = 'message bot-message';
-		// messageDiv.innerText = 'loading...';
+<<<<<<< HEAD
+=======
+		const loading = document.createElement('div');
+		loading.className = 'loading';
+		messageDiv.appendChild(loading);
+>>>>>>> 5d98d085122c02a550871193d3034d652493ca13
 		chatContent.appendChild(messageDiv);
 		return messageDiv;
 	}
@@ -46,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		const messageDiv = document.createElement('div');
 		messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
 		// console.log('test', isUser);
-		// console.log('test', isUser);
 		chatContent.appendChild(messageDiv);
 
 		if (isUser) {
@@ -58,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function typeMessage(element, message) {
-		element.textContent = '';
 		element.textContent = '';
 		let i = 0;
 		const interval = setInterval(() => {
@@ -86,10 +78,15 @@ document.addEventListener('DOMContentLoaded', function () {
 			const botMessage = createMessage(); //add
 			try {
 				const botResponse = await getFlaskResponse(message);
+<<<<<<< HEAD
 				addMessage(botResponse.answer, false);
 				if(botResponse.isProblem){
 					await saveChatbotResponseToNodeServer(botResponse);
 				}
+=======
+				// addMessage(botResponse, false);
+				typeMessage(botMessage, botResponse.answer);
+>>>>>>> 5d98d085122c02a550871193d3034d652493ca13
 			} catch (error) {
 				// addMessage("죄송합니다. 오류가 발생했습니다: " + error.message, false); //remove
 				typeMessage(botMessage, "죄송합니다. 오류가 발생했습니다: " + error.message);
