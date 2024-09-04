@@ -23,18 +23,18 @@ class TarotBot:
                     "타로카드: {cards}\n"
                     "{cards}의 의미는 한줄로 간략히 출력하고, {user_input}를 주제로 종합한 해석은 최대 500자 이내로 출력해주세요."
                 ),
-                input_variables=[ "cards","user_input"]
+                input_variables=["cards", "user_input"]
             )
 
             reason_chain = LLMChain(llm=self.model, prompt=tarot_template_reason)
-            reason_response = reason_chain.run(user_input=user_input, cards=cards)
-            answer = reason_response.strip()
-    
 
+            reason_response = reason_chain.invoke({"cards": ", ".join(cards), "user_input": user_input})
+            answer = reason_response.strip()
+            
             return jsonify({"answer": answer})
 
         except Exception as e:
-            return f"Error in interpret_cards: {str(e)}"
+            return jsonify({"error": f"Error in interpret_cards: {str(e)}"}), 500
         
     # 일반적인 타로 해석
     def general_reading(self, user_select, cards):

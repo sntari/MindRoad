@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const data = {
             user_select: selectedCategory,
             cards: selectedCardNames,
-            user_input : reason
+            user_input: reason
         };
 
         fetch('http://localhost:7000/api/interpret', {
@@ -330,24 +330,40 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(data),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            const p = document.createElement('p');
-            if (data.answer.text){
-                
-                p.innerText = `타로 해설: ${data.answer.text}`;
-                interpretationContent.appendChild(p);
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
 
-            } else if (data.text){
-                interpretationContent.innerHTML += `
-                    <p>오류 발생: ${data.error}</p>
-                `;
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+                const p = document.createElement('p');
+
+                // 응답 데이터 형식에 따라 처리
+                if (data.answer && typeof data.answer === 'object') {
+                    // general_reading 응답 처리
+                    if (data.answer.text) {
+                        console.log('General reading text:', data.answer.text);
+                        p.innerText = `타로 해설: ${data.answer.text}`;
+                    } else {
+                        console.log('Unexpected data format:', data);
+                        p.innerText = '응답 데이터 형식이 예상과 다릅니다.';
+                    }
+                } else if (data.answer) {
+                    // interpret_cards 응답 처리
+                    console.log('Interpret cards answer:', data.answer);
+                    p.innerText = `타로 해설: ${data.answer}`;
+                } else if (data.error) {
+                    // 오류 처리
+                    console.log('Error:', data.error);
+                    p.innerHTML = `오류 발생: ${data.error}`;
+                } else {
+                    // 기타 경우 처리
+                    p.innerHTML = '응답 데이터가 없습니다.';
+                }
+
+                interpretationContent.appendChild(p);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     }
 
 
