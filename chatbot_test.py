@@ -6,7 +6,6 @@ from langchain_openai import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 
 
-
 class ChatBotTs:
     def __init__(self, api_key, csv_file):
         self.client = OpenAI(api_key=api_key)
@@ -72,19 +71,25 @@ class ChatBotTs:
                 print(f"Problem reason: {reason}")
 
                 #고민 이유에 맞는 답변 찾기
-                reference_data = self.responses.get("reason")
-
+                reference_data = self.responses.get(reason,"기타")
+                data = {"reference_data":reference_data}
+                print(reference_data)
                 #RAG방식으로 답변 생성
                 rag_template = PromptTemplate(
                     template=
                         "사용자 입력: '{user_input}'\n"
-                        "자료 : '{reference_data}'\n"
-                        "{reference_data}를 참조하여 {user_input}에 맞는 답변을 최대 500자 이내로 출력을 해주세요.",
-                        input_variables=["user_input","reference_data"]
+                        "데이터 : '{reference_data}'\n"
+                        "{reference_data}와 유사하게 {user_input}에 맞는 답변을 단락을 나누어 최대 500자 이내로 출력을 해주세요.",
+                        input_variables=["reference_data","user_input"]
                 )
-                rag_chain = LLMChain(llm=self.model,prompt=rag_template,memory=self.memory)
-                rag_response = rag_chain.invoke({"user_input":user_input, "reference_data":reference_data})
+                rag_chain = LLMChain(llm=self.model,prompt=rag_template)
+                rag_response = rag_chain.run(user_input=user_input,reference_data=reference_data)
+
                 answer = rag_response.strip()
+
+                print("참조자료",reference_data)
+                print("gpt응답",answer)
+
 
                 return {
                     "user" : user_nick,
@@ -92,7 +97,6 @@ class ChatBotTs:
                     "isProblem" : True,
                     "reason" : reason,
                     "answer" : answer
-
                 }
 
                 # # 고민 이유에 맞는 답변 찾기

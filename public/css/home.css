@@ -74,8 +74,16 @@
 }
 
 div.loading {
-    width: 64px;
-    height: 64px;
+    margin: 0 35px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
-    border: 2px solid white;
+    border: 5px solid white;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+
+    animation: rotate 1s linear infinite;
+} @keyframes rotate {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
 }
