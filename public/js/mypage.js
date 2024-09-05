@@ -107,11 +107,81 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("긍부중실패", xhr.responseText);
         }
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $.ajax({
+        type: 'POST',
+        url: '/mypage/Graph_BAD',
+        data: { nickname: nickname },
+        success: function (response) {
+            const avg_bad = parseFloat(response.graph.avg_bad);
+            const all_bad = parseFloat(response.graph.all_bad);
+            console.log(avg_bad.avg_bad[0]);
+            console.log(all_bad);
+            
+            const pieData = {
+                labels: [
+                    '긍정', '부정', '중립'
+                ],
+                datasets: [{
+                    label: '감정 분포도',
+                    data: [good, bad, center], // 데이터 값 예시
+                    backgroundColor: [
+                        'rgb(54, 162, 235)',  // 긍정
+                        'rgb(255, 51, 0)',  // 부정
+                        'rgb(245, 245, 7)',  // 중립
+                    ],
+                    hoverOffset: 4
+                }]
+            };
+            const pieCtx = document.getElementById('myPieChart').getContext('2d');
+            const myPieChart = new Chart(pieCtx, {
+                type: 'pie',
+                data: pieData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true
+                        }
+                    }
+                }
+            });
+        },
+        error: function (xhr, status, error) {
+            console.log("긍부중실패", xhr.responseText);
+        }
+    });
 });
 
-
 // 꺾은 선 그래프
-const labels = ["최초 상담일", "2회차", "3회차", "4회차", "5회차", "최근"]; // 레이블 및 데이터 값 input 값으로 수정
+const labels = ["최초 상담일", "2회차", "3회차", "4회차", "5회차","6회차", "최근"]; // 레이블 및 데이터 값 input 값으로 수정
 const data = {
     labels: labels,
     datasets: [{
@@ -161,7 +231,58 @@ const myLineChart = new Chart(ctx, {
     }
 });
 
-// 고민 카테고리
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 고민 카테고리 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', function () {
     var worryCategory = "일반고민"; // 추후 해당 값을 모델에서 입력받음
 

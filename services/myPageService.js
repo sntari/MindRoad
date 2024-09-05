@@ -104,9 +104,57 @@ async function mypage_AVG(user) {
     }
 }
 
+// 부정 평균 수치
+async function mypage_BAD(user) {
+    let connection;
+    try {
+        // 데이터베이스 연결
+        connection = await mysql.getConnection();
+
+        // SELECT 쿼리 정의
+        const query = `
+            SELECT
+            BAD AS avg_bad
+            FROM SCORE_DATA
+            WHERE nickname = ?
+        `;
+
+        // SELECT 쿼리 정의
+        const query2 = `
+            SELECT
+            AVG(BAD) AS all_bad
+            FROM SCORE_DATA
+            WHERE nickname = 'admin'
+        `;
+
+        // 쿼리 실행
+        const [rows] = await connection.execute(query, [user]);
+        const [rows2] = await connection.execute(query2);
+        
+        // 결과 반환        
+        if (rows.length > 0) {
+            return {
+                avg_bad: rows,
+                all_bad: rows2[0].all_bad
+            };
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        console.error('Error retrieving chatbot sentiment averages:', error);
+        throw error;
+    } finally {
+        // 연결 종료
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
 module.exports = {
     updateMemberInfo,
     del_member,
     loginUser,
     mypage_AVG,
+    mypage_BAD
 };
