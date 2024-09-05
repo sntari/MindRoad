@@ -1,3 +1,49 @@
+/* 버튼 컨테이너 스타일 */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#draw-again,
+#spread-cards {
+    background-color: #2b233a; /* 원하는 색상으로 변경 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px; /* 원하는 둥글기 */
+    cursor: pointer; /* 커서 모양 */
+}
+
+.category-button{
+    background-color: #2b233a; /* 원하는 색상으로 변경 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px; /* 원하는 둥글기 */
+    cursor: pointer; /* 커서 모양 */
+}
+
+.userButton {
+    background-color: #2b233a; /* 원하는 색상으로 변경 */
+    color: white; /* 텍스트 색상 */
+    padding: 15px 30px;
+    border: none;
+    border-radius: 25px; /* 원하는 둥글기 */
+    cursor: pointer; /* 커서 모양 */
+}
+
+/* 활성화된 버튼 스타일 */
+.category-button.active {
+    background-color: #c88b62;
+    color: white;
+}
+
+.userButton.active {
+    background-color: #c88b62;
+    color: white;
+}
+
 /* 타로 카드 스프레드 컨테이너 */
 .tarot-spread {
     width: 100%;
@@ -5,7 +51,7 @@
     position: relative;
     margin-top: 0;
     margin-bottom: 20px;
-    overflow: hidden; /* 기본적으로 스크롤 숨김 */
+    overflow: auto; /* 기본적으로 스크롤 숨김 */
 }
 
 /* 카드 스타일 */
@@ -55,13 +101,6 @@
     align-items: center;
     justify-content: center;
     font-size: 16px;
-}
-
-/* 버튼 컨테이너 스타일 */
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
 }
 
 #draw-again,
@@ -120,16 +159,6 @@
     font-size: 16px;
 }
 
-/* 활성화된 버튼 스타일 */
-.category-button.active {
-    background-color: rebeccapurple;
-    color: white;
-}
-
-.userButton.active {
-    background-color: palevioletred;
-    color: white;
-}
 
 /* 해석 결과 표시 영역 스타일 */
 .interpretation-wrapper {
