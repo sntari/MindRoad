@@ -27,10 +27,12 @@ class TarotBot:
             )
 
             reason_chain = LLMChain(llm=self.model, prompt=tarot_template_reason)
-
-            reason_response = reason_chain.invoke({"cards": ", ".join(cards), "user_input": user_input})
-            answer = reason_response.strip()
+            reason_response = reason_chain.invoke({ "user_input": user_input, "cards": cards})
             
+            if isinstance(reason_response, str):
+                answer = reason_response.strip()
+            else:
+                answer = reason_response      
             return jsonify({"answer": answer})
 
         except Exception as e:
@@ -56,9 +58,6 @@ class TarotBot:
                 answer = general_response.strip()
             else:
                 answer = general_response
-            
-            if len(answer) > 500:
-                answer = answer[:500]
 
             return jsonify({"answer": answer})
 
