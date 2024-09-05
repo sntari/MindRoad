@@ -49,19 +49,50 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function typeMessage(element, message) {
-		element.textContent = '';
-		let i = 0;
-		const interval = setInterval(() => {
-			if (i < message.length) {
-				element.textContent += message.charAt(i);
-				i++;
-				scrollToBottom();
-			} else {
-				clearInterval(interval);
+		element.textContent = ''; // 기존 내용을 초기화
+
+		const paragraphs = message.split('\n'); // 줄바꿈을 기준으로 문단 구분
+
+		if (paragraphs.length === 1) {
+			// 한 줄짜리 메시지는 줄바꿈 없이 출력
+			let i = 0;
+			const interval = setInterval(() => {
+				if (i < message.length) {
+					element.textContent += message.charAt(i);
+					i++;
+					scrollToBottom();
+				} else {
+					clearInterval(interval);
+				}
+			}, 15); // 타이핑 속도 조절 (밀리초 단위)
+		} else {
+			// 여러 줄 메시지는 p 태그로 감싸서 출력
+			let currentParagraph = 0;
+
+			function typeNextParagraph() {
+				if (currentParagraph < paragraphs.length) {
+					const p = document.createElement('p'); // 각 문단을 p 태그로 감싸기
+					element.appendChild(p);
+
+					let i = 0;
+					const interval = setInterval(() => {
+						if (i < paragraphs[currentParagraph].length) {
+							p.textContent += paragraphs[currentParagraph].charAt(i);
+							i++;
+							scrollToBottom(); // 스크롤을 아래로 내리기
+						} else {
+							clearInterval(interval);
+							currentParagraph++;
+							typeNextParagraph(); // 다음 문단으로 이동
+						}
+					}, 15); // 타이핑 속도 조절 (밀리초 단위)
+				}
 			}
-		}, 15); // 타이핑 속도 조절 (밀리초 단위)
+
+			typeNextParagraph(); // 첫 번째 문단부터 타이핑 시작
+		}
 	}
-	
+
 	async function handleSend() {
 		const message = chatInput.value.trim();
 		if (message) {
@@ -70,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			const botMessage = createMessage(); //add
 			try {
 				const botResponse = await getFlaskResponse(message);
-				if(botResponse.isProblem){
+				if (botResponse.isProblem) {
 					reason = botResponse.input
 					await saveChatbotResponseToNodeServer(botResponse);
 				}
@@ -82,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		}
 	}
-	
+
 	function scrollToBottom() {
 		setTimeout(() => {
 			chatContent.scrollTop = chatContent.scrollHeight;
