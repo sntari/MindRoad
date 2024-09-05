@@ -61,13 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		}, 15); // 타이핑 속도 조절 (밀리초 단위)
 	}
-
-	function scrollToBottom() {
-		setTimeout(() => {
-			chatContent.scrollTop = chatContent.scrollHeight;
-		}, 100); // 0ms 지연 시간
-	}
-
+	
 	async function handleSend() {
 		const message = chatInput.value.trim();
 		if (message) {
@@ -80,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					reason = botResponse.input
 					await saveChatbotResponseToNodeServer(botResponse);
 				}
+				console.log(botResponse.answer);
 				typeMessage(botMessage, botResponse.answer);
 			} catch (error) {
 				// addMessage("죄송합니다. 오류가 발생했습니다: " + error.message, false); //remove
@@ -87,6 +82,13 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		}
 	}
+	
+	function scrollToBottom() {
+		setTimeout(() => {
+			chatContent.scrollTop = chatContent.scrollHeight;
+		}, 100); // 0ms 지연 시간
+	}
+
 
 	async function getFlaskResponse(userMessage) {
 		const url = 'http://localhost:7000/chatbot'; // Flask 서버 주소
