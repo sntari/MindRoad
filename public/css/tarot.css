@@ -33,6 +33,10 @@
     cursor: pointer; /* 커서 모양 */
 }
 
+#psychological-button {
+    opacity: 20%;
+}
+
 /* 활성화된 버튼 스타일 */
 .category-button.active {
     background-color: #c88b62;
