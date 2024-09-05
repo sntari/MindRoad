@@ -34,8 +34,9 @@
 		<div id="wrapper">
 
 			<!-- Nav -->
+			<% if(user){ %>
+
 			<nav id="nav">
-				<% if(user){ %>
 				<a href="#" class="icon solid fa-comment"><span>Chat Bot</span></a>
 				<a href="#tarot" class="icon solid fa-hat-wizard"><span>Tarot</span></a>
 				<a href="#mypage" class="icon solid fa-user"><span>MyPage</span></a>
@@ -43,7 +44,6 @@
 			</nav>
 				
 				<!-- Main -->
-				<% if(user){ %>
 				<div id="main">
 					<!-- 홈(챗봇) -->
 					<article id="home" class="panel">
@@ -61,9 +61,7 @@
 					</article>
 					
 				</div>
-				<% }else{ %>
-					<%- include('test') %>
-				<% }%>
+
 				
 				<!-- Footer -->
 			<div id="footer">
