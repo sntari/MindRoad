@@ -128,7 +128,7 @@ class ChatBotTs:
         
 
 # API 키를 파일에서 읽어오기
-def load_api_key(file_path='C:\\Users\\smhrd\\Desktop\\ky_api.txt'):
+def load_api_key(file_path='C:\\Users\\SMHRD\\Desktop\\ky_api.txt'):
 # def load_api_key(file_path='C:\\Users\\SMHRD\\Desktop\\ky_api.txt'):
     try:
         with open(file_path, 'r') as file:
