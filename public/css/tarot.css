@@ -8,16 +8,6 @@
     overflow: hidden; /* 기본적으로 스크롤 숨김 */
 }
 
-/* 크롬, 사파리, 엣지용 스크롤바 숨기기 */
-.tarot-spread::-webkit-scrollbar {
-    display: none; /* 스크롤바 숨기기 */
-}
-
-/* 파이어폭스용 스크롤바 숨기기 */
-.tarot-spread {
-    scrollbar-width: none; /* Firefox */
-}
-
 /* 카드 스타일 */
 .card {
     width: 120px;
@@ -54,7 +44,7 @@
 }
 
 .card-back {
-    background-image: url('../img/tarot-back.jpg');
+    background-image: url('../img/tarot_back.png');
     background-size: cover;
 }
 
