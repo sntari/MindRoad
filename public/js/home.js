@@ -1,7 +1,6 @@
 // 서버에서 EJS로 세션에 있는 user 값을 전달
 const user = document.body.getAttribute('data-user');
-let reason;
-
+// let reason;
 // user 값이 없으면 .chat-wrapper 요소를 숨김
 if (!user) {
 	document.querySelector('.chat-wrapper').style.display = 'none';
@@ -10,6 +9,7 @@ if (!user) {
 	document.querySelector('.chat-wrapper').style.display = 'block';
 	document.querySelector('.not_login_main_page').style.display = 'none';
 }
+window.currentInput = null;
 
 document.addEventListener('DOMContentLoaded', function () {
 	console.log(user);
@@ -49,23 +49,48 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	function typeMessage(element, message) {
-		element.textContent = '';
-		let i = 0;
-		const interval = setInterval(() => {
-			if (i < message.length) {
-				element.textContent += message.charAt(i);
-				i++;
-				scrollToBottom();
-			} else {
-				clearInterval(interval);
-			}
-		}, 15); // 타이핑 속도 조절 (밀리초 단위)
-	}
+		element.textContent = ''; // 기존 내용을 초기화
 
-	function scrollToBottom() {
-		setTimeout(() => {
-			chatContent.scrollTop = chatContent.scrollHeight;
-		}, 100); // 0ms 지연 시간
+		const paragraphs = message.split('\n'); // 줄바꿈을 기준으로 문단 구분
+
+		if (paragraphs.length === 1) {
+			// 한 줄짜리 메시지는 줄바꿈 없이 출력
+			let i = 0;
+			const interval = setInterval(() => {
+				if (i < message.length) {
+					element.textContent += message.charAt(i);
+					i++;
+					scrollToBottom();
+				} else {
+					clearInterval(interval);
+				}
+			}, 15); // 타이핑 속도 조절 (밀리초 단위)
+		} else {
+			// 여러 줄 메시지는 p 태그로 감싸서 출력
+			let currentParagraph = 0;
+
+			function typeNextParagraph() {
+				if (currentParagraph < paragraphs.length) {
+					const p = document.createElement('p'); // 각 문단을 p 태그로 감싸기
+					element.appendChild(p);
+
+					let i = 0;
+					const interval = setInterval(() => {
+						if (i < paragraphs[currentParagraph].length) {
+							p.textContent += paragraphs[currentParagraph].charAt(i);
+							i++;
+							scrollToBottom(); // 스크롤을 아래로 내리기
+						} else {
+							clearInterval(interval);
+							currentParagraph++;
+							typeNextParagraph(); // 다음 문단으로 이동
+						}
+					}, 15); // 타이핑 속도 조절 (밀리초 단위)
+				}
+			}
+
+			typeNextParagraph(); // 첫 번째 문단부터 타이핑 시작
+		}
 	}
 
 	async function handleSend() {
@@ -76,10 +101,11 @@ document.addEventListener('DOMContentLoaded', function () {
 			const botMessage = createMessage(); //add
 			try {
 				const botResponse = await getFlaskResponse(message);
-				if(botResponse.isProblem){
+				if (botResponse.isProblem) {
 					reason = botResponse.input
 					await saveChatbotResponseToNodeServer(botResponse);
 				}
+				console.log(botResponse.answer);
 				typeMessage(botMessage, botResponse.answer);
 			} catch (error) {
 				// addMessage("죄송합니다. 오류가 발생했습니다: " + error.message, false); //remove
@@ -87,6 +113,13 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		}
 	}
+
+	function scrollToBottom() {
+		setTimeout(() => {
+			chatContent.scrollTop = chatContent.scrollHeight;
+		}, 100); // 0ms 지연 시간
+	}
+
 
 	async function getFlaskResponse(userMessage) {
 		const url = 'http://localhost:7000/chatbot'; // Flask 서버 주소
@@ -106,6 +139,13 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 
 			const data = await response.json();
+
+			// isProblem이 True 일때만 currentInput업데이트.
+			// currentInput이 not null일때, 심리버튼 활성화.
+			// currentInput은 가장 최근 고민을 저장한것.
+			if (data.isProblem){
+				currentInput = data.input;
+			}
 
 			if (data.error) {
 				throw new Error(data.error);

@@ -99,16 +99,6 @@ class ChatBotTs:
                     "answer" : answer
                 }
 
-                # # 고민 이유에 맞는 답변 찾기
-                # if reason in self.responses:
-                #     answer = self.responses[reason]
-                # else:
-                #     answer = self.responses.get("기타", "죄송합니다. 해당 고민에 대한 특정 답변을 찾을 수 없습니다. 하지만 귀하의 고민을 듣고 있으며, 힘든 상황을 이해합니다. 필요하다면 전문가와 상담을 받아보는 것도 좋은 방법일 수 있습니다.")
-
-                # # 답변 길이 제한
-                # if len(answer) > 500:
-                #     answer = answer[:500] + "..."  # 500자 이내로 자르기
-
             else:
                 # 이전 대화를 기억하면서 대화를 이어나감.
                 response = self.memory.load_memory_variables({})
@@ -138,7 +128,7 @@ class ChatBotTs:
         
 
 # API 키를 파일에서 읽어오기
-def load_api_key(file_path='C:\\Users\\SMHRD\\Desktop\\ky_api.txt'):
+def load_api_key(file_path='C:\\Users\\smhrd\\Desktop\\ky_api.txt'):
 # def load_api_key(file_path='C:\\Users\\SMHRD\\Desktop\\ky_api.txt'):
     try:
         with open(file_path, 'r') as file:
