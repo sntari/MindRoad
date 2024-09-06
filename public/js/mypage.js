@@ -7,54 +7,6 @@ function openTab(tabName) {
     document.getElementById(tabName).style.display = "block";
 }
 
-// 게이지 그래프
-document.addEventListener('DOMContentLoaded', gaugeGraphUpdate);
-gaugeGraphUpdate();
-function gaugeGraphUpdate() {
-    var opts = {
-        angle: 0.0, // 게이지의 스팬 (각도)
-        lineWidth: 0.2, // 게이지의 선 두께
-        radiusScale: 0.5, // 상대적인 반지름 크기
-        pointer: {
-            length: 0.6, // 화살표의 길이 (게이지 반지름에 대한 비율)
-            strokeWidth: 0.035, // 화살표의 두께
-            color: '#000000' // 화살표 색상
-        },
-        limitMax: false, // 최대값 제한 사용 여부
-        limitMin: false, // 최소값 제한 사용 여부
-        colorStart: 'orange', // 게이지의 시작 색상
-        colorStop: 'red', // 게이지의 끝 색상
-        strokeColor: 'green', // 게이지의 테두리 색상
-        generateGradient: true, // 색상 그라데이션 생성 여부
-        highDpiSupport: true, // 고해상도 지원 여부
-
-        // 구간별 색상 적용
-        staticZones: [
-            { strokeStyle: "green", min: 0, max: 20 }, // 구간 0-20: 녹색
-            { strokeStyle: "lime", min: 21, max: 40 }, // 구간 21-40: 라임색
-            { strokeStyle: "yellow", min: 41, max: 60 }, // 구간 41-60: 노란색
-            { strokeStyle: "orange", min: 61, max: 80 }, // 구간 61-80: 주황색
-            { strokeStyle: "red", min: 81, max: 100 } // 구간 81-100: 빨간색
-        ],
-    };
-
-    var target = document.getElementById('gauge'); // canvas 요소 선택
-    var gauge = new Gauge(target).setOptions(opts); // Gauge 객체 생성 및 옵션 설정
-    gauge.maxValue = 100; // 최대값 설정
-    gauge.setMinValue(0); // 최소값 설정
-    gauge.animationSpeed = 32; // 애니메이션 속도 설정
-
-    var currentValue = 71; // 현재 값 설정
-    gauge.set(currentValue); // 현재 값 적용
-
-    // 현재 값을 텍스트로 표시
-    function updateGaugeText(value) {
-        var gaugeText = document.getElementById('gauge-text');
-        gaugeText.textContent = value;
-    }
-
-    updateGaugeText(currentValue); // 현재 값 텍스트 업데이트
-}
 
 // 파이 그래프
 let good = 1;
@@ -71,6 +23,57 @@ document.addEventListener('DOMContentLoaded', function () {
             good = parseFloat(response.pie.average_good);
             bad = parseFloat(response.pie.average_bad);
             center = parseFloat(response.pie.average_center);
+            my_Q = response.pie.my_Q;
+            
+            document.getElementById('worry-text').innerText = my_Q ;
+            // 게이지 그래프
+            document.addEventListener('DOMContentLoaded', gaugeGraphUpdate);
+            gaugeGraphUpdate();
+            function gaugeGraphUpdate() {
+                var opts = {
+                    angle: 0.0, // 게이지의 스팬 (각도)
+                    lineWidth: 0.2, // 게이지의 선 두께
+                    radiusScale: 0.5, // 상대적인 반지름 크기
+                    pointer: {
+                        length: 0.6, // 화살표의 길이 (게이지 반지름에 대한 비율)
+                        strokeWidth: 0.035, // 화살표의 두께
+                        color: '#000000' // 화살표 색상
+                    },
+                    limitMax: false, // 최대값 제한 사용 여부
+                    limitMin: false, // 최소값 제한 사용 여부
+                    colorStart: 'orange', // 게이지의 시작 색상
+                    colorStop: 'red', // 게이지의 끝 색상
+                    strokeColor: 'green', // 게이지의 테두리 색상
+                    generateGradient: true, // 색상 그라데이션 생성 여부
+                    highDpiSupport: true, // 고해상도 지원 여부
+
+                    // 구간별 색상 적용
+                    staticZones: [
+                        { strokeStyle: "green", min: 0, max: 20 }, // 구간 0-20: 녹색
+                        { strokeStyle: "lime", min: 21, max: 40 }, // 구간 21-40: 라임색
+                        { strokeStyle: "yellow", min: 41, max: 60 }, // 구간 41-60: 노란색
+                        { strokeStyle: "orange", min: 61, max: 80 }, // 구간 61-80: 주황색
+                        { strokeStyle: "red", min: 81, max: 100 } // 구간 81-100: 빨간색
+                    ],
+                };
+
+                var target = document.getElementById('gauge'); // canvas 요소 선택
+                var gauge = new Gauge(target).setOptions(opts); // Gauge 객체 생성 및 옵션 설정
+                gauge.maxValue = 100; // 최대값 설정
+                gauge.setMinValue(0); // 최소값 설정
+                gauge.animationSpeed = 32; // 애니메이션 속도 설정
+
+                gauge.set(Math.round(bad)); // 현재 값 적용
+
+                // 현재 값을 텍스트로 표시
+                function updateGaugeText(value) {
+                    var gaugeText = document.getElementById('gauge-text');
+                    gaugeText.textContent = value;
+                }
+
+                updateGaugeText(Math.round(bad)); // 현재 값 텍스트 업데이트
+            }
+
             const pieData = {
                 labels: [
                     '긍정', '부정', '중립'
@@ -107,61 +110,97 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("긍부중실패", xhr.responseText);
         }
     });
-});
 
 
-// 꺾은 선 그래프
-const labels = ["최초 상담일", "2회차", "3회차", "4회차", "5회차", "최근"]; // 레이블 및 데이터 값 input 값으로 수정
-const data = {
-    labels: labels,
-    datasets: [{
-        label: '상담 기록에 따른 우울도 추이',
-        font: {
-            size: 24
-        },
-        data: [65, 59, 70, 31, 45, 15], // 꺾은 선 그래프의 데이터 값
-        fill: false,
-        borderColor: 'rgb(75, 140, 192)',
-        tension: 0.4
-    }]
-};
-const ctx = document.getElementById('myLineChart').getContext('2d');
-const myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top',
-            },
-            title: {
-                display: true,
-            }
-        },
-        scales: {
-            x: {
-                beginAtZero: true,
-                ticks: {
-                    font: {
-                        size: 24
+// 우울도 전체 평균, 자신의 질문 우울도
+    $.ajax({
+        type: 'POST',
+        url: '/mypage/Graph_BAD',
+        data: { nickname: nickname },
+        success: function (response) {
+            const avg_bad = response.graph.avg_bad;
+            const all_bad = parseFloat(response.graph.all_bad);
+
+            // 꺾은 선 그래프
+            const label_int = avg_bad; // 이 배열의 길이에 따라 회차 수를 결정합니다
+            const label_int_Length = label_int.length; // lll 배열의 길이
+            const labels = Array.from({ length: label_int_Length }, (_, index) => `${index + 1}회차`);
+            const onesList = Array(label_int_Length).fill(all_bad);
+            const data = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: '상담 기록에 따른 우울도 추이',
+                        font: {
+                            size: 24
+                        },
+                        data: label_int, // 꺾은 선 그래프의 데이터 값
+                        fill: false,
+                        borderColor: 'rgb(75, 140, 192)',
+                        tension: 0.4
+                    },
+                    {
+                        label: '우울도 전체 평균', // 두 번째 선의 레이블
+                        font: {
+                            size: 24
+                        },
+                        data: onesList, // 두 번째 선의 데이터 값
+                        fill: false,
+                        borderColor: 'rgb(255, 99, 132)', // 두 번째 선의 색상
+                        tension: 0.4
+                    }
+                ]
+            };
+
+            const ctx = document.getElementById('myLineChart').getContext('2d');
+            const myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: '꺾은 선 그래프'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: 24
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: 24
+                                }
+                            }
+                        }
                     }
                 }
-            },
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    font: {
-                        size: 24
-                    }
-                }
-            }
+            });
+
+
+        },
+        error: function (xhr, status, error) {
+            console.log("긍부중실패", xhr.responseText);
         }
-    }
+    });
 });
 
-// 고민 카테고리
+
+
+
+// 고민 카테고리 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', function () {
     var worryCategory = "일반고민"; // 추후 해당 값을 모델에서 입력받음
 

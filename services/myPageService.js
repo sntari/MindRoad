@@ -71,7 +71,8 @@ async function mypage_AVG(user) {
             SELECT
             GOOD AS recent_good,
             BAD AS recent_bad,
-            CENTER AS recent_center
+            CENTER AS recent_center,
+            QUESTIONS AS my_Q
             FROM SCORE_DATA
             WHERE nickname = ? AND id = (
             SELECT MAX(id)
@@ -88,10 +89,59 @@ async function mypage_AVG(user) {
             return {
                 average_good: rows[0].recent_good,
                 average_bad: rows[0].recent_bad,
-                average_center: rows[0].recent_center
+                average_center: rows[0].recent_center,
+                my_Q : rows[0].my_Q,
             };
         } else {
             return { average_good: 33, average_bad: 33, average_center: 34 };
+        }
+    } catch (error) {
+        console.error('Error retrieving chatbot sentiment averages:', error);
+        throw error;
+    } finally {
+        // 연결 종료
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+// 부정 평균 수치
+async function mypage_BAD(user) {
+    let connection;
+    try {
+        // 데이터베이스 연결
+        connection = await mysql.getConnection();
+
+        // SELECT 쿼리 정의
+        const query = `
+            SELECT
+            BAD AS avg_bad
+            FROM SCORE_DATA
+            WHERE nickname = ?
+        `;
+
+        // SELECT 쿼리 정의
+        const query2 = `
+            SELECT
+            AVG(BAD) AS all_bad
+            FROM SCORE_DATA
+            WHERE nickname = 'admin'
+        `;
+
+        // 쿼리 실행
+        const [rows] = await connection.execute(query, [user]);
+        const [rows2] = await connection.execute(query2);
+        const rows3 = rows.map(item => item.avg_bad);   // 리스트로 변환
+        
+        // 결과 반환
+        if (rows.length > 0) {
+            return {
+                avg_bad: rows3,
+                all_bad: rows2[0].all_bad
+            };
+        } else {
+            return 0;
         }
     } catch (error) {
         console.error('Error retrieving chatbot sentiment averages:', error);
@@ -109,4 +159,5 @@ module.exports = {
     del_member,
     loginUser,
     mypage_AVG,
+    mypage_BAD
 };

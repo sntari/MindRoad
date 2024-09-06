@@ -38,18 +38,35 @@ function logout(req, res) {
 // 긍부중 평균
 async function pie_info(req, res){
     try {
-    
         const { nickname } = req.body;
         
         // nickname을 기반으로 pie 값을 계산
         const pie = await myPageService.mypage_AVG(nickname);
 
-        
         // 응답을 JSON 형식으로 보내기
         res.json({
             success: true,
             pie: pie,
             message: pie > 0 ? 'User session updated' : 'Pie value is not greater than 0'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+}
+
+// 긍부중 평균
+async function Graph_BAD(req, res){
+    try {
+        const { nickname } = req.body;
+        
+        // nickname을 기반으로 pie 값을 계산
+        const graph = await myPageService.mypage_BAD(nickname);
+        // 응답을 JSON 형식으로 보내기
+        res.json({
+            success: true,
+            graph: graph,
+            message: graph > 0 ? 'User session updated' : 'Pie value is not greater than 0'
         });
     } catch (error) {
         console.error(error);
@@ -63,4 +80,5 @@ module.exports = {
     del_id,
     logout,
     pie_info,
+    Graph_BAD,
 };
