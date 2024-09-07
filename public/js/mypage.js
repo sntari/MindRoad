@@ -24,10 +24,9 @@ document.addEventListener('DOMContentLoaded', function () {
             bad = parseFloat(response.pie.average_bad);
             center = parseFloat(response.pie.average_center);
             my_Q = response.pie.my_Q;
-            
-            document.getElementById('worry-text').innerText = my_Q ;
+
+            document.getElementById('worry-text').innerText = my_Q;
             // 게이지 그래프
-            document.addEventListener('DOMContentLoaded', gaugeGraphUpdate);
             gaugeGraphUpdate();
             function gaugeGraphUpdate() {
                 var opts = {
@@ -112,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-// 우울도 전체 평균, 자신의 질문 우울도
+    // 우울도 전체 평균, 자신의 질문 우울도
     $.ajax({
         type: 'POST',
         url: '/mypage/Graph_BAD',
@@ -255,14 +254,9 @@ $(document).ready(function () {
 
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
-        console.log(Pw);
-        console.log(currentPw);
-        console.log(newPw);
-
 
         if (Pw === currentPw) {
-            console.log("비번은 맞아요");
-            if (Pw != newPw && strength >= 7) {                 // 비밀번호 길이
+            if (Pw != newPw && newPw.length >= 7) {                 // 비밀번호 길이
                 document.getElementById('mypage_error1').innerHTML = "";
                 $.ajax({
                     type: 'POST',

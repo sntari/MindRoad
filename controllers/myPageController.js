@@ -28,7 +28,7 @@ async function del_id(req, res) {
 function logout(req, res) {
     req.session.destroy((err) => {
         if (err) {
-            return res.status(500).send('세션 제거');            
+            return res.status(500).send('세션 제거');
         }
         res.redirect('/');
         console.log("로그아웃 성공");
