@@ -68,14 +68,7 @@ class ChatBot:
 
                 # 고민 이유에 맞는 답변 찾기
                 if reason in self.responses:
-                    response = self.client.chat.completions.create(
-                    model="gpt-4",
-                    messages=[
-                        {"role": "system", "content": f"사용자의 고민에 대해 공감하고 해결방안을 제시하는 상담사입니다. 참고할 답변은 {self.responses[reason]}이고 다음 형식으로 응답해주세요:\n\n고민이유 : [고민의 근본적인 이유 설명]\n\n해결방안:\n\n1. [첫 번째 해결방안]\n\n2. [두 번째 해결방안]\n\n3. [세 번째 해결방안]"},
-                        {"role": "user", "content": f"다음은 사용자의 고민입니다: {user_input}\n\n이 고민의 유형은 '{reason}'입니다. 이에 대한 고민이유와 해결방안을 제시해주세요."}
-                        ]
-                    )
-                    answer = response.choices[0].message.content.strip()
+                    answer = self.responses[reason]
                 else:
                     answer = self.responses.get("기타", "죄송합니다. 해당 고민에 대한 특정 답변을 찾을 수 없습니다. 하지만 귀하의 고민을 듣고 있으며, 힘든 상황을 이해합니다. 필요하다면 전문가와 상담을 받아보는 것도 좋은 방법일 수 있습니다.")
 
@@ -113,7 +106,7 @@ class ChatBot:
             print("Error processing input:", e)
             return {"error": f"Error processing input: {str(e)}"}
 # API 키를 파일에서 읽어오기
-def load_api_key(file_path='c:/Users/SMHRD/api.txt'):
+def load_api_key(file_path='C:\\Users\\SMHRD\\Desktop\\ky_api.txt'):
     try:
         with open(file_path, 'r') as file:
             return file.read().strip()
