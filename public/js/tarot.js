@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // // togglePsychologicalButton();
     }
-  
+
     function handleCategoryClick(button) {
         categoryButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
