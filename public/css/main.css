@@ -1998,7 +1998,6 @@ ul.actions li:first-child {
 /* Wrapper */
 
 #wrapper {
-	width: 55em;
 	margin: 0 auto;
 	min-height: 100vh;
 	max-width: 100%;
