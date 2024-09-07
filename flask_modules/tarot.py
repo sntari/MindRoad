@@ -29,7 +29,8 @@ class TarotBot:
             reason_chain = LLMChain(llm=self.model, prompt=tarot_template_reason)
 
             reason_response = reason_chain.invoke({"cards": ", ".join(cards), "user_input": user_input})
-            answer = reason_response.strip()
+            print(reason_response)
+            answer = reason_response["text"].strip()
             
             return jsonify({"answer": answer})
 
