@@ -20,7 +20,6 @@
 	<!-- home css -->
 	 <link rel="stylesheet" href="../css/home.css">
 
-
 	<!-- noscript -->
 	<noscript>
 		<link rel="stylesheet" href="../css/noscript.css" />
@@ -31,37 +30,37 @@
 <body class="is-preload" data-user="<%= user ? user.NICKNAME : '' %>">
 	<%- include('login') %>
 		<!-- Wrapper-->
-		<div id="wrapper">
+		<div id="wrapper" style="width:100%">
 
 			<!-- Nav -->
 			<% if(user){ %>
-
-			<nav id="nav">
-				<a href="#" class="icon solid fa-comment"><span>Chat Bot</span></a>
-				<a href="#tarot" class="icon solid fa-hat-wizard"><span>Tarot</span></a>
-				<a id="mypage_button" href="#mypage" class="icon solid fa-user"><span>MyPage</span></a>
-				<% }%>
-			</nav>
-				
-				<!-- Main -->
-				<div id="main">
-					<!-- 홈(챗봇) -->
-					<article id="home" class="panel">
-						<%- include('home') %>
-					</article>
+			<div id="wrapper" style="width: 55em;">
+				<nav id="nav">
+					<a href="#" class="icon solid fa-comment"><span>Chat Bot</span></a>
+					<a href="#tarot" class="icon solid fa-hat-wizard"><span>Tarot</span></a>
+					<a id="mypage_button" href="#mypage" class="icon solid fa-user"><span>MyPage</span></a>
+					<% }%>
+				</nav>
 					
-					<!-- 타로카드 -->
-					<article id="tarot" class="panel">
-						<%- include('tarot') %>
-					</article>
-					
-					<!-- 마이페이지 -->
-					<article id="mypage" class="panel">
-						<%- include('mypage') %>
-					</article>
-					
-				</div>
-
+					<!-- Main -->
+					<div id="main">
+						<!-- 홈(챗봇) -->
+						<article id="home" class="panel">
+							<%- include('home') %>
+						</article>
+						
+						<!-- 타로카드 -->
+						<article id="tarot" class="panel">
+							<%- include('tarot') %>
+						</article>
+						
+						<!-- 마이페이지 -->
+						<article id="mypage" class="panel">
+							<%- include('mypage') %>
+						</article>
+						
+					</div>
+			</div>
 				
 				<!-- Footer -->
 			<div id="footer">

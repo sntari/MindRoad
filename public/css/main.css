@@ -1998,7 +1998,6 @@ ul.actions li:first-child {
 /* Wrapper */
 
 #wrapper {
-	width: 55em;
 	margin: 0 auto;
 	min-height: 100vh;
 	max-width: 100%;
@@ -2086,7 +2085,7 @@ body.is-preload #wrapper {
 	transition: opacity 0.25s ease-in-out;
 	margin-bottom: 0;
 	position: relative;
-	padding: 3.5em 2.5em 2.5em 2.5em;
+	padding: 2em 2em 2em 2em;
 	width: 100%;
 }
 

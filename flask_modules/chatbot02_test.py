@@ -6,23 +6,13 @@ from langchain_openai import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 
 
+
 class ChatBotTs:
-    def __init__(self, api_key, csv_file):
+    def __init__(self, api_key, response_search):
         self.client = OpenAI(api_key=api_key)
         self.model = ChatOpenAI(temperature=0.7, model_name="gpt-4", openai_api_key=api_key)
-        self.responses = self.load_response_csv(csv_file)
+        self.responses_search = response_search
         self.memory = ConversationBufferMemory()
-
-    def load_response_csv(self, csv_file):
-        """CSV 파일에서 고민 유형별 응답을 로드"""
-        responses = {}
-        with open(csv_file, mode="r", encoding="utf-8") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                reason = row["유형설명"].strip()  # 공백 제거
-                response = row["대처"].strip()    # 공백 제거
-                responses[reason] = response
-        return responses
 
     def is_problem(self, user_input):
         """고민 여부 판단"""
@@ -71,10 +61,9 @@ class ChatBotTs:
                 print(f"Problem reason: {reason}")
 
                 #고민 이유에 맞는 답변 찾기
-                reference_data = self.responses.get(reason,"기타")
-                data = {"reference_data":reference_data}
-                print(reference_data)
-                #RAG방식으로 답변 생성
+                reference_data = self.responses_search.find_best_ans(user_input,reason)
+                print(f"reference : {reference_data}")
+
                 rag_template = PromptTemplate(
                     template=
                         "사용자 입력: '{user_input}'\n"
@@ -87,27 +76,16 @@ class ChatBotTs:
 
                 answer = rag_response.strip()
 
-                print("참조자료",reference_data)
-                print("gpt응답",answer)
-
-
+                
                 return {
                     "user" : user_nick,
                     "input" : user_input,
                     "isProblem" : True,
                     "reason" : reason,
                     "answer" : answer
+
                 }
 
-                # # 고민 이유에 맞는 답변 찾기
-                # if reason in self.responses:
-                #     answer = self.responses[reason]
-                # else:
-                #     answer = self.responses.get("기타", "죄송합니다. 해당 고민에 대한 특정 답변을 찾을 수 없습니다. 하지만 귀하의 고민을 듣고 있으며, 힘든 상황을 이해합니다. 필요하다면 전문가와 상담을 받아보는 것도 좋은 방법일 수 있습니다.")
-
-                # # 답변 길이 제한
-                # if len(answer) > 500:
-                #     answer = answer[:500] + "..."  # 500자 이내로 자르기
 
             else:
                 # 이전 대화를 기억하면서 대화를 이어나감.
@@ -138,8 +116,7 @@ class ChatBotTs:
         
 
 # API 키를 파일에서 읽어오기
-def load_api_key(file_path='c:/Users/SMHRD/api.txt'):
-# def load_api_key(file_path='C:\\Users\\SMHRD\\Desktop\\ky_api.txt'):
+def load_api_key(file_path='C:\\Users\\SMHRD\\Desktop\\ky_api.txt'):
     try:
         with open(file_path, 'r') as file:
             return file.read().strip()
