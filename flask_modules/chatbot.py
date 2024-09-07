@@ -1,24 +1,18 @@
 from openai import OpenAI
 import csv
-from langchain import PromptTemplate, LLMChain
-from langchain.chat_models import ChatOpenAI
+from langchain_core.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain_openai import ChatOpenAI
+from langchain.memory import ConversationBufferMemory
+
+
 
 class ChatBot:
-    def __init__(self, api_key, csv_file):
+    def __init__(self, api_key, response_search):
         self.client = OpenAI(api_key=api_key)
         self.model = ChatOpenAI(temperature=0.7, model_name="gpt-4", openai_api_key=api_key)
-        self.responses = self.load_response_csv(csv_file)
-
-    def load_response_csv(self, csv_file):
-        """CSV 파일에서 고민 유형별 응답을 로드"""
-        responses = {}
-        with open(csv_file, mode="r", encoding="utf-8") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                reason = row["유형설명"].strip()  # 공백 제거
-                response = row["대처"].strip()    # 공백 제거
-                responses[reason] = response
-        return responses
+        self.responses_search = response_search
+        self.memory = ConversationBufferMemory()
 
     def is_problem(self, user_input):
         """고민 여부 판단"""
@@ -26,8 +20,8 @@ class ChatBot:
             template="사용자의 입력은 : '{user_input}'\n고민, 걱정, 또는 문제를 표현하고 있는지? '예', '아니오','맞다'등 명확하고 간결하게 표현",
             input_variables=["user_input"]
         )
-        chain = LLMChain(llm=self.model, prompt=template)
-        response = chain.run(user_input=user_input).strip()
+        ck_chain = LLMChain(llm=self.model, prompt=template)
+        response = ck_chain.run(user_input=user_input).strip()
         pos_res = ["예", "네", "맞다", "맞습니다", "그렇다",
                    "그렇습니다", "고민이라고 판단된다", "고민입니다", "예, 고민이다"]
         return response in pos_res
@@ -66,47 +60,63 @@ class ChatBot:
                 reason = self.get_problem_reason(user_input).strip()
                 print(f"Problem reason: {reason}")
 
-                # 고민 이유에 맞는 답변 찾기
-                if reason in self.responses:
-                    answer = self.responses[reason]
-                else:
-                    answer = self.responses.get("기타", "죄송합니다. 해당 고민에 대한 특정 답변을 찾을 수 없습니다. 하지만 귀하의 고민을 듣고 있으며, 힘든 상황을 이해합니다. 필요하다면 전문가와 상담을 받아보는 것도 좋은 방법일 수 있습니다.")
+                #고민 이유에 맞는 답변 찾기
+                reference_data = self.responses_search.find_best_ans(user_input,reason)
+                print(f"reference : {reference_data}")
 
-                # 답변 길이 제한
-                if len(answer) > 500:
-                    answer = answer[:500] + "..."  # 500자 이내로 자르기
-
-                return {
-                    "user": user_nick,
-                    "input": user_input,
-                    "isProblem": True,
-                    "reason": reason,
-                    "answer": answer,
-                }
-            else:
-                print("고민이 아님")
-                response = self.client.chat.completions.create(
-                    model="gpt-4",
-                    messages=[
-                        {"role": "system", "content": "You are a helpful assistant."},
-                        {"role": "user", "content": user_input}
-                    ]
+                rag_template = PromptTemplate(
+                    template=
+                        "사용자 입력: '{user_input}'\n"
+                        "데이터 : '{reference_data}'\n"
+                        "{reference_data}와 유사하게 {user_input}에 맞는 답변을 단락을 나누어 최대 500자 이내로 출력을 해주세요.",
+                        input_variables=["reference_data","user_input"]
                 )
-                answer = response.choices[0].message.content.strip()
+                rag_chain = LLMChain(llm=self.model,prompt=rag_template)
+                rag_response = rag_chain.run(user_input=user_input,reference_data=reference_data)
 
-                # 답변 길이 제한
-                if len(answer) > 500:
-                    answer = answer[:500] + "..."  # 500자 이내로 자르기
+                answer = rag_response.strip()
+
+                
+                return {
+                    "user" : user_nick,
+                    "input" : user_input,
+                    "isProblem" : True,
+                    "reason" : reason,
+                    "answer" : answer
+
+                }
+
+
+            else:
+                # 이전 대화를 기억하면서 대화를 이어나감.
+                response = self.memory.load_memory_variables({})
+                response.update({
+                    "role":"user","content":user_input
+                })
+                gen_chain = LLMChain(llm=self.model,prompt=PromptTemplate(
+                    template= "사용자과 AI어시스턴트간의 대화 입니다. AI는 이전 대화를 기억하며,따뜻한말투로 대화합니다.\n\n"
+                    "{history}\n\n사용자:{user_input}\nAI(따뜻한말투):",
+                    input_variables=["history","user_input"]
+                    ),
+                    memory = self.memory
+                    )
+                answer = gen_chain.run(user_input=user_input)
 
                 return {
-                    "user_nick": user_nick,
-                    "answer": answer
+                    "user" : user_nick,
+                    "input" : user_input,
+                    "isProblem" : False,
+                    "answer" : answer
                 }
+
+                
         except Exception as e:
             print("Error processing input:", e)
             return {"error": f"Error processing input: {str(e)}"}
+        
+
 # API 키를 파일에서 읽어오기
-def load_api_key(file_path='c:/Users/SMHRD/api.txt'):
+def load_api_key(file_path='C:\\Users\\SMHRD\\Desktop\\ky_api.txt'):
     try:
         with open(file_path, 'r') as file:
             return file.read().strip()
