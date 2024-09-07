@@ -70,9 +70,9 @@ app.use('/chatbot', Chatbotsave)
 // 메인페이지
 app.get('/', (req, res) => {
   if (req.session.user) {
-    res.render('template', { user: req.session.user, title: '유저있음' });
+    res.render('template', { user: req.session.user, title: 'MindRoad' });
   } else {
-    res.render('template', { user: null, title: '유저없음' });
+    res.render('template', { user: null, title: 'MindRoad' });
   }
 });
 
