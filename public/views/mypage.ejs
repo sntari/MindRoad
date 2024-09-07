@@ -33,7 +33,7 @@
             <canvas id="gauge"></canvas>
             <p>계측기 형식의 그래프</p>
         </div>
-        <div id="piegraph" class="graph-container">
+        <div id="piegraph" class="graph-container" style="width:40%">
             <canvas id="myPieChart"></canvas>
             <p>파이 그래프</p>
         </div>
@@ -182,6 +182,7 @@
         </div>
     </form>
 </div>
+</div>
 <div id="delete_ID" class="tab-content" style="display:none">
     <form id="id_del">
         <div class="form-container">
@@ -199,7 +200,6 @@
                 <label for="confirm-password">비밀번호 확인</label>
                 <input type="password" id="del-password" name="new_pw" placeholder="New password" required>
             </div>
-            <p id="mypage_error2" style="color: red; font-size: 20px;"></p>
             <div class="form-group">
                 <input type="button" id="del_id" value="삭제">
             </div>
