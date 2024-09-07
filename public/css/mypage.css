@@ -229,3 +229,13 @@ body {
     content: "●"; /* 선택된 심볼 */
     color: #007bff; /* 선택된 심볼의 색상 */
 }
+
+#intro_survey p {
+    font-size: 16px;
+}
+
+.survey_Question td{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
