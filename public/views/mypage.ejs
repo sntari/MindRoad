@@ -42,9 +42,9 @@
         </div>
         <div id="worryCategory" class="graph-container">
             <% if(user){ %>
-            <h3> <%= user.NICKNAME %> 님의 주요 고민요소</h3>
+            <h3  class="interpretation-header"> <%= user.NICKNAME %> 님의 주요 고민요소</h3>
             <% } %>
-            <div id="worry-text">일반고민</div>
+            <h4 id="worry-text">일반고민</h4>
         </div>
     </div> 
 </div>
@@ -166,7 +166,7 @@
                 <input type="password" id="password" name="mem_pw" placeholder="Password" required>
             </div>
             <div class="form-group" id="pw_box">
-                <label for="register_pw">바꿀 비밀번호</label>
+                <label for="register_pw">새 비밀번호</label>
                 <% if(user){ %>
                 <p id="pw_check" style="display: none;"><%= user.PW%></p>
                 <% } %>
@@ -182,7 +182,6 @@
             </div>
         </div>
     </form>
-</div>
 </div>
 <div id="delete_ID" class="tab-content" style="display:none">
     <form id="id_del">

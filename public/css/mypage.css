@@ -20,7 +20,8 @@ body {
     margin: 5px auto;
     display: inline-block;
     flex: 1;
-    border-radius: 0.1rem;
+    margin-left: 10px;
+    border-radius: 0.3rem;
 }
 .mypage_tab:hover {
 	background-color: #fabeac;
@@ -111,10 +112,14 @@ body {
 }
 
 #worry-text{
+    padding: 10px;
+    font-size: 26px;
+    line-height: 1.6;
     color: #333;
-    font-size: 3em;
-    margin-top: 40px;
-    margin-bottom: 20px;
+    max-height: 350px;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 /* 수정 */

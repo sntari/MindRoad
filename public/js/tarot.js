@@ -278,19 +278,23 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedCardNames = [];
         selectedCategory = null;
         categoryButtons.forEach(btn => btn.classList.remove('active'));
-
+    
         cards.forEach(card => resetCard(card));
-
+    
         if (isSpread) {
             toggleCardSpread();
         }
-
+    
         isSpread = false;
         resetSelectedCards();
         updateSpreadButton();
-
+    
         // 초기화 시 spreadButton 활성화
-        spreadButton.disabled = false; // 추가된 부분
+        spreadButton.disabled = false;
+    
+        // interpretationContent 초기화
+        const interpretationContent = document.getElementById('interpretationContent');
+        interpretationContent.innerHTML = '';
     }
 
     function resetCard(card) {
