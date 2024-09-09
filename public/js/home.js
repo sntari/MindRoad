@@ -109,6 +109,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			const data = await response.json();
 
+			// isProblem이 True 일때만 currentInput업데이트.
+			// currentInput이 not null일때, 심리버튼 활성화.
+			// currentInput은 가장 최근 고민을 저장한것.
+			if (data.isProblem){
+				currentInput = data.input;
+			}
+
 			if (data.error) {
 				throw new Error(data.error);
 			}
