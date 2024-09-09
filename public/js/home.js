@@ -37,29 +37,70 @@ document.addEventListener('DOMContentLoaded', function () {
 	function addMessage(message, isUser) {
 		const messageDiv = document.createElement('div');
 		messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-		// console.log('test', isUser);
 		chatContent.appendChild(messageDiv);
 
 		if (isUser) {
 			messageDiv.textContent = message;
 			scrollToBottom();
 		} else {
-			typeMessage(messageDiv, message);
+			// 한 줄짜리 메시지의 경우 문단 처리를 하지 않도록 조건 추가
+			if (message.includes('\n')) {
+				typeMessage(messageDiv, message);  // 문단이 포함된 경우만 타이핑 애니메이션 사용
+			} else {
+				messageDiv.textContent = message;  // 한 줄 메시지는 바로 출력
+				scrollToBottom();
+			}
 		}
 	}
 
 	function typeMessage(element, message) {
-		element.textContent = '';
-		let i = 0;
-		const interval = setInterval(() => {
-			if (i < message.length) {
-				element.textContent += message.charAt(i);
-				i++;
+		element.textContent = '';  // 기존 내용을 비웁니다.
+		const paragraphs = message.split('\n');  // 문단을 줄바꿈으로 나눕니다.
+		let paragraphIndex = 0;
+		let charIndex = 0;
+
+		function typeCharacter() {
+			// 모든 문단을 출력했으면 타이핑을 종료합니다.
+			if (paragraphIndex >= paragraphs.length) {
 				scrollToBottom();
-			} else {
-				clearInterval(interval);
+				return;
 			}
-		}, 15); // 타이핑 속도 조절 (밀리초 단위)
+
+			// 현재 문단을 가져옵니다.
+			const currentParagraph = paragraphs[paragraphIndex];
+
+			// 첫 글자를 타이핑 중이라면 새로운 <p> 태그 또는 마지막 문단을 위한 <span> 태그 생성
+			if (charIndex === 0) {
+				const tag = paragraphIndex === paragraphs.length - 1 ? 'span' : 'p';  // 마지막 문단이면 <span> 사용
+				const newElement = document.createElement(tag);
+				element.appendChild(newElement);
+			}
+
+			const pOrSpan = element.querySelectorAll('p, span')[paragraphIndex];
+
+			// 현재 문단의 현재 문자까지 p 또는 span 태그에 추가합니다.
+			if (charIndex < currentParagraph.length) {
+				pOrSpan.textContent += currentParagraph.charAt(charIndex);
+				charIndex++;
+				scrollToBottom();
+				setTimeout(typeCharacter, 15);  // 타이핑 속도 조절
+			} else {
+				// 문단이 끝나면 다음 문단으로 넘어갑니다.
+				paragraphIndex++;
+				charIndex = 0;
+
+				if (paragraphIndex < paragraphs.length) {
+					// 마지막 문단이 아니면 다음 문단 출력
+					setTimeout(typeCharacter, 15);  // 문단 간 지연 시간
+				} else {
+					// 마지막 문단은 줄바꿈 없이 바로 종료
+					scrollToBottom();
+				}
+			}
+		}
+
+		// 첫 번째 타이핑 시작
+		typeCharacter();
 	}
 
 	function scrollToBottom() {
@@ -76,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			const botMessage = createMessage(); //add
 			try {
 				const botResponse = await getFlaskResponse(message);
-				if(botResponse.isProblem){
+				if (botResponse.isProblem) {
 					reason = botResponse.input
 					await saveChatbotResponseToNodeServer(botResponse);
 				}
