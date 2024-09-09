@@ -2,8 +2,11 @@
     font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
     border: 1px solid #ddd;
     border-radius: 8px;
+    flex-direction: column; /* 세로 방향으로 배치 */
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%; /* 전체 너비 사용 */
+    height: 100%; /* 전체 높이 사용 */
 }
 
 .chat-header {
@@ -16,6 +19,9 @@
 }
 
 .chat-container {
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 배치 */
+    flex-grow: 1; /* 남은 공간을 사용하도록 설정 */
     height: 450px;
     overflow-y: auto;
     -ms-overflow-style: none;
@@ -23,7 +29,10 @@
     scrollbar-width: none;
     /* Firefox */
     padding: 10px;
-    background-color: #fff;
+    background-color: #f9f9f9; /* 대화창 배경색 */
+    border: 1px solid #ccc; /* 대화창 테두리 */
+    position: relative; /* 자식 요소의 절대 위치 설정을 위해 relative로 설정 */
+	min-height: 20em;
 }
 
 .chat-container::-webkit-scrollbar,
@@ -33,9 +42,14 @@
 }
 
 .chat-content {
+    flex-grow: 1; /* 남은 공간을 채우도록 설정 */
+    padding: 10px; /* 패딩 추가 */
     display: flex;
     flex-direction: column;
     height: auto;
+    border: 1px solid #ddd; /* 내용 박스 테두리 */
+    border-radius: 5px; /* 둥근 모서리 */
+    background-color: #fff; /* 배경색 */
     overflow-y: auto;
 }
 
@@ -49,21 +63,35 @@
 
 .user-message {
     align-self: flex-end;
+    color: #0f5132; /* 사용자 메시지 글자색 */
     background-color: #E7AF9E;
-    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    margin: 5px 0;
+    max-width: 70%; /* 최대 너비 설정 */
+    word-wrap: break-word; /* 긴 단어 줄바꿈 */
 }
 
 .bot-message {
     align-self: flex-start;
     background-color: #f1f1f1;
     color: black;
+    padding: 8px;
+    border-radius: 5px;
+    margin: 5px 0;
+    max-width: 70%; /* 최대 너비 설정 */
+    word-wrap: break-word; /* 긴 단어 줄바꿈 */
 }
 
 .input-container {
     display: flex;
     padding: 10px;
-    background-color: #fff;
+    background-color: #f9f9f9; /* 배경색 */
     border-top: 1px solid #ddd;
+    bottom: 10px; /* 하단에서 10px 위치 */
+    left: 10px; /* 왼쪽에서 10px 위치 */
+    right: 10px; /* 오른쪽에서 10px 위치 */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
 }
 
 #chatInput {
