@@ -13,7 +13,7 @@ body {
 .mypage_tab {
     background-color: #ffdab9;
     color: rgb(245, 245, 7);
-    color: white;
+    color: black;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
