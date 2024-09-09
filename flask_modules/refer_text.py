@@ -5,7 +5,7 @@ import torch
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-class ResponseSearch():
+class ResponseSearch:
     def __init__(self,csv_file_path,model_name):
         self.csv_file_path = csv_file_path
         self.data = self._load_data()

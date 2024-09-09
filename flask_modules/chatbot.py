@@ -6,7 +6,6 @@ from langchain_openai import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 
 
-
 class ChatBot:
     def __init__(self, api_key, response_search):
         self.client = OpenAI(api_key=api_key)
@@ -116,7 +115,7 @@ class ChatBot:
         
 
 # API 키를 파일에서 읽어오기
-def load_api_key(file_path='C:\\Users\\SMHRD\\Desktop\\ky_api.txt'):
+def load_api_key(file_path='c:/Users/SMHRD/api.txt'):
     try:
         with open(file_path, 'r') as file:
             return file.read().strip()
