@@ -1,6 +1,6 @@
 // 서버에서 EJS로 세션에 있는 user 값을 전달
 const user = document.body.getAttribute('data-user');
-let reason;
+// let reason;
 
 // user 값이 없으면 .chat-wrapper 요소를 숨김
 if (!user) {
@@ -10,6 +10,8 @@ if (!user) {
 	document.querySelector('.chat-wrapper').style.display = 'block';
 	document.querySelector('.not_login_main_page').style.display = 'none';
 }
+
+window.currentInput = null;
 
 document.addEventListener('DOMContentLoaded', function () {
 	console.log(user);

@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const cards = document.querySelectorAll('.card');
     const spreadButton = document.getElementById('spread-cards');
     const categoryButtons = document.querySelectorAll('.category-button');
-    const userButtons = document.querySelectorAll('.user-button');
+    const userButtons = document.querySelectorAll('.userButton');
     const psychologicalButton = document.getElementById('psychological-button');
     const drawAgainButton = document.getElementById('draw-again');
 
@@ -124,9 +124,38 @@ document.addEventListener('DOMContentLoaded', function () {
     let isSpread = false;
     let selectedCategory = null;
 
+    initializeUserButtons()
     initializeButtons();
     initializeCardClickEvents();
     updateSpreadButton();
+
+    function initializeUserButtons(){
+        // 기본 버튼 활성화
+        if (!window.currentInput) {
+            // currentInput이 null이면 일반 버튼 활성화 -> 고민이 없을때
+            userButtons.forEach(button => {
+                if (button.value === "일반") {
+                    button.classList.add("active");
+                } else {
+                    button.classList.remove("active");
+                }
+            });
+        } else {
+            // currentInput이 not null 이면 사용자 선택 -> 고민있을때 선택
+            userButtons.forEach(button => {
+                button.disabled = false;
+                button.classList.remove("disabled");
+
+                button.addEventListener("click", () => {
+                    // 현재 활성화 된 버튼 비활성화 (기본값)
+                    userButtons.forEach(button => button.classList.remove("active"));
+
+                    // 클릭된 버튼 활성화
+                    button.classList.add("active");
+                })
+            })
+        }
+    }
 
     function initializeButtons() {
         categoryButtons.forEach(button => {
@@ -137,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function () {
             button.addEventListener('click', () => handleUserButtonClick(button));
         });
 
-        togglePsychologicalButton();
     }
 
     function handleCategoryClick(button) {
@@ -154,11 +182,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         userButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
-    }
-
-    function togglePsychologicalButton() {
-        psychologicalButton.disabled = !reason;
-        psychologicalButton.classList.toggle('disabled', !reason);
     }
 
     function initializeCardClickEvents() {
@@ -324,13 +347,16 @@ document.addEventListener('DOMContentLoaded', function () {
         interpretationContent.innerHTML = `
             <p>선택된 카드: ${selectedCardNames.join(', ')}</p>
         `;
+        const activeUserBtn = document.querySelector(".userButton.active");
+        const userModeValue = activeUserBtn ? activeUserBtn.value : null;
 
         const data = {
+            user_mode : userModeValue,
             user_select: selectedCategory,
             cards: selectedCardNames,
-            user_input: reason
+            user_input: window.currentInput
         };
-
+        console.log(data.user_input)
         fetch('http://localhost:7000/api/interpret', {
             method: 'POST',
             headers: {
@@ -349,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     // general_reading 응답 처리
                     if (data.answer.text) {
                         console.log('General reading text:', data.answer.text);
-                        p.innerText = `타로 해설: ${data.answer.text}`;
+                        p.innerText = `${data.answer.text}`;
                     } else {
                         console.log('Unexpected data format:', data);
                         p.innerText = '응답 데이터 형식이 예상과 다릅니다.';
@@ -357,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (data.answer) {
                     // interpret_cards 응답 처리
                     console.log('Interpret cards answer:', data.answer);
-                    p.innerText = `타로 해설: ${data.answer}`;
+                    p.innerText = `${data.answer}`;
                 } else if (data.error) {
                     // 오류 처리
                     console.log('Error:', data.error);
