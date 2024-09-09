@@ -1,92 +1,45 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스크롤 애니메이션</title>
-    <style>
-        .not_login_main_page {
-            margin-left: -4%;
-            margin-right: -4%;
-        }
-        /* 각 섹션의 최소 높이를 1000px로 고정하고, 백분율로 레이아웃 유지 */
-        .not_login_main_page .notChatbot,
-        .not_login_main_page .notTarot{
-            min-height: 1000px; /* 최소 높이 1000px */
-            height: 100vh; /* 화면 전체 높이의 100% */
-            width: 100%; /* 너비를 100%로 설정 */
-            display: flex;
-            align-items: center; /* 수직 중앙 정렬 */
-            justify-content: center; /* 수평 중앙 정렬 */
-        }
-        .notTarot {
-            background-color: red;
-        }
-        .notGraph {
-            background-color: blue;
-            min-height: 1000px; /* 최소 높이 1000px */
-            width: 100%; /* 너비를 100%로 설정 */
-            display: flex;
-            align-items: center; /* 수직 중앙 정렬 */
-            justify-content: center; /* 수평 중앙 정렬 */
-        }
-        @media screen and (max-width: 768px) {
-            .not_login_main_page .notChatbot,
-            .not_login_main_page .notTarot,
-            .not_login_main_page .notGraph {
-                min-height: 800px; /* 작은 화면에서의 최소 높이 */
-            }
-        }
-        .footer {
-            padding : 20px;
-            width: 100%
-        }
-    </style>
-</head>
-<body>
-    <!-- -------------------------------- 로그인시 보여줄 화면 (챗봇) -------------------------- -->
-    <div class="chat-wrapper">
-        <div class="chat-header">채팅</div>
-        <div class="chat-container">
-            <div id="chatContent" class="chat-content">
-                <!-- 메시지들이 여기에 동적으로 추가 -->
-            </div>
-        </div>
-        <div class="input-container">
-            <input type="text" id="chatInput" placeholder="메시지를 입력하세요..." />
-            <button id="sendButton">전송</button>
+<!-- -------------------------------- 로그인시 보여줄 화면 (챗봇) -------------------------- -->
+<div class="chat-wrapper">
+    <div class="chat-header">챗봇</div>
+    <div class="chat-container">
+        <div id="chatContent" class="chat-content">
+            <!-- 메시지들이 여기에 동적으로 추가 -->
         </div>
     </div>
-    <!-- ------------------------------------------- 끝 -------------------------------------- -->
+    <div class="input-container">
+        <input type="text" id="chatInput" placeholder="메시지를 입력하세요..." />
+        <button id="sendButton">전송</button>
+    </div>
+</div>
+<!-- ------------------------------------------- 끝 -------------------------------------- -->
 
-    <!-- ----------------------------------- 로그인 안했을 때 화면 ----------------------------- -->
-    <div class="not_login_main_page">
-        <div class="notChatbot">
-            <div id="notLoginContent" class="not_login_content">
-                <article>
-                    <p>test1</p>
-                </article>
-            </div>
-        </div>
-        <div class="notTarot">
-            <div class="not_login_content">
-                <article>
-                    <p>test2</p>
-                </article>
-            </div>
-        </div>
-        <div class="notGraph">
-            <div class="not_login_content">
-                <article>
-                    <p>test3</p>
-                </article>
-            </div>
+<!-- ----------------------------------- 로그인 안했을 때 화면 ----------------------------- -->
+<div class="not_login_main_page">
+    <div class="notChatbot">
+        <div id="notLoginContent" class="not_login_content">
+            <article>
+                <p>test1</p>
+            </article>
         </div>
     </div>
-    <!-- ------------------------------------------- 끝 --------------------------------------- -->
+    <div class="notTarot">
+        <div class="not_login_content">
+            <article>
+                <p>test2</p>
+            </article>
+        </div>
+    </div>
+    <div class="notGraph">
+        <div class="not_login_content">
+            <article>
+                <p>test3</p>
+            </article>
+        </div>
+    </div>
+</div>
+<!-- ------------------------------------------- 끝 --------------------------------------- -->
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script>
+<!-- <script>
         var sections = $('.not_login_main_page > div'); // 모든 섹션을 가져옴
         var currentIndex = 0; // 현재 섹션의 인덱스
         var isAnimating = false; // 애니메이션 진행 중인지 확인
@@ -121,5 +74,3 @@
             });
         });
     </script> -->
-</body>
-</html>

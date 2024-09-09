@@ -11,6 +11,9 @@
 	<!-- 기본 main.css -->
 	<link rel="stylesheet" href="../css/main.css" />
 
+	<!-- 타로 css -->
+	<link rel="stylesheet" href="../css/tarot.css">
+
 	<!-- 로그인/회원가입 관련 css -->
 	<link rel="stylesheet" href="../css/login.css">
 	<!-- 로그인/회원가입 내부 아이콘 -->
@@ -18,7 +21,7 @@
 	<!-- 마이페이지 css -->
 	<link rel="stylesheet" href="../css/mypage.css">
 	<!-- home css -->
-	 <link rel="stylesheet" href="../css/home.css">
+	<link rel="stylesheet" href="../css/home.css">
 
 	<!-- noscript -->
 	<noscript>
@@ -34,41 +37,41 @@
 
 			<!-- Nav -->
 			<% if(user){ %>
-			<div id="wrapper" style="width: 55em;">
-				<nav id="nav">
-					<a href="#" class="icon solid fa-comment"><span>Chat Bot</span></a>
-					<a href="#tarot" class="icon solid fa-hat-wizard"><span>Tarot</span></a>
-					<a id="mypage_button" href="#mypage" class="icon solid fa-user"><span>MyPage</span></a>
-					<% }%>
-				</nav>
-					
+				<div id="wrapper" style="width: 55em;">
+					<nav id="nav">
+						<a href="#" class="icon solid fa-comment"><span>Chat Bot</span></a>
+						<a href="#tarot" class="icon solid fa-hat-wizard"><span>Tarot</span></a>
+						<a id="mypage_button" href="#mypage" class="icon solid fa-user"><span>MyPage</span></a>
+						<% }%>
+					</nav>
+
 					<!-- Main -->
 					<div id="main">
 						<!-- 홈(챗봇) -->
 						<article id="home" class="panel">
 							<%- include('home') %>
 						</article>
-						
+
 						<!-- 타로카드 -->
 						<article id="tarot" class="panel">
 							<%- include('tarot') %>
 						</article>
-						
+
 						<!-- 마이페이지 -->
 						<article id="mypage" class="panel">
 							<%- include('mypage') %>
 						</article>
-						
+
 					</div>
-			</div>
-				
+				</div>
+
 				<!-- Footer -->
-			<div id="footer">
-				<ul class="copyright">
-					<li>&copy; 스마트인재개발원</li>
-					<li> MindRoad : 김현우 | 문승명 | 김형욱 | 오창선 | 김지성 </li>
-				</ul>
-			</div>
+				<div id="footer">
+					<ul class="copyright">
+						<li>&copy; 스마트인재개발원</li>
+						<li> MindRoad : 김현우 | 문승명 | 김형욱 | 오창선 | 김지성 </li>
+					</ul>
+				</div>
 
 		</div>
 
@@ -80,6 +83,11 @@
 		<script src="../js/home.js"></script>
 		<script src="../js/login.js"></script>
 		<script src="../js/mypage.js"></script>
+		<script src="../js/tarot.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chartjs-gauge@0.1.8/dist/chartjs-gauge.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/gaugeJS/dist/gauge.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </body>
 
