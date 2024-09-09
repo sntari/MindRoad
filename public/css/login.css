@@ -14,6 +14,14 @@
   z-index: 1000;
 }
 
+#logo-container img {
+  position: absolute;
+  margin: 35px 35px 35px 200px;
+  padding: 20px;
+  width: 120px; /* 원하는 너비로 설정 */
+  height: auto; /* 비율을 유지하면서 높이 자동 조절 */
+}
+
 /* 로그아웃 버튼 css */
 #logout-button-container {
   position: absolute;
@@ -59,7 +67,7 @@
   /* 배경색 없음 */
   width: 100px;
   /* 버튼의 고정된 너비 */
-  margin: 1em 1em 0 0;
+  margin: 2em 9.5em 0 0;
 }
 
 #show:hover {
