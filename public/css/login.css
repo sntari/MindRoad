@@ -18,8 +18,10 @@
   position: absolute;
   margin: 35px 35px 35px 200px;
   padding: 20px;
-  width: 120px; /* 원하는 너비로 설정 */
-  height: auto; /* 비율을 유지하면서 높이 자동 조절 */
+  width: 120px;
+  /* 원하는 너비로 설정 */
+  height: auto;
+  /* 비율을 유지하면서 높이 자동 조절 */
 }
 
 /* 로그아웃 버튼 css */
@@ -32,22 +34,22 @@
 
 #show {
   display: inline-block;
-  padding: 10px 20px;
-  color: #fff;
-  /* 텍스트 색상 */
+  font-weight: bold;
+  color: #000;
   text-decoration: none;
-  /* 밑줄 제거 */
+  border-color: #000;
   border-radius: 5px;
-  /* 모서리 둥글게 */
   font-size: 20px;
-  /* 폰트 크기 */
   text-align: center;
-  /* 텍스트 중앙 정렬 */
   background-color: transparent;
-  /* 배경색 없음 */
   width: 100px;
-  /* 버튼의 고정된 너비 */
-  margin: 2em 10em 0 0;
+  /* 화면에 고정 */
+  top : 5%;
+  /* 화면 하단에서 20px 위쪽 */
+  right: 5%;
+  /* 화면 오른쪽에서 20px 왼쪽 */
+  z-index: 1000;
+  /* 다른 요소들보다 위에 표시되도록 z-index 설정 */
 }
 
 #logoutshow {
@@ -244,7 +246,7 @@ a {
   column-gap: 0.5rem;
   padding: 1.125rem 1rem;
   background-color: #fff;
-  margin : 0.5rem;
+  margin: 0.5rem;
   border-radius: 0.5rem;
 }
 
