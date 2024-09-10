@@ -70,39 +70,93 @@
     overflow-y: auto;
 }
 
-.message {
-    max-width: 80%;
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    border-radius: 20px;
-    word-wrap: break-word;
+/* 공통 wrapper 스타일 */
+.message-wrapper {
+    display: flex;
+    align-items: flex-start;
+    margin: 10px 0;
 }
 
+/* 사용자 아이콘을 맨 우측에 */
+.user-wrapper {
+    justify-content: flex-end;
+}
+
+.user-wrapper .icon {
+    font-size: 35px;
+    margin-right: 10px;
+    margin-left: 10px;
+    order: 2;
+    /* 아이콘을 맨 우측으로 */
+}
+
+.user-wrapper .message {
+    order: 1;
+    margin-right : 5px;
+    /* 메시지를 아이콘 왼쪽으로 */
+}
+
+/* 봇 아이콘을 맨 좌측에 */
+.bot-wrapper {
+    justify-content: flex-start;
+}
+
+.bot-wrapper .icon {
+    margin-top : 10px;
+    display: flex;
+    /* 아이콘을 flex 컨테이너로 설정 */
+    align-items: center;
+    /* 아이콘을 수직 중앙 정렬 */
+    margin-right: 10px;
+    /* 메시지와 아이콘 사이의 간격 */
+    order: 1;
+    /* 아이콘을 맨 좌측으로 */
+    flex-shrink: 0;
+    /* 아이콘이 축소되지 않도록 설정 */
+    height: 10%;
+    /* 이미지의 높이를 자동 조정 */
+    width: 10%;
+}
+
+.bot-wrapper .message {
+    order: 2;
+    margin-left: -420px;
+    /* 메시지를 아이콘 오른쪽으로 */
+}
+
+/* 메시지 스타일 */
 .user-message {
-    align-self: flex-end;
-    color: #0f5132;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #f1f1f1;
+    /* 사용자 메시지 배경색 */
+    color: black;
     /* 사용자 메시지 글자색 */
-    background-color: #E7AF9E;
     padding: 8px;
     border-radius: 5px;
     margin: 5px 0;
     max-width: 70%;
-    /* 최대 너비 설정 */
     word-wrap: break-word;
-    /* 긴 단어 줄바꿈 */
+    white-space: pre-wrap;
+    /* 줄바꿈을 그대로 유지 */
 }
 
 .bot-message {
-    align-self: flex-start;
-    background-color: #f1f1f1;
-    color: black;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #E7AF9E;
+    /* 봇 메시지 배경색 */
+    color: #f9f9f9;
+    /* 봇 메시지 글자색 */
     padding: 8px;
     border-radius: 5px;
     margin: 5px 0;
     max-width: 70%;
-    /* 최대 너비 설정 */
     word-wrap: break-word;
-    /* 긴 단어 줄바꿈 */
+    white-space: pre-wrap;
+    /* 줄바꿈을 그대로 유지 */
 }
 
 .input-container {
@@ -122,6 +176,7 @@
 }
 
 #chatInput {
+    font-size: 20px;
     flex-grow: 1;
     padding: 10px;
     border: 1px solid #ddd;
