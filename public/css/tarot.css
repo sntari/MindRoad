@@ -16,6 +16,8 @@
 }
 
 .category-button{
+    width: 150px;
+    height: 50px;
     background-color: #2b233a; /* 원하는 색상으로 변경 */
     color: white; /* 텍스트 색상 */
     padding: 10px 20px;
@@ -25,16 +27,14 @@
 }
 
 .userButton {
+    width: 200px;
+    margin: 20px;
     background-color: #2b233a; /* 원하는 색상으로 변경 */
     color: white; /* 텍스트 색상 */
     padding: 15px 30px;
     border: none;
     border-radius: 25px; /* 원하는 둥글기 */
     cursor: pointer; /* 커서 모양 */
-}
-
-#psychological-button {
-    opacity: 20%;
 }
 
 /* 활성화된 버튼 스타일 */
@@ -200,5 +200,20 @@
 .interpretation-content::-webkit-scrollbar {
     display: none;
     /* Chrome, Safari, Opera */
+<<<<<<< HEAD
 }
 
+#userButtons{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+#category-buttons{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+=======
+>>>>>>> 961eaae6fa90b66b0648c971d5d1bef31d6897e9
+}
