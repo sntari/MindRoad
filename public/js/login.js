@@ -178,6 +178,17 @@ $(document).ready(function () {
     });
 });
 
+// 이메일 유효성 검사
+let emailPattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,6}$/;
+
+document.querySelector('#register_id').addEventListener('keyup', function () {
+    const email = document.querySelector('#register_id').value;
+    if (emailPattern.test(email)) {
+        document.getElementById('register_id_text').innerText = '';
+    } else {
+        document.getElementById('register_id_text').innerText = '올바른 이메일 형식이 아닙니다.';
+    }
+});
 
 // 로그인
 $(document).ready(function () {

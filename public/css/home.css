@@ -76,7 +76,7 @@
     align-self: flex-start;
     background-color: #f1f1f1;
     color: black;
-    padding: 8px;
+        padding: 8px;
     border-radius: 5px;
     margin: 5px 0;
     max-width: 70%; /* 최대 너비 설정 */

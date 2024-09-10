@@ -1,13 +1,4 @@
-<div>
-    <div style="display: flex;">
-        <% if(user){ %>
-        <h2> <%= user.NICKNAME %> 님 환영합니다!</h2>
-        <% } %>
-        <div>
 
-        </div>
-    </div>
-</div>
 
 <div class="mypage_button">
     <button class="mypage_tab" onclick="openTab('myinfo')">내 상태</button>
@@ -18,36 +9,43 @@
 
 <div id="myinfo" class="tab-content">
     <div id="myinfoimg" class="myinfo-container">
-        <div id="gauge-container" class="graph-container">
-            <% if(user){ %>
-            <h3> <%= user.NICKNAME %> 님의 최근 우울도</h3>
-            <% } %>
-            <div id="gauge-text" style="font-size: 80px;">100</div>
-            <!-- 게이지 그래프를 표시할 canvas 요소 -->
-            <canvas id="gauge"></canvas>
-            <p>계측기 형식의 그래프</p>
+        <div style="margin-left: 11rem;">
+            <h3 style="margin-left: -169px;">
+                <% if(user){ %>
+                    <%= user.NICKNAME %> 님의 최근 부정도
+                <% } %>
+            </h3>
+            <div id="gauge-text">100</div>
         </div>
-        <div id="piegraph" class="graph-container" style="width:40%">
+        <div id="gauge-container" class="graph-container">
+            <canvas id="gauge"></canvas>
+            <div>
+            <span style="margin-right: 17rem;">양호</span>
+            <span style="margin-right: 1rem;">주의</span>
+        </div>
+        </div>
+        <div id="piegraph" class="graph-container" style="width:36%">
             <canvas id="myPieChart"></canvas>
-            <p>파이 그래프</p>
         </div>
         <div id="linegraph" class="graph-container">
             <canvas id="myLineChart"></canvas>
         </div>
         <div id="worryCategory" class="graph-container">
             <% if(user){ %>
-            <h3  class="interpretation-header"> <%= user.NICKNAME %> 님의 주요 고민요소</h3>
-            <% } %>
-            <h4 id="worry-text">일반고민</h4>
+                <h3 class="interpretation-header">
+                    <%= user.NICKNAME %> 님의 주요 고민요소
+                </h3>
+                <% } %>
+                    <h4 id="worry-text">일반고민</h4>
         </div>
-    </div> 
+    </div>
 </div>
 
 <div id="survey" class="tab-content" style="display: none;">
     <form id="depression-survey">
         <div id="intro_survey">
-            <p>*본 자가진단 설문지는 보건복지부 산하 국립정신건강센터의 국가트라우마센터 정서관련 질문지를 토대로 제작되었습니다.</p>
-            <p>이 설문지는 국제질병기준 분류(ICD)와 DSM-5 기준에 의거하여 검사자의 우울도를 측정합니다. 정확한 평가를 위해서는 전문적인 상담과 진단이 필요할 수 있습니다.</p>
+            <p style="margin-bottom: -1.5em;">*본 자가진단 설문지는 보건복지부 산하 국립정신건강센터의 국가트라우마센터 정서관련 질문지를 토대로 제작되었습니다.</p>
+            <p style="margin-bottom: 1em;">이 설문지는 국제질병기준 분류(ICD)와 DSM-5 기준에 의거하여 검사자의 우울도를 측정합니다. 정확한 평가를 위해서는 전문적인 상담과 진단이 필요할 수 있습니다.</p>
         </div>
         <table>
             <thead>
@@ -61,6 +59,7 @@
             </thead>
             <tbody>
                 <tr class="survey_Question">
+                    <td class="question">1. 일 또는 여가 활동을 하는데 흥미나 즐거움을 느끼지 못함</td>
                     <td>일 또는 여가 활동을 하는데 흥미나 즐거움을 느끼지 못함</td>
                     <td><input type="radio" id="q1-0" name="q1" value="0"><label for="q1-0"></label></td>
                     <td><input type="radio" id="q1-1" name="q1" value="1"><label for="q1-1"></label></td>
@@ -125,7 +124,7 @@
                 </tr>
             </tbody>
         </table>
-    
+
         <!-- 합계 점수 및 결과 -->
         <div>
             <button type="button" onclick="calculateScore()">결과 확인</button>
@@ -134,45 +133,44 @@
             <p>합계 점수: <span id="total-score"></span></p>
             <p>결과: <span id="result-text"></span></p>
         </div>
-        <div>
-            <h3>추가 사항 : 우울함 정도에 따른 분류별 간략 설명 및 특정 수준 이상의 우울함을 보일 시, 내원 및 정신과 상담 권유하는 글 or 링크</h3>
-        </div>
     </form>
 </div>
 
 <div id="info_r" class="tab-content" style="display:none">
     <form id="info_rr">
-        <div class="form-container">
+        <div class="form-container" >
             <div class="form-group">
                 <label for="user-id2">ID</label>
                 <% if(user){ %>
-                    <input type="text" id="user-id2" name="mem_id" value="<%= user.EMAIL %>" readonly>
+                    <input type="text" id="user-id2" name="mem_id" value="<%= user.EMAIL %>" style="border: 3px solid #f0ba8c;" readonly>
                     <% } %>
             </div>
             <div class="form-group">
                 <label for="nickname">닉네임</label>
                 <% if(user){ %>
-                    <input type="text" id="nickname" name="mem_nick" value="<%= user.NICKNAME %>" required>
+                    <input type="text" id="nickname" name="mem_nick" value="<%= user.NICKNAME %>" style="border: 3px solid #f0ba8c;" required>
                     <% } %>
             </div>
             <div class="form-group">
                 <label for="password">현재 비밀번호</label>
-                <input type="password" id="password" name="mem_pw" placeholder="Password" required>
+                <input type="password" id="password" name="mem_pw" placeholder="Password" style="border: 3px solid #f0ba8c;" required>
             </div>
             <div class="form-group" id="pw_box">
                 <label for="register_pw">새 비밀번호</label>
                 <% if(user){ %>
-                <p id="pw_check" style="display: none;"><%= user.PW%></p>
-                <% } %>
-                <input type="password" id="register_pw2" name="new_pw" placeholder="Password" required>
+                    <p id="pw_check" style="display: none;">
+                        <%= user.PW%>
+                    </p>
+                    <% } %>
+                        <input type="password" id="register_pw2" name="new_pw" placeholder="Password" style="border: 3px solid #f0ba8c;" required>
             </div>
             <p id="mypage_error1" style="color: red; font-size: 17px;"></p>
             <div id="progress_bar2">
                 <progress max="4" value="0" id="meter2"></progress>
-                <p id="mypage_error3" style="color: red; font-size: 17px;"></p>
+                <p id="mypage_error3" style="color: rgb(0, 0, 0); font-size: 17px;">보안강도</p>
             </div>
             <div class="form-group">
-                <input type="button" id="info_re" value="수정">
+                <input type="button" id="info_re" value="수정" >
             </div>
         </div>
     </form>
@@ -183,17 +181,18 @@
             <div class="form-group">
                 <label for="user-id">ID</label>
                 <% if(user){ %>
-                    <input type="text" id="user-id" name="mem_id" value="<%= user.EMAIL %>" readonly>
+                    <input style="border: 3px solid #f0ba8c;" type="text" id="user-id" name="mem_id" value="<%= user.EMAIL %>" readonly>
                     <% } %>
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>
-                <input type="password" id="password2" name="mem_pw" placeholder="Password" required>
+                <input style="border: 3px solid #f0ba8c;" type="password" id="password2" name="mem_pw" placeholder="Password" required>
             </div>
             <div class="form-group">
                 <label for="confirm-password">비밀번호 확인</label>
-                <input type="password" id="del-password" name="new_pw" placeholder="New password" required>
+                <input style="border: 3px solid #f0ba8c;" type="password" id="del-password" name="new_pw" placeholder="New password" required>
             </div>
+            <p id="mypage_error2"></p>
             <div class="form-group">
                 <input type="button" id="del_id" value="삭제">
             </div>

@@ -84,7 +84,7 @@ async function mypage_AVG(user) {
         // 쿼리 실행
         const [rows] = await connection.execute(query, [user, user]);
 
-        // 결과 반환        
+        // 결과 반환
         if (rows.length > 0) {
             return {
                 average_good: rows[0].recent_good,
@@ -126,14 +126,13 @@ async function mypage_BAD(user) {
             SELECT
             AVG(BAD) AS all_bad
             FROM SCORE_DATA
-            WHERE nickname = 'admin'
         `;
 
         // 쿼리 실행
-        const [rows] = await connection.execute(query, [user]);
-        const [rows2] = await connection.execute(query2);
+        const [rows] = await connection.execute(query,[user]); // 사용자 부정수치
+        const [rows2] = await connection.execute(query2);   // 부정수치 전체평균
         const rows3 = rows.map(item => item.avg_bad);   // 리스트로 변환
-        
+
         // 결과 반환
         if (rows.length > 0) {
             return {
@@ -154,10 +153,52 @@ async function mypage_BAD(user) {
     }
 }
 
+// 그래프 부정
+async function graph_BAD(user) {
+    let connection;
+    try {
+        // 데이터베이스 연결
+        connection = await mysql.getConnection();
+
+        // SELECT 쿼리 정의
+        const query = `
+            SELECT
+            BAD AS g_bad
+            FROM SCORE_DATA
+            WHERE nickname = ? AND id = (
+            SELECT MAX(id)
+            FROM SCORE_DATA
+            WHERE nickname = ?
+            )
+        `;
+
+        // 쿼리 실행
+        const [rows] = await connection.execute(query, [user, user]);
+
+        // 결과 반환
+        if (rows.length > 0) {
+            return {
+                g_bad: rows[0].g_bad
+            };
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        console.error('Error retrieving chatbot sentiment averages:', error);
+        throw error;
+    } finally {
+        // 연결 종료
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
 module.exports = {
     updateMemberInfo,
     del_member,
     loginUser,
     mypage_AVG,
-    mypage_BAD
+    mypage_BAD,
+    graph_BAD
 };
