@@ -11,7 +11,8 @@ body {
 }
 
 .mypage_tab {
-    background-color: #ffdab9;
+    background-color: #e8b180;
+    font-weight: bold;
     color: rgb(245, 245, 7);
     color: white;
     padding: 10px 20px;
@@ -205,9 +206,11 @@ body {
 }
 #depression-survey th {
     background-color: #f2f2f2;
+    font-size: 21px;
 }
 #depression-survey td {
     position: relative;
+    font-size: 19px;
 }
 #depression-survey label {
     cursor: pointer; /* 클릭 가능한 포인터 추가 */
@@ -227,12 +230,12 @@ body {
     line-height: 24px;
     border-radius: 50%;
     font-size: 24px;
-    color: #333;
+    color: #333333;
 }
 /* 라디오 버튼 선택 시 심볼 변경 */
 #depression-survey input[type="radio"]:checked + label::before {
     content: "●"; /* 선택된 심볼 */
-    color: #007bff; /* 선택된 심볼의 색상 */
+    color: #000000; /* 선택된 심볼의 색상 */
 }
 
 #intro_survey p {
