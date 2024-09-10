@@ -47,7 +47,6 @@ $(document).ready(function () {
                     hoverOffset: 4
                 }]
             };
-
             const pieCtx = document.getElementById('myPieChart').getContext('2d');
             const myPieChart = new Chart(pieCtx, {
                 type: 'pie',
@@ -256,7 +255,6 @@ $(document).ready(function () {
         }
     });
 });
-
 
 
 

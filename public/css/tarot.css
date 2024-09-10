@@ -16,6 +16,8 @@
 }
 
 .category-button{
+    width: 150px;
+    height: 50px;
     background-color: #2b233a; /* 원하는 색상으로 변경 */
     color: white; /* 텍스트 색상 */
     padding: 10px 20px;
@@ -25,6 +27,8 @@
 }
 
 .userButton {
+    width: 200px;
+    margin: 20px;
     background-color: #2b233a; /* 원하는 색상으로 변경 */
     color: white; /* 텍스트 색상 */
     padding: 15px 30px;

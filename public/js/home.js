@@ -21,94 +21,95 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	addMessage("안녕하세요! 무엇을 도와드릴까요?", false);
 
-	function createMessage() {
-		const messageDiv = document.createElement('div');
-		messageDiv.className = 'message bot-message';
-		// messageDiv.innerText = 'loading...';
-		const loading = document.createElement('div');
-		loading.className = 'loading';
-		messageDiv.appendChild(loading);
-		chatContent.appendChild(messageDiv);
-		return messageDiv;
-	}
+	function addMessage(message, isUser, isLoading = false) {
+		const messageWrapper = document.createElement('div');
+		messageWrapper.className = `message-wrapper ${isUser ? 'user-wrapper' : 'bot-wrapper'}`;
 
-	// function updateMessage(chatContent, message) {
+		// 아이콘 추가
+		// 아이콘 추가
+		const icon = document.createElement('div');
+		if (isUser) {
+			// 사용자일 경우 Font Awesome 아이콘 추가
+			icon.className = 'icon solid fa-user';
+		} else {
+			// 봇일 경우 이미지 추가
+			const botIcon = document.createElement('img');
+			botIcon.src = '../img/글자x로고.png'; // 봇 아이콘 이미지 경로
+			botIcon.className = 'icon'; // 공통 클래스 추가
+			icon.appendChild(botIcon); // 이미지 요소를 아이콘 요소에 추가
+		}
+		messageWrapper.appendChild(icon);
 
-	// }
+		// 메시지 버블 추가
+		const messageBubble = document.createElement('div');
+		messageBubble.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+		messageWrapper.appendChild(messageBubble);
 
-	function addMessage(message, isUser) {
-		const messageDiv = document.createElement('div');
-		messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-		chatContent.appendChild(messageDiv);
+		chatContent.appendChild(messageWrapper);
 
 		if (isUser) {
-			messageDiv.textContent = message;
-			scrollToBottom();
+			messageBubble.textContent = message;
+		} else if (isLoading) {
+			const loading = document.createElement('div');
+			loading.className = 'loading';
+			messageBubble.appendChild(loading);
 		} else {
-			// 한 줄짜리 메시지의 경우 문단 처리를 하지 않도록 조건 추가
 			if (message.includes('\n')) {
-				typeMessage(messageDiv, message);  // 문단이 포함된 경우만 타이핑 애니메이션 사용
+				typeMessage(messageBubble, message);
 			} else {
-				messageDiv.textContent = message;  // 한 줄 메시지는 바로 출력
-				scrollToBottom();
+				messageBubble.textContent = message;
 			}
 		}
+		scrollToBottom();
+		return messageBubble;
 	}
 
 	function typeMessage(element, message) {
-		element.textContent = '';  // 기존 내용을 비웁니다.
-		const paragraphs = message.split('\n');  // 문단을 줄바꿈으로 나눕니다.
+		element.textContent = '';
+		const paragraphs = message.split('\n');
 		let paragraphIndex = 0;
 		let charIndex = 0;
 
 		function typeCharacter() {
-			// 모든 문단을 출력했으면 타이핑을 종료합니다.
 			if (paragraphIndex >= paragraphs.length) {
 				scrollToBottom();
 				return;
 			}
 
-			// 현재 문단을 가져옵니다.
 			const currentParagraph = paragraphs[paragraphIndex];
 
-			// 첫 글자를 타이핑 중이라면 새로운 <p> 태그 또는 마지막 문단을 위한 <span> 태그 생성
 			if (charIndex === 0) {
-				const tag = paragraphIndex === paragraphs.length - 1 ? 'span' : 'p';  // 마지막 문단이면 <span> 사용
+				const tag = paragraphIndex === paragraphs.length - 1 ? 'span' : 'p';
 				const newElement = document.createElement(tag);
 				element.appendChild(newElement);
 			}
 
 			const pOrSpan = element.querySelectorAll('p, span')[paragraphIndex];
 
-			// 현재 문단의 현재 문자까지 p 또는 span 태그에 추가합니다.
 			if (charIndex < currentParagraph.length) {
 				pOrSpan.textContent += currentParagraph.charAt(charIndex);
 				charIndex++;
 				scrollToBottom();
-				setTimeout(typeCharacter, 15);  // 타이핑 속도 조절
+				setTimeout(typeCharacter, 15);
 			} else {
-				// 문단이 끝나면 다음 문단으로 넘어갑니다.
 				paragraphIndex++;
 				charIndex = 0;
 
 				if (paragraphIndex < paragraphs.length) {
-					// 마지막 문단이 아니면 다음 문단 출력
-					setTimeout(typeCharacter, 15);  // 문단 간 지연 시간
+					setTimeout(typeCharacter, 15);
 				} else {
-					// 마지막 문단은 줄바꿈 없이 바로 종료
 					scrollToBottom();
 				}
 			}
 		}
 
-		// 첫 번째 타이핑 시작
 		typeCharacter();
 	}
 
 	function scrollToBottom() {
 		setTimeout(() => {
 			chatContent.scrollTop = chatContent.scrollHeight;
-		}, 100); // 0ms 지연 시간
+		}, 100);
 	}
 
 	async function handleSend() {
@@ -116,28 +117,37 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (message) {
 			addMessage(message, true);
 			chatInput.value = '';
-			const botMessage = createMessage(); //add
+
+			const botMessageBubble = addMessage("", false, true); // 로딩 애니메이션으로 봇 응답 자리 만들기
+
 			try {
 				const botResponse = await getFlaskResponse(message);
 				if (botResponse.isProblem) {
-					reason = botResponse.input
+					reason = botResponse.input;
 					await saveChatbotResponseToNodeServer(botResponse);
 				}
-				typeMessage(botMessage, botResponse.answer);
+
+				// 로딩 애니메이션 제거
+				botMessageBubble.innerHTML = '';
+
+				// 봇 응답 메시지 표시
+				typeMessage(botMessageBubble, botResponse.answer);
 			} catch (error) {
-				// addMessage("죄송합니다. 오류가 발생했습니다: " + error.message, false); //remove
-				typeMessage(botMessage, "죄송합니다. 오류가 발생했습니다: " + error.message);
+				// 로딩 애니메이션 제거
+				botMessageBubble.innerHTML = '';
+
+				typeMessage(botMessageBubble, "죄송합니다. 오류가 발생했습니다: " + error.message);
 			}
 		}
 	}
 
 	async function getFlaskResponse(userMessage) {
-		const url = 'http://localhost:7000/chatbot'; // Flask 서버 주소
+		const url = 'http://localhost:7000/chatbot';
 		const headers = {
 			'Content-Type': 'application/json'
 		};
 		const body = JSON.stringify({
-			user_nick: user, // 사용자 닉네임 설정
+			user_nick: user,
 			input: userMessage
 		});
 
@@ -150,10 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			const data = await response.json();
 
-			// isProblem이 True 일때만 currentInput업데이트.
-			// currentInput이 not null일때, 심리버튼 활성화.
-			// currentInput은 가장 최근 고민을 저장한것.
-			if (data.isProblem){
+			if (data.isProblem) {
 				currentInput = data.input;
 			}
 
