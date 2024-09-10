@@ -254,13 +254,23 @@ $(document).ready(function () {
                         datalabels: {
                             display: true,         // 라벨을 표시
                             color: 'black',        // 라벨의 색상
-                            align: 'top',          // 데이터 포인트 위에 라벨 배치
+                            align: 'right',          // 데이터 포인트 위에 라벨 배치
+                            font: {                // 폰트 설정
+                                size: 13,          // 폰트 크기 (예: 14px)
+                                weight: 'bold'     // 폰트 굵기 (옵션)
+                            },
                             formatter: (value, context) => {
-                                // 특정 데이터셋에만 라벨을 표시
-                                if (context.dataset.label === '상담 기록에 따른 부정도 추이') {
-                                    return value.toFixed(0) + "점"; // 소수점 한 자리까지 표시
+                                // 전체 부정도 평균과 nickname 부정치 평균에서 마지막 데이터만 표시
+                                const dataset = context.dataset;
+                                const dataIndex = context.dataIndex;
+                                const lastIndex = dataset.data.length - 1;
+
+                                if (dataset.label === '전체 부정도 평균' || dataset.label === nickname + '님 부정치 평균') {
+                                    if (dataIndex === lastIndex) {
+                                        return value.toFixed(1); // 마지막 데이터 포인트에 소수점 한자리로 라벨 표시
+                                    }
                                 }
-                                return null;  // '상담 기록에 따른 추이' 외의 데이터셋에서는 라벨을 표시하지 않음
+                                return null; // 그 외에는 라벨을 표시하지 않음
                             }
                         }
                     },
@@ -275,6 +285,7 @@ $(document).ready(function () {
                 },
                 plugins: [ChartDataLabels] // 플러그인 추가
             });
+
 
         },
         error: function (xhr, status, error) {
@@ -347,6 +358,9 @@ $(document).ready(function () {
             setTimeout(() => {
                 gaugeGraphUpdate(g_bad);
             }, 2000);
+            document.querySelector('.mypage_tab').addEventListener('click', () => {
+                gaugeGraphUpdate(g_bad);
+            });
 
 >>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
         },
@@ -511,7 +525,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         switch (strength2) {
             case 0:
-                errorText.textContent = "";
+                errorText.textContent = "보안강도";
+                errorText.style.color = "black";
                 break;
             case 1:
                 errorText.textContent = "보안 강도: 매우 약함";

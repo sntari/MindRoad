@@ -6,13 +6,16 @@ body {
 
 .mypage_button {
     text-align: center;
-    margin-top: 50px;
     display: flex;
 }
 
 #myPieChart {
-    width: 400px;
-    height: 400px;
+    margin-left: 176px;
+    margin-top: 1rem;
+    display: block;
+    box-sizing: border-box;
+    height: 148px;
+    width: 148px;
 }
 
 .mypage_tab {
@@ -20,7 +23,6 @@ body {
     font-weight: bold;
     color: rgb(245, 245, 7);
     color: white;
-    padding: 10px 20px;
     border: none;
     cursor: pointer;
     margin: 5px auto;
@@ -28,6 +30,8 @@ body {
     flex: 1;
     margin-left: 10px;
     border-radius: 0.3rem;
+    font-size: 20px;
+    z-index: 2; /* 버튼의 z-index를 더 높게 설정 */
 }
 .mypage_tab:hover {
 	background-color: #fabeac;
@@ -76,17 +80,24 @@ body {
 #gauge-container {
     padding-top: 50px;
     border-right: 2px solid #E7AF9E;
+    margin-left: -9rem;
 }
 
 #gauge{
     width: 100%;
     height: 488px;
+    margin-left: -1rem;
+    margin-top: -19rem;
+    z-index: 1; /* 기본값보다 낮은 z-index 설정 */
 }
 
 #gauge-text {
-    padding-top: 20px;
     color: #333;
     font-size: 2em;
+    font-size: 60px;
+    margin-bottom: -143px;
+    margin-left: -174px;
+    color: green;
 }
 
 #piegraph{
@@ -135,7 +146,7 @@ body {
     margin: 0 auto;
     text-align: center;
     border-radius: 0.5rem;
-    background-color: #f2f2f2;
+    background-color: #ffffff;
 }
 
 .form-group {
@@ -165,7 +176,7 @@ body {
     display: block;
     padding: 1rem;
     margin-bottom: 1rem;
-    background-color: #4AD395;
+    background-color: #f0ba8c;
     color: #fff;
     font-weight: 600;
     text-align: center;
@@ -181,7 +192,7 @@ body {
 /* 프로그래스바 */
 #meter2 {
     appearance: none;
-    width: 220px;
+    width: 1112px;
     display: block;
     margin-top: 17px;
     margin-left: 26px;
@@ -220,6 +231,8 @@ body {
 #depression-survey label {
     cursor: pointer; /* 클릭 가능한 포인터 추가 */
     font-size: 24px; /* 심볼의 크기 설정 */
+    margin-top: 11px;
+    margin-bottom: 0;
 }
 /* 라디오 버튼 숨기기 */
 #depression-survey input[type="radio"] {
@@ -234,7 +247,7 @@ body {
     text-align: center;
     line-height: 24px;
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 53px;
     color: #333333;
 }
 /* 라디오 버튼 선택 시 심볼 변경 */
@@ -251,4 +264,8 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+.survey_Question .question {
+    text-align: left; /* 텍스트 정렬 */
 }

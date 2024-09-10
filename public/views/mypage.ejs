@@ -1,17 +1,4 @@
-<div>
-    <div style="display: flex;">
-        <% if(user){ %>
-            <h2 style="margin-left: 89px;
-            margin-top: 5px;
-            margin-bottom: -5px;">
-                <%= user.NICKNAME %> 님 환영합니다!
-            </h2>
-            <% } %>
-                <div>
 
-                </div>
-    </div>
-</div>
 
 <div class="mypage_button">
     <button class="mypage_tab" onclick="openTab('myinfo')">내 상태</button>
@@ -23,18 +10,22 @@
 <div id="myinfo" class="tab-content">
     <div id="myinfoimg" class="myinfo-container">
         <div style="margin-left: 11rem;">
-            <h3 style="margin-left: -85px;">
+            <h3 style="margin-left: -169px;">
                 <% if(user){ %>
                     <%= user.NICKNAME %> 님의 최근 부정도
                 <% } %>
             </h3>
-            <div id="gauge-text" style="font-size: 80px; margin-bottom: -160px; margin-left: -85px;">100</div>
+            <div id="gauge-text">100</div>
         </div>
         <div id="gauge-container" class="graph-container">
-            <canvas id="gauge" style="margin-left: -85px; margin-top: -19rem; margin-bottom: 50px;"></canvas>
+            <canvas id="gauge"></canvas>
+            <div>
+            <span style="margin-right: 17rem;">양호</span>
+            <span style="margin-right: 1rem;">주의</span>
         </div>
-        <div id="piegraph" class="graph-container" style="width:40%">
-            <canvas id="myPieChart" style="margin-left: 96px; margin-top: 1rem;"></canvas>
+        </div>
+        <div id="piegraph" class="graph-container" style="width:36%">
+            <canvas id="myPieChart"></canvas>
         </div>
         <div id="linegraph" class="graph-container">
             <canvas id="myLineChart"></canvas>
@@ -53,8 +44,8 @@
 <div id="survey" class="tab-content" style="display: none;">
     <form id="depression-survey">
         <div id="intro_survey">
-            <p>*본 자가진단 설문지는 보건복지부 산하 국립정신건강센터의 국가트라우마센터 정서관련 질문지를 토대로 제작되었습니다.</p>
-            <p>이 설문지는 국제질병기준 분류(ICD)와 DSM-5 기준에 의거하여 검사자의 우울도를 측정합니다. 정확한 평가를 위해서는 전문적인 상담과 진단이 필요할 수 있습니다.</p>
+            <p style="margin-bottom: -1.5em;">*본 자가진단 설문지는 보건복지부 산하 국립정신건강센터의 국가트라우마센터 정서관련 질문지를 토대로 제작되었습니다.</p>
+            <p style="margin-bottom: 1em;">이 설문지는 국제질병기준 분류(ICD)와 DSM-5 기준에 의거하여 검사자의 우울도를 측정합니다. 정확한 평가를 위해서는 전문적인 상담과 진단이 필요할 수 있습니다.</p>
         </div>
         <table>
             <thead>
@@ -68,63 +59,63 @@
             </thead>
             <tbody>
                 <tr class="survey_Question">
-                    <td>1. 일 또는 여가 활동을 하는데 흥미나 즐거움을 느끼지 못함</td>
+                    <td class="question">1. 일 또는 여가 활동을 하는데 흥미나 즐거움을 느끼지 못함</td>
                     <td><input type="radio" id="q1-0" name="q1" value="0"><label for="q1-0"></label></td>
                     <td><input type="radio" id="q1-1" name="q1" value="1"><label for="q1-1"></label></td>
                     <td><input type="radio" id="q1-2" name="q1" value="2"><label for="q1-2"></label></td>
                     <td><input type="radio" id="q1-3" name="q1" value="3"><label for="q1-3"></label></td>
                 </tr>
                 <tr class="survey_Question">
-                    <td>2. 기분이 가라앉거나, 우울하거나, 희망이 없음</td>
+                    <td class="question">2. 기분이 가라앉거나, 우울하거나, 희망이 없음</td>
                     <td><input type="radio" id="q2-0" name="q2" value="0"><label for="q2-0"></label></td>
                     <td><input type="radio" id="q2-1" name="q2" value="1"><label for="q2-1"></label></td>
                     <td><input type="radio" id="q2-2" name="q2" value="2"><label for="q2-2"></label></td>
                     <td><input type="radio" id="q2-3" name="q2" value="3"><label for="q2-3"></label></td>
                 </tr>
                 <tr class="survey_Question">
-                    <td>3. 잠이 들거나 계속 잠을 자는 것이 어려움. 또는 잠을 너무 많이 잠</td>
+                    <td class="question">3. 잠이 들거나 계속 잠을 자는 것이 어려움. 또는 잠을 너무 많이 잠</td>
                     <td><input type="radio" id="q3-0" name="q3" value="0"><label for="q3-0"></label></td>
                     <td><input type="radio" id="q3-1" name="q3" value="1"><label for="q3-1"></label></td>
                     <td><input type="radio" id="q3-2" name="q3" value="2"><label for="q3-2"></label></td>
                     <td><input type="radio" id="q3-3" name="q3" value="3"><label for="q3-3"></label></td>
                 </tr>
                 <tr class="survey_Question">
-                    <td>4. 피곤하다고 느끼거나 기운이 거의 없음</td>
+                    <td class="question">4. 피곤하다고 느끼거나 기운이 거의 없음</td>
                     <td><input type="radio" id="q4-0" name="q4" value="0"><label for="q4-0"></label></td>
                     <td><input type="radio" id="q4-1" name="q4" value="1"><label for="q4-1"></label></td>
                     <td><input type="radio" id="q4-2" name="q4" value="2"><label for="q4-2"></label></td>
                     <td><input type="radio" id="q4-3" name="q4" value="3"><label for="q4-3"></label></td>
                 </tr>
                 <tr class="survey_Question">
-                    <td>5. 입맛이 없거나 과식을 함</td>
+                    <td class="question">5. 입맛이 없거나 과식을 함</td>
                     <td><input type="radio" id="q5-0" name="q5" value="0"><label for="q5-0"></label></td>
                     <td><input type="radio" id="q5-1" name="q5" value="1"><label for="q5-1"></label></td>
                     <td><input type="radio" id="q5-2" name="q5" value="2"><label for="q5-2"></label></td>
                     <td><input type="radio" id="q5-3" name="q5" value="3"><label for="q5-3"></label></td>
                 </tr>
                 <tr class="survey_Question">
-                    <td>6. 자신을 부정적으로 봄 혹은 자신이 실패자라고 느끼거나 자신 또는 가족을 실망시킴</td>
+                    <td class="question">6. 자신을 부정적으로 봄 혹은 자신이 실패자라고 느끼거나 자신 또는 가족을 실망시킴</td>
                     <td><input type="radio" id="q6-0" name="q6" value="0"><label for="q6-0"></label></td>
                     <td><input type="radio" id="q6-1" name="q6" value="1"><label for="q6-1"></label></td>
                     <td><input type="radio" id="q6-2" name="q6" value="2"><label for="q6-2"></label></td>
                     <td><input type="radio" id="q6-3" name="q6" value="3"><label for="q6-3"></label></td>
                 </tr>
                 <tr class="survey_Question">
-                    <td>7. 신문을 읽거나 텔레비전 보는 것과 같은 일에 집중하는 것이 어려움</td>
+                    <td class="question">7. 신문을 읽거나 텔레비전 보는 것과 같은 일에 집중하는 것이 어려움</td>
                     <td><input type="radio" id="q7-0" name="q7" value="0"><label for="q7-0"></label></td>
                     <td><input type="radio" id="q7-1" name="q7" value="1"><label for="q7-1"></label></td>
                     <td><input type="radio" id="q7-2" name="q7" value="2"><label for="q7-2"></label></td>
                     <td><input type="radio" id="q7-3" name="q7" value="3"><label for="q7-3"></label></td>
                 </tr>
                 <tr class="survey_Question">
-                    <td>8. 다른 사람들이 주목할 정도로 너무 느리게 움직이거나 말을 함 또는 반대로 평상시보다 많이 움직여서, 너무 안절부절 못하거나 들떠 있음</td>
+                    <td class="question">8. 다른 사람들이 주목할 정도로 너무 느리게 움직이거나 말을 함 또는 반대로 평상시보다 많이 움직여서, 너무 안절부절 못하거나 들떠 있음</td>
                     <td><input type="radio" id="q8-0" name="q8" value="0"><label for="q8-0"></label></td>
                     <td><input type="radio" id="q8-1" name="q8" value="1"><label for="q8-1"></label></td>
                     <td><input type="radio" id="q8-2" name="q8" value="2"><label for="q8-2"></label></td>
                     <td><input type="radio" id="q8-3" name="q8" value="3"><label for="q8-3"></label></td>
                 </tr>
                 <tr class="survey_Question">
-                    <td>9. 자신이 죽는 것이 더 낫다고 생각하거나 어떤 식으로든 자신을 해칠것이라고 생각함</td>
+                    <td class="question">9. 자신이 죽는 것이 더 낫다고 생각하거나 어떤 식으로든 자신을 해칠것이라고 생각함</td>
                     <td><input type="radio" id="q9-0" name="q9" value="0"><label for="q9-0"></label></td>
                     <td><input type="radio" id="q9-1" name="q9" value="1"><label for="q9-1"></label></td>
                     <td><input type="radio" id="q9-2" name="q9" value="2"><label for="q9-2"></label></td>
@@ -141,30 +132,27 @@
             <p>합계 점수: <span id="total-score"></span></p>
             <p>결과: <span id="result-text"></span></p>
         </div>
-        <div>
-            <h3>추가 사항 : 우울함 정도에 따른 분류별 간략 설명 및 특정 수준 이상의 우울함을 보일 시, 내원 및 정신과 상담 권유하는 글 or 링크</h3>
-        </div>
     </form>
 </div>
 
 <div id="info_r" class="tab-content" style="display:none">
     <form id="info_rr">
-        <div class="form-container">
+        <div class="form-container" >
             <div class="form-group">
                 <label for="user-id2">ID</label>
                 <% if(user){ %>
-                    <input type="text" id="user-id2" name="mem_id" value="<%= user.EMAIL %>" readonly>
+                    <input type="text" id="user-id2" name="mem_id" value="<%= user.EMAIL %>" style="border: 3px solid #f0ba8c;" readonly>
                     <% } %>
             </div>
             <div class="form-group">
                 <label for="nickname">닉네임</label>
                 <% if(user){ %>
-                    <input type="text" id="nickname" name="mem_nick" value="<%= user.NICKNAME %>" required>
+                    <input type="text" id="nickname" name="mem_nick" value="<%= user.NICKNAME %>" style="border: 3px solid #f0ba8c;" required>
                     <% } %>
             </div>
             <div class="form-group">
                 <label for="password">현재 비밀번호</label>
-                <input type="password" id="password" name="mem_pw" placeholder="Password" required>
+                <input type="password" id="password" name="mem_pw" placeholder="Password" style="border: 3px solid #f0ba8c;" required>
             </div>
             <div class="form-group" id="pw_box">
                 <label for="register_pw">새 비밀번호</label>
@@ -173,15 +161,15 @@
                         <%= user.PW%>
                     </p>
                     <% } %>
-                        <input type="password" id="register_pw2" name="new_pw" placeholder="Password" required>
+                        <input type="password" id="register_pw2" name="new_pw" placeholder="Password" style="border: 3px solid #f0ba8c;" required>
             </div>
             <p id="mypage_error1" style="color: red; font-size: 17px;"></p>
             <div id="progress_bar2">
                 <progress max="4" value="0" id="meter2"></progress>
-                <p id="mypage_error3" style="color: red; font-size: 17px;"></p>
+                <p id="mypage_error3" style="color: rgb(0, 0, 0); font-size: 17px;">보안강도</p>
             </div>
             <div class="form-group">
-                <input type="button" id="info_re" value="수정">
+                <input type="button" id="info_re" value="수정" >
             </div>
         </div>
     </form>
@@ -192,17 +180,18 @@
             <div class="form-group">
                 <label for="user-id">ID</label>
                 <% if(user){ %>
-                    <input type="text" id="user-id" name="mem_id" value="<%= user.EMAIL %>" readonly>
+                    <input style="border: 3px solid #f0ba8c;" type="text" id="user-id" name="mem_id" value="<%= user.EMAIL %>" readonly>
                     <% } %>
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>
-                <input type="password" id="password2" name="mem_pw" placeholder="Password" required>
+                <input style="border: 3px solid #f0ba8c;" type="password" id="password2" name="mem_pw" placeholder="Password" required>
             </div>
             <div class="form-group">
                 <label for="confirm-password">비밀번호 확인</label>
-                <input type="password" id="del-password" name="new_pw" placeholder="New password" required>
+                <input style="border: 3px solid #f0ba8c;" type="password" id="del-password" name="new_pw" placeholder="New password" required>
             </div>
+            <p id="mypage_error2"></p>
             <div class="form-group">
                 <input type="button" id="del_id" value="삭제">
             </div>
