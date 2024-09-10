@@ -37,10 +37,6 @@
     cursor: pointer; /* 커서 모양 */
 }
 
-#psychological-button {
-    opacity: 20%;
-}
-
 /* 활성화된 버튼 스타일 */
 .category-button.active {
     background-color: #c88b62;
@@ -204,6 +200,7 @@
 .interpretation-content::-webkit-scrollbar {
     display: none;
     /* Chrome, Safari, Opera */
+<<<<<<< HEAD
 }
 
 #userButtons{
@@ -217,4 +214,6 @@
     display: flex;
     align-items: center;
     gap: 20px;
+=======
+>>>>>>> 961eaae6fa90b66b0648c971d5d1bef31d6897e9
 }
