@@ -47,7 +47,7 @@
   /* 배경색 없음 */
   width: 100px;
   /* 버튼의 고정된 너비 */
-  margin: 1em 1em 0 0;
+  margin: 2em 10em 0 0;
 }
 
 #logoutshow {
@@ -67,7 +67,7 @@
   /* 배경색 없음 */
   width: 100px;
   /* 버튼의 고정된 너비 */
-  margin: 2em 9.5em 0 0;
+  margin: 2em 10em 0 0;
 }
 
 #show:hover {
