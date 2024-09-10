@@ -90,7 +90,7 @@ async function mypage_AVG(user) {
                 average_good: rows[0].recent_good,
                 average_bad: rows[0].recent_bad,
                 average_center: rows[0].recent_center,
-                my_Q : rows[0].my_Q,
+                my_Q: rows[0].my_Q,
             };
         } else {
             return { average_good: 33, average_bad: 33, average_center: 34 };
@@ -115,10 +115,11 @@ async function mypage_BAD(user) {
 
         // SELECT 쿼리 정의
         const query = `
-            SELECT
-            BAD AS avg_bad
+            SELECT BAD AS avg_bad
             FROM SCORE_DATA
             WHERE nickname = ?
+            ORDER BY id DESC
+            LIMIT 10;
         `;
 
         // SELECT 쿼리 정의
@@ -129,10 +130,10 @@ async function mypage_BAD(user) {
         `;
 
         // 쿼리 실행
-        const [rows] = await connection.execute(query,[user]); // 사용자 부정수치
+        const [rows] = await connection.execute(query, [user]); // 사용자 부정수치
         const [rows2] = await connection.execute(query2);   // 부정수치 전체평균
         const rows3 = rows.map(item => item.avg_bad);   // 리스트로 변환
-
+        
         // 결과 반환
         if (rows.length > 0) {
             return {

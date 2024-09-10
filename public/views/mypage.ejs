@@ -10,16 +10,16 @@
 <div id="myinfo" class="tab-content">
     <div id="myinfoimg" class="myinfo-container">
         <div style="margin-left: 11rem;">
-            <h3 style="margin-left: -169px;">
+            <h3 style="margin-left: -169px; margin-top: 7px;">
                 <% if(user){ %>
-                    <%= user.NICKNAME %> 님의 최근 부정도
+                    <%= user.NICKNAME %> 님의 최근 감정
                 <% } %>
             </h3>
             <div id="gauge-text">100</div>
         </div>
         <div id="gauge-container" class="graph-container">
             <canvas id="gauge"></canvas>
-            <div>
+            <div style="margin-top: -40px;">
             <span style="margin-right: 17rem;">양호</span>
             <span style="margin-right: 1rem;">주의</span>
         </div>
@@ -36,7 +36,7 @@
                     <%= user.NICKNAME %> 님의 주요 고민요소
                 </h3>
                 <% } %>
-                    <h4 id="worry-text">일반고민</h4>
+                    <h4 id="worry-text" style="border: 2px solid black; margin-top: -22px;">일반고민</h4>
         </div>
     </div>
 </div>

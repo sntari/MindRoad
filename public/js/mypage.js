@@ -66,7 +66,7 @@ $(document).ready(function () {
                         title: { display: true },
                         datalabels: {
                             formatter: (value, context) => {
-                                return value + "%";
+                                return value.toFixed(1) + "%";
                             },
                             color: '#000000',  // 라벨의 텍스트 색상
                             font: {
@@ -109,7 +109,7 @@ $(document).ready(function () {
                 datasets: [
                     {
                         label: '상담 기록에 따른 부정도 추이',
-                        data: avg_bad,
+                        data: avg_bad.reverse(),
                         fill: false,
                         borderColor: 'rgb(75, 140, 192)',
                         tension: 0.4
@@ -136,15 +136,45 @@ $(document).ready(function () {
                 type: 'line',
                 data: data,
                 options: {
+                    maintainAspectRatio: true, // 비율 유지하지 않음
+                    layout: {
+                        padding: {
+                            left: 50,   // 왼쪽 여백
+                            right: 50,  // 오른쪽 여백
+                            top: 20,    // 위쪽 여백
+                            bottom: 20  // 아래쪽 여백
+                        }
+                    },
                     responsive: true,
                     plugins: {
-                        legend: { display: true, position: 'top' },
+                        title: {
+                            display: true, text: nickname + '님의 감정평균, 전체 평균', font: {
+                                size: 30
+                            },
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                generateLabels: function (chart) {
+                                    const datasets = chart.data.datasets;
+                                    return datasets.map((dataset, i) => ({
+                                        text: dataset.label,
+                                        datasetIndex: i,
+                                        fillStyle: dataset.borderColor,
+                                        strokeStyle: dataset.borderColor,
+                                        lineWidth: 0.01
+                                    }));
+                                },
+                                usePointStyle: false
+                            }
+                        },
                         datalabels: {
                             display: true,         // 라벨을 표시
                             color: 'black',        // 라벨의 색상
                             align: 'right',          // 데이터 포인트 위에 라벨 배치
                             font: {                // 폰트 설정
-                                size: 13,          // 폰트 크기 (예: 14px)
+                                size: 20,          // 폰트 크기 (예: 14px)
                                 weight: 'bold'     // 폰트 굵기 (옵션)
                             },
                             formatter: (value, context) => {
@@ -208,12 +238,13 @@ $(document).ready(function () {
                     generateGradient: true,
                     highDpiSupport: true,
                     staticZones: [
-                        { strokeStyle: "green", min: 0, max: 20 },
-                        { strokeStyle: "lime", min: 21, max: 40 },
-                        { strokeStyle: "yellow", min: 41, max: 60 },
-                        { strokeStyle: "orange", min: 61, max: 80 },
-                        { strokeStyle: "red", min: 81, max: 100 }
-                    ],
+                        { strokeStyle: "#388E3C", min: 0, max: 20 }, // even darker green
+                        { strokeStyle: "#43A047", min: 21, max: 40 }, // darker lime
+                        { strokeStyle: "#FDD835", min: 41, max: 60 }, // darker yellow
+                        { strokeStyle: "#FF5722", min: 61, max: 80 }, // darker salmon
+                        { strokeStyle: "#D32F2F", min: 81, max: 100 } // darker coral
+                    ]
+
                 };
 
                 var target = document.getElementById('gauge');
@@ -232,15 +263,15 @@ $(document).ready(function () {
                 var gaugeText = document.getElementById('gauge-text');
                 gaugeText.textContent = Math.round(bad);  // 게이지 텍스트 업데이트
                 if (bad < 20) {
-                    gaugeText.style.color = "green";
+                    gaugeText.style.color = "#388E3C";
                 } else if (bad < 40) {
-                    gaugeText.style.color = "lime";
+                    gaugeText.style.color = "#43A047";
                 } else if (bad < 60) {
-                    gaugeText.style.color = "yellow";
+                    gaugeText.style.color = "#FDD835";
                 } else if (bad < 80) {
-                    gaugeText.style.color = "orange";
+                    gaugeText.style.color = "#FF5722";
                 } else if (bad <= 100) {
-                    gaugeText.style.color = "red";
+                    gaugeText.style.color = "#D32F2F";
                 }
             }
             setTimeout(() => {
