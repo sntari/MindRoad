@@ -1,7 +1,9 @@
 <div>
     <div style="display: flex;">
         <% if(user){ %>
-            <h2 style="margin-left: 87px; margin-top: 33px; margin-bottom: 19px;">
+            <h2 style="margin-left: 89px;
+            margin-top: 5px;
+            margin-bottom: -5px;">
                 <%= user.NICKNAME %> 님 환영합니다!
             </h2>
             <% } %>
@@ -20,18 +22,19 @@
 
 <div id="myinfo" class="tab-content">
     <div id="myinfoimg" class="myinfo-container">
-        <div id="gauge-container" class="graph-container">
-            <% if(user){ %>
-                <h3 style="margin-left: -85px;">
+        <div style="margin-left: 11rem;">
+            <h3 style="margin-left: -85px;">
+                <% if(user){ %>
                     <%= user.NICKNAME %> 님의 최근 부정도
-                </h3>
                 <% } %>
-                    <div id="gauge-text" style="font-size: 80px; margin-bottom: -160px; margin-left: -85px;">100</div>
-                    <!-- 게이지 그래프를 표시할 canvas 요소 -->
-                    <canvas id="gauge" style="margin-left: -85px;"></canvas>
+            </h3>
+            <div id="gauge-text" style="font-size: 80px; margin-bottom: -160px; margin-left: -85px;">100</div>
+        </div>
+        <div id="gauge-container" class="graph-container">
+            <canvas id="gauge" style="margin-left: -85px; margin-top: -19rem; margin-bottom: 50px;"></canvas>
         </div>
         <div id="piegraph" class="graph-container" style="width:40%">
-            <canvas id="myPieChart" style="margin-left: 96px;"></canvas>
+            <canvas id="myPieChart" style="margin-left: 96px; margin-top: 1rem;"></canvas>
         </div>
         <div id="linegraph" class="graph-container">
             <canvas id="myLineChart"></canvas>

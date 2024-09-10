@@ -33,17 +33,16 @@ $(document).ready(function () {
             my_Q = response.pie.my_Q;
 
             document.getElementById('worry-text').innerText = my_Q;
-
-            // 파이 차트 생성
+            // 파이차트
             const pieData = {
                 labels: ['긍정', '부정', '중립'],
                 datasets: [{
                     label: '감정 분포도',
                     data: [good, bad, center],
                     backgroundColor: [
-                        'rgb(34, 193, 34)',  // 긍정
-                        'rgb(255, 59, 48)',  // 부정
-                        'rgb(169, 169, 169)',  // 중립
+                        'rgb(54, 162, 235)',  // 파랑 (긍정)
+                        'rgb(255, 80, 80)',  // 빨강 (부정)
+                        'rgb(255, 206, 86)'   // 노랑 (중립)
                     ],
                     hoverOffset: 4
                 }]
@@ -56,13 +55,20 @@ $(document).ready(function () {
                 options: {
                     responsive: true,
                     plugins: {
-                        legend: { position: 'top' },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 18  // 상단 레이블의 텍스트 크기 조정
+                                }
+                            }
+                        },
                         title: { display: true },
                         datalabels: {
                             formatter: (value, context) => {
-                                return value+"%";
+                                return value + "%";
                             },
-                            color: '#black',  // 라벨의 텍스트 색상
+                            color: '#000000',  // 라벨의 텍스트 색상
                             font: {
                                 weight: 'bold',
                                 size: 14
@@ -72,6 +78,7 @@ $(document).ready(function () {
                 },
                 plugins: [ChartDataLabels]  // datalabels 플러그인 활성화
             });
+
         },
         error: function (xhr, status, error) {
             console.log("긍부중실패", xhr.responseText);
@@ -132,7 +139,6 @@ $(document).ready(function () {
                     responsive: true,
                     plugins: {
                         legend: { display: true, position: 'top' },
-                        title: { display: true, text: '꺾은 선 그래프' },
                         datalabels: {
                             display: true,         // 라벨을 표시
                             color: 'black',        // 라벨의 색상
@@ -214,6 +220,17 @@ $(document).ready(function () {
 
                 var gaugeText = document.getElementById('gauge-text');
                 gaugeText.textContent = Math.round(bad);  // 게이지 텍스트 업데이트
+                if (bad < 20) {
+                    gaugeText.style.color = "green";
+                } else if (bad < 40) {
+                    gaugeText.style.color = "lime";
+                } else if (bad < 60) {
+                    gaugeText.style.color = "yellow";
+                } else if (bad < 80) {
+                    gaugeText.style.color = "orange";
+                } else if (bad <= 100) {
+                    gaugeText.style.color = "red";
+                }
             }
             setTimeout(() => {
                 gaugeGraphUpdate(g_bad);

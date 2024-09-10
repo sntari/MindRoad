@@ -10,6 +10,11 @@ body {
     display: flex;
 }
 
+#myPieChart {
+    width: 400px;
+    height: 400px;
+}
+
 .mypage_tab {
     background-color: #f0ba8c;
     font-weight: bold;
