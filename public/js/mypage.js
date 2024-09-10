@@ -306,6 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function calculateScore() {
     let totalScore = 0;
+    let allAnswered = true; // 모든 항목이 선택되었는지 확인하는 변수
 
     // 각 문항에 대해 선택된 값을 합산
     for (let i = 1; i <= 9; i++) {
@@ -313,31 +314,67 @@ function calculateScore() {
         if (selectedOption) {
             totalScore += parseInt(selectedOption.value, 10);
         } else {
-            console.warn(`이봐요 ${i}번 선택 안했수다.`);
+            allAnswered = false; // 하나라도 선택되지 않았을 경우 false로 변경
         }
     }
+
+    // 오류 메시지를 위한 별도 변수
+    const errorElement = document.getElementById('error-message');
+    const resultElement = document.getElementById('survey_result');
+    
+    // 모든 항목이 선택되지 않았을 경우
+    if (!allAnswered) {
+        errorElement.textContent = '모든 항목을 선택해주세요.'; // 오류 메시지 출력
+        resultElement.style.display = 'none'; // 결과는 숨김
+        return; // 더 이상 진행하지 않음
+    }
+
+    // 항목이 모두 선택되었으면 오류 메시지 숨기기
+    errorElement.textContent = '';
+
     // 합계 점수 표시
     document.getElementById('total-score').textContent = totalScore;
 
-    // 점수에 따른 결과 텍스트
     let resultText = '';
-    if (totalScore == 0) {
-        resultText = '입력값이 없습니다';
-    } else if (totalScore <= 4) {
+    let commentText = '';
+    let resultColor = 'black'; // 기본 색상
+
+    if (totalScore <= 4) {
         resultText = '정상';
+        commentText = '적응상의 지장을 초래할만한 우울 관련 증상을 거의 보이지 않았습니다.';
+        resultColor = 'green';
     } else if (totalScore <= 9) {
         resultText = '경미한 수준의 우울함';
+        commentText = '경미한 수준의 우울감이 있으나 일상생활에 지장을 줄 정도는 아닙니다.';
+        resultColor = '#2ede02';
     } else if (totalScore <= 14) {
         resultText = '중간 수준의 우울함';
+        commentText = '중간수준의 우울감을 비교적 자주 경험하는 것으로 보입니다.<br>직업적, 사회적 적응에 일부 영향을 미칠 수 있어 주의 깊은 관찰과 관심이 필요합니다.';
+        resultColor = '#e38c02';
     } else if (totalScore <= 19) {
         resultText = '약간 심한 수준의 우울함';
+        commentText = '약간 심한 수준의 우울감을 자주 경험하는 것으로 보입니다.<br>직업적, 사회적 적응에 일부 영향을 미칠 수 있습니다.<br>정신건강 전문가의 도움을 받아 보시기를 권해 드립니다.';
+        resultColor = '#f75002';
     } else if (totalScore <= 27) {
         resultText = '심한 수준의 우울함';
+        commentText = '광범위한 우울 증상을 매우 자주, 심한 수준에서 경험하는 것으로 보입니다.<br>일상생활의 다양한 영역에서 어려움이 초래될 경우.<br>추가적인 평가나 정신건강 전문가의 도움을 받아보시기를 권해 드립니다.';
+        resultColor = '#f80101';
     }
+
     // 결과 텍스트 표시
-    document.getElementById('result-text').textContent = resultText;
+    const resultTextElement = document.getElementById('result-text');
+    resultTextElement.innerHTML = resultText;
+    resultTextElement.style.color = resultColor; // 텍스트 색상 설정
+
+    document.getElementById('comment-text').innerHTML = commentText;
+
+    // #survey_result가 표시되도록 설정
+    resultElement.style.display = 'block';
 }
 
+// 초기 로드 시 #survey_result와 에러 메시지를 숨김
+document.getElementById('survey_result').style.display = 'none';
+document.getElementById('error-message').textContent = '';
 
 // 계정 정보 수정
 $(document).ready(function () {

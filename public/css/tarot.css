@@ -200,20 +200,4 @@
 .interpretation-content::-webkit-scrollbar {
     display: none;
     /* Chrome, Safari, Opera */
-<<<<<<< HEAD
-}
-
-#userButtons{
-    justify-content: center;
-    display: flex;
-    align-items: center;
-}
-
-#category-buttons{
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-=======
->>>>>>> 961eaae6fa90b66b0648c971d5d1bef31d6897e9
 }
