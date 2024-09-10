@@ -263,8 +263,13 @@ $(document).ready(function () {
                 
 
                 var gaugeText = document.getElementById('gauge-text');
-                gaugeText.textContent = Math.round(bad);  // 게이지 텍스트 업데이트
-                gaugeText.textContent = "현재 고민이 없습니다.";
+                
+                if (bad === 0) {
+                    gaugeText.textContent = "현재 고민이 없습니다.";
+                }else{
+                    gaugeText.textContent = Math.round(bad);  // 게이지 텍스트 업데이트
+                }
+                
 
                 if (bad < 20) {
                     gaugeText.style.color = "#388E3C";
