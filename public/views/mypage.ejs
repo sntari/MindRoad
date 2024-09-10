@@ -1,4 +1,8 @@
-
+<style>
+    .survey_select{
+        width: 9%;
+    }
+</style>
 
 <div class="mypage_button">
     <button class="mypage_tab" onclick="openTab('myinfo')">내 상태</button>
@@ -44,17 +48,17 @@
 <div id="survey" class="tab-content" style="display: none;">
     <form id="depression-survey">
         <div id="intro_survey">
-            <p style="margin-bottom: -1.5em;">*본 자가진단 설문지는 보건복지부 산하 국립정신건강센터의 국가트라우마센터 정서관련 질문지를 토대로 제작되었습니다.</p>
-            <p style="margin-bottom: 1em;">이 설문지는 국제질병기준 분류(ICD)와 DSM-5 기준에 의거하여 검사자의 우울도를 측정합니다. 정확한 평가를 위해서는 전문적인 상담과 진단이 필요할 수 있습니다.</p>
+            <p style="margin-bottom: -1.5em; font-weight: 900;">*본 자가진단 설문지는 보건복지부 산하 국립정신건강센터의 국가트라우마센터 정서관련 질문지를 토대로 제작되었습니다.</p>
+            <p style="margin-bottom: 1em; font-weight: 900;">이 설문지는 국제질병기준 분류(ICD)와 DSM-5 기준에 의거하여 검사자의 우울도를 측정합니다. 정확한 평가를 위해서는 전문적인 상담과 진단이 필요할 수 있습니다.</p>
         </div>
         <table>
             <thead>
                 <tr class="survey_Question">
-                    <th>질문</th>
-                    <th>전혀 방해받지 않았다</th>
-                    <th>며칠동안 방해받았다</th>
-                    <th>7일 이상 방해받았다</th>
-                    <th>거의 매일 방해받았다</th>
+                    <th>지난 2주일 동안 당신은 다음의 문제들로 인해서 얼마나 자주 방해를 받았습니까?</th>
+                    <th class="survey_select">전혀<br>방해받지<br>않았다</th>
+                    <th class="survey_select">며칠동안<br>방해받았다</th>
+                    <th class="survey_select">7일 이상<br>방해받았다</th>
+                    <th class="survey_select">거의 매일<br>방해받았다</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,7 +112,7 @@
                     <td><input type="radio" id="q7-3" name="q7" value="3"><label for="q7-3"></label></td>
                 </tr>
                 <tr class="survey_Question">
-                    <td class="question">8. 다른 사람들이 주목할 정도로 너무 느리게 움직이거나 말을 함 또는 반대로 평상시보다 많이 움직여서, 너무 안절부절 못하거나 들떠 있음</td>
+                    <td class="question">8. 다른 사람들이 주목할 정도로 너무 느리게 움직이거나 말을 함<br> 또는 반대로 평상시보다 많이 움직여서, 너무 안절부절 못하거나 들떠 있음</td>
                     <td><input type="radio" id="q8-0" name="q8" value="0"><label for="q8-0"></label></td>
                     <td><input type="radio" id="q8-1" name="q8" value="1"><label for="q8-1"></label></td>
                     <td><input type="radio" id="q8-2" name="q8" value="2"><label for="q8-2"></label></td>
@@ -126,11 +130,14 @@
 
         <!-- 합계 점수 및 결과 -->
         <div>
-            <button type="button" onclick="calculateScore()">결과 확인</button>
+            <button type="button" onclick="calculateScore()" style="font-size: 32px; border-radius: 20px;">결과 확인</button>
         </div>
         <div id="score-result">
-            <p>합계 점수: <span id="total-score"></span></p>
-            <p>결과: <span id="result-text"></span></p>
+            <% if(user){ %>
+            <p>자가진단 결과, <%= user.NICKNAME %> 님의 우울도는 <span id="total-score"></span>점 입니다.</p>
+            <% } %>
+            <p><span id="result-text"></span>으로 측정됩니다.</p>
+            <p>ㅎㅇ<span id="comment-text"></span></p>
         </div>
     </form>
 </div>
