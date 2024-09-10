@@ -50,8 +50,21 @@
 					</nav>
 
 					<!-- Main -->
-					<div id="main">
+				<% if (!user){ %>
+					<div id="main" style="top: 120px;">
 						<!-- 홈(챗봇) -->
+						<article id="home" class="panel">
+							<%- include('home') %>
+						</article>
+					<div id="footer">
+						<ul class="copyright">
+							<li>&copy; 스마트인재개발원</li>
+							<li> MindRoad : 김현우 | 문승명 | 김형욱 | 오창선 | 김지성 </li>
+						</ul>
+					</div>
+					</div>
+						<% }else{ %>
+					<div id="main">
 						<article id="home" class="panel">
 							<%- include('home') %>
 						</article>
@@ -78,6 +91,7 @@
 				</div>
 
 		</div>
+		<% } %>
 
 		<!-- 스크립트 js 연결 -->
 		<script src="../js/jquery.min.js"></script>
@@ -92,6 +106,8 @@
 		<script src="https://cdn.jsdelivr.net/npm/chartjs-gauge@0.1.8/dist/chartjs-gauge.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/gaugeJS/dist/gauge.min.js"></script>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
 
 </body>
 

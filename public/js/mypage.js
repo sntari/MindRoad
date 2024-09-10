@@ -6,7 +6,12 @@ function openTab(tabName) {
     }
     document.getElementById(tabName).style.display = "block";
 }
+function calculateAverage(avg_bad) {
+    if (avg_bad.length === 0) return 0; // 배열이 비어 있을 때 0 반환
 
+    let sum = avg_bad.reduce((acc, num) => acc + num, 0);
+    return sum / avg_bad.length;
+}
 
 // 파이 그래프
 let good = 1;
@@ -15,7 +20,10 @@ let center = 1;
 
 $(document).ready(function () {
     const nickname = document.getElementById('nickname').value;
+<<<<<<< HEAD
     console.log("dom");
+=======
+>>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
 
     // 첫 번째 AJAX 요청 (파이 차트 및 게이지)
     $.ajax({
@@ -23,6 +31,7 @@ $(document).ready(function () {
         url: '/mypage/pie_info',
         data: { nickname: nickname },
         success: function (response) {
+<<<<<<< HEAD
             const good = parseFloat(response.pie.average_good);
             const bad = parseFloat(response.pie.average_bad);
             const center = parseFloat(response.pie.average_center);
@@ -31,19 +40,38 @@ $(document).ready(function () {
             document.getElementById('worry-text').innerText = my_Q;
 
             // 파이 차트 생성
+=======
+            good = parseFloat(response.pie.average_good);
+            bad = parseFloat(response.pie.average_bad);
+            center = parseFloat(response.pie.average_center);
+            my_Q = response.pie.my_Q;
+
+            document.getElementById('worry-text').innerText = my_Q;
+            // 파이차트
+>>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
             const pieData = {
                 labels: ['긍정', '부정', '중립'],
                 datasets: [{
                     label: '감정 분포도',
                     data: [good, bad, center],
                     backgroundColor: [
+<<<<<<< HEAD
                         'rgb(54, 162, 235)',  // 긍정
                         'rgb(255, 51, 0)',  // 부정
                         'rgb(245, 245, 7)',  // 중립
+=======
+                        'rgb(54, 162, 235)',  // 파랑 (긍정)
+                        'rgb(255, 80, 80)',  // 빨강 (부정)
+                        'rgb(255, 206, 86)'   // 노랑 (중립)
+>>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
                     ],
                     hoverOffset: 4
                 }]
             };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
             const pieCtx = document.getElementById('myPieChart').getContext('2d');
             const myPieChart = new Chart(pieCtx, {
                 type: 'pie',
@@ -51,6 +79,7 @@ $(document).ready(function () {
                 options: {
                     responsive: true,
                     plugins: {
+<<<<<<< HEAD
                         legend: { position: 'top' },
                         title: { display: true }
                     }
@@ -109,6 +138,32 @@ $(document).ready(function () {
             $(document).ready(function () {
                 gaugeGraphUpdate(bad);
             });
+=======
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 18  // 상단 레이블의 텍스트 크기 조정
+                                }
+                            }
+                        },
+                        title: { display: true },
+                        datalabels: {
+                            formatter: (value, context) => {
+                                return value + "%";
+                            },
+                            color: '#000000',  // 라벨의 텍스트 색상
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]  // datalabels 플러그인 활성화
+            });
+
+>>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
         },
         error: function (xhr, status, error) {
             console.log("긍부중실패", xhr.responseText);
@@ -128,23 +183,52 @@ $(document).ready(function () {
             const label_int = avg_bad;
             const label_int_Length = label_int.length;
             const labels = Array.from({ length: label_int_Length }, (_, index) => `${index + 1}회차`);
+<<<<<<< HEAD
             const onesList = Array(label_int_Length).fill(all_bad);
+=======
+            const all_bad_list = Array.from({ length: label_int_Length }, () => all_bad);
+            const avg_list = avg_bad.length === 0 ? 0 : avg_bad.reduce((acc, num) => acc + num, 0) / avg_bad.length;
+            const all_avg_list = Array.from({ length: label_int_Length }, () => avg_list);
+
+
+
+>>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
             const data = {
                 labels: labels,
                 datasets: [
                     {
+<<<<<<< HEAD
                         label: '상담 기록에 따른 우울도 추이',
                         data: label_int,
+=======
+                        label: '상담 기록에 따른 부정도 추이',
+                        data: avg_bad,
+>>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
                         fill: false,
                         borderColor: 'rgb(75, 140, 192)',
                         tension: 0.4
                     },
                     {
+<<<<<<< HEAD
                         label: '우울도 전체 평균',
                         data: onesList,
                         fill: false,
                         borderColor: 'rgb(255, 99, 132)',
                         tension: 0.4
+=======
+                        label: '전체 부정도 평균',
+                        data: all_bad_list,
+                        fill: false,
+                        borderColor: 'rgb(255, 99, 132)',
+                        tension: 0.4
+                    },
+                    {
+                        label: nickname + '님 부정치 평균',
+                        data: all_avg_list,
+                        fill: false,
+                        borderColor: 'rgb(0, 255, 0)',
+                        tension: 0.4
+>>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
                     }
                 ]
             };
@@ -157,6 +241,7 @@ $(document).ready(function () {
                     responsive: true,
                     plugins: {
                         legend: { display: true, position: 'top' },
+<<<<<<< HEAD
                         title: { display: true, text: '꺾은 선 그래프' }
                     },
                     scales: {
@@ -165,12 +250,115 @@ $(document).ready(function () {
                     }
                 }
             });
+=======
+                        datalabels: {
+                            display: true,         // 라벨을 표시
+                            color: 'black',        // 라벨의 색상
+                            align: 'top',          // 데이터 포인트 위에 라벨 배치
+                            formatter: (value, context) => {
+                                // 특정 데이터셋에만 라벨을 표시
+                                if (context.dataset.label === '상담 기록에 따른 부정도 추이') {
+                                    return value.toFixed(0) + "점"; // 소수점 한 자리까지 표시
+                                }
+                                return null;  // '상담 기록에 따른 추이' 외의 데이터셋에서는 라벨을 표시하지 않음
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { beginAtZero: true },
+                        y: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 100
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels] // 플러그인 추가
+            });
+
+        },
+        error: function (xhr, status, error) {
+            console.log("긍부중실패", xhr.responseText);
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '/mypage/graph_info',
+        data: { nickname: nickname },
+        success: function (response) {
+            const g_bad = response.pie.g_bad;
+            console.log(g_bad);
+
+
+            // 게이지 그래프 업데이트
+            function gaugeGraphUpdate(bad) {
+                var opts = {
+                    angle: 0.0,
+                    lineWidth: 0.2,
+                    radiusScale: 0.5,
+                    pointer: {
+                        length: 0.6,
+                        strokeWidth: 0.035,
+                        color: '#000000'
+                    },
+                    limitMax: false,
+                    limitMin: false,
+                    colorStart: 'orange',
+                    colorStop: 'red',
+                    strokeColor: 'green',
+                    generateGradient: true,
+                    highDpiSupport: true,
+                    staticZones: [
+                        { strokeStyle: "green", min: 0, max: 20 },
+                        { strokeStyle: "lime", min: 21, max: 40 },
+                        { strokeStyle: "yellow", min: 41, max: 60 },
+                        { strokeStyle: "orange", min: 61, max: 80 },
+                        { strokeStyle: "red", min: 81, max: 100 }
+                    ],
+                };
+
+                var target = document.getElementById('gauge');
+
+                if (!target) {
+                    console.log("gauge element를 찾을 수 없습니다.");
+                    return;
+                }
+
+                var gauge = new Gauge(target).setOptions(opts);
+                gauge.maxValue = 100;
+                gauge.setMinValue(0);
+                gauge.animationSpeed = 32;
+                gauge.set(bad);  // bad 값을 게이지에 설정
+
+                var gaugeText = document.getElementById('gauge-text');
+                gaugeText.textContent = Math.round(bad);  // 게이지 텍스트 업데이트
+                if (bad < 20) {
+                    gaugeText.style.color = "green";
+                } else if (bad < 40) {
+                    gaugeText.style.color = "lime";
+                } else if (bad < 60) {
+                    gaugeText.style.color = "yellow";
+                } else if (bad < 80) {
+                    gaugeText.style.color = "orange";
+                } else if (bad <= 100) {
+                    gaugeText.style.color = "red";
+                }
+            }
+            setTimeout(() => {
+                gaugeGraphUpdate(g_bad);
+            }, 2000);
+
+>>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
         },
         error: function (xhr, status, error) {
             console.log("긍부중실패", xhr.responseText);
         }
     });
 });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2603a8cd80ef36f150b988d3c1da28be1a02c636
 
 
 
@@ -202,7 +390,7 @@ function calculateScore() {
     // 점수에 따른 결과 텍스트
     let resultText = '';
     if (totalScore == 0) {
-        resultText = '입력을 안했어';
+        resultText = '입력값이 없습니다';
     } else if (totalScore <= 4) {
         resultText = '정상';
     } else if (totalScore <= 9) {
