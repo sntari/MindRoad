@@ -62,7 +62,6 @@ async function graph_info(req, res){
         
         // nickname을 기반으로 pie 값을 계산
         const pie2 = await myPageService.graph_BAD(nickname);
-        console.log(pie2);
         
         // 응답을 JSON 형식으로 보내기
         res.json({

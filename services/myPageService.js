@@ -183,7 +183,6 @@ async function graph_BAD(user) {
                 g_bad: rows[0].g_bad
             };
         } else {
-            console.log("체크");
             // { average_good: 33, average_bad: 33, average_center: 34 }
             return {g_bad : 0};
         }
