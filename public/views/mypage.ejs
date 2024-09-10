@@ -15,7 +15,7 @@
                     <%= user.NICKNAME %> 님의 최근 감정
                 <% } %>
             </h3>
-            <div id="gauge-text">100</div>
+            <div id="gauge-text" style="font-size: 42px;">100</div>
         </div>
         <div id="gauge-container" class="graph-container">
             <canvas id="gauge"></canvas>
@@ -158,9 +158,7 @@
             <div class="form-group" id="pw_box">
                 <label for="register_pw">새 비밀번호</label>
                 <% if(user){ %>
-                    <p id="pw_check" style="display: none;">
-                        <%= user.PW%>
-                    </p>
+                    <p id="pw_check" style="display: none;"><%= user.PW%></p>
                     <% } %>
                         <input type="password" id="register_pw2" name="new_pw" placeholder="Password" style="border: 3px solid #f0ba8c;" required>
             </div>

@@ -214,8 +214,7 @@ $(document).ready(function () {
         url: '/mypage/graph_info',
         data: { nickname: nickname },
         success: function (response) {
-            const g_bad = response.pie.g_bad;
-            console.log(g_bad);
+            const g_bad = response.pie2.g_bad;
 
 
             // 게이지 그래프 업데이트
@@ -257,10 +256,16 @@ $(document).ready(function () {
                 gauge.maxValue = 100;
                 gauge.setMinValue(0);
                 gauge.animationSpeed = 32;
+           
+            
                 gauge.set(bad);  // bad 값을 게이지에 설정
+                
+                
 
                 var gaugeText = document.getElementById('gauge-text');
                 gaugeText.textContent = Math.round(bad);  // 게이지 텍스트 업데이트
+                gaugeText.textContent = "현재 고민이 없습니다.";
+
                 if (bad < 20) {
                     gaugeText.style.color = "#388E3C";
                 } else if (bad < 40) {
@@ -386,30 +391,39 @@ $(document).ready(function () {
         const newPw = document.getElementById('del-password').value;
         const Pw = document.getElementById('pw_check').innerHTML;
 
+        console.log(currentPw);
+        console.log(newPw);
+        console.log(Pw);
+        
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
         if (currentPw == newPw && newPw == Pw) {
-            $.ajax({
-                type: 'POST',
-                url: '/mypage/del_id',
-                data: formData,
-                success: function (response) {
-                    // 로그아웃
-                    $.ajax({
-                        type: 'GET',
-                        url: '/mypage/logout',
-                        success: function (response) {
-                            window.location.href = '/';
-                        },
-                        error: function (xhr, status, error) {
-                            console.log("로그아웃실패", xhr.responseText);
-                        }
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.log("삭제실패", xhr.responseText);
-                }
-            });
+            const confirmation = confirm("정말로 탈퇴하시겠습니까?");
+            if(confirmation){
+                $.ajax({
+                    type: 'POST',
+                    url: '/mypage/del_id',
+                    data: formData,
+                    success: function (response) {
+                        // 로그아웃
+                        $.ajax({
+                            type: 'GET',
+                            url: '/mypage/logout',
+                            success: function (response) {
+                                window.location.href = '/';
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("로그아웃실패", xhr.responseText);
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("삭제실패", xhr.responseText);
+                    }
+                });
+            }else {
+                alert("탈퇴가 취소되었습니다.");
+            }
         } else {
             document.getElementById('mypage_error2').innerHTML = "비밀번호가 일치하지 않습니다";
         }

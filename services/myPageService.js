@@ -29,6 +29,7 @@ async function del_member(mem_id, mem_pw, new_pw) {
         // mem_id와 mem_pw를 업데이트하는 SQL 쿼리
         const [result] = await connection.execute(
             'DELETE FROM MEMBERS WHERE EMAIL = ? AND PW = ?',
+            
             [mem_id, mem_pw]
         );
         // 업데이트된 행 수를 확인
@@ -182,7 +183,9 @@ async function graph_BAD(user) {
                 g_bad: rows[0].g_bad
             };
         } else {
-            return 0;
+            console.log("체크");
+            // { average_good: 33, average_bad: 33, average_center: 34 }
+            return {g_bad : 0};
         }
     } catch (error) {
         console.error('Error retrieving chatbot sentiment averages:', error);

@@ -61,13 +61,14 @@ async function graph_info(req, res){
         const { nickname } = req.body;
         
         // nickname을 기반으로 pie 값을 계산
-        const pie = await myPageService.graph_BAD(nickname);
-
+        const pie2 = await myPageService.graph_BAD(nickname);
+        console.log(pie2);
+        
         // 응답을 JSON 형식으로 보내기
         res.json({
             success: true,
-            pie: pie,
-            message: pie > 0 ? 'User session updated' : 'Pie value is not greater than 0'
+            pie2: pie2,
+            message: pie2 > 0 ? 'User session updated' : 'Pie value is not greater than 0'
         });
     } catch (error) {
         console.error(error);
