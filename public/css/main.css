@@ -10,7 +10,7 @@
 @font-face {
 	font-family: "GmarketSansLight";
 	src: url("../img/font/GmarketSansLight.otf") format("otf"),
-		url("../img/font/GmarketSansLight.ttf") format("truetype");
+		url("../img/font/GmarketSansTTFLight.ttf") format("truetype");
 	font-weight: normal;
 	font-style: normal;
 }
