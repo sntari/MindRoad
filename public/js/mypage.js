@@ -285,7 +285,7 @@ $(document).ready(function () {
             }
             setTimeout(() => {
                 gaugeGraphUpdate(g_bad);
-            }, 2000);
+            }, 3000);
             document.querySelector('.mypage_tab').addEventListener('click', () => {
                 gaugeGraphUpdate(g_bad);
             });
