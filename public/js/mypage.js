@@ -18,283 +18,302 @@ let good = 1;
 let bad = 1;
 let center = 1;
 
+
+const nickname = document.getElementById('nickname').value;
+
+function executeTask() {
+    const pieData = {
+        labels: ['긍정', '부정', '중립'],
+        datasets: [{
+            label: '감정 분포도',
+            data: [good, bad, center],
+            backgroundColor: [
+                'rgb(54, 162, 235)',  // 파랑 (긍정)
+                'rgb(255, 80, 80)',  // 빨강 (부정)
+                'rgb(255, 206, 86)'   // 노랑 (중립)
+            ],
+            hoverOffset: 4
+        }]
+    };
+    const pieCtx = document.getElementById('myPieChart').getContext('2d');
+    const myPieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: pieData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: {
+                            size: 18  // 상단 레이블의 텍스트 크기 조정
+                        }
+                    }
+                },
+                title: { display: true },
+                datalabels: {
+                    formatter: (value, context) => {
+                        return value.toFixed(1);
+                    },
+                    color: '#000000',  // 라벨의 텍스트 색상
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]  // datalabels 플러그인 활성화
+    });
+}
+
+function updateLineChart(avg_bad, all_bad) {
+    const label_int = avg_bad;
+    const label_int_Length = label_int.length;
+    const labels = Array.from({ length: label_int_Length }, (_, index) => `${index + 1}회차`);
+    const all_bad_list = Array.from({ length: label_int_Length }, () => all_bad);
+    const avg_list = avg_bad.length === 0 ? 0 : avg_bad.reduce((acc, num) => acc + num, 0) / avg_bad.length;
+    const all_avg_list = Array.from({ length: label_int_Length }, () => avg_list);
+
+
+
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: '상담 기록에 따른 부정도 추이',
+                data: avg_bad.reverse(),
+                fill: false,
+                borderColor: 'rgb(75, 140, 192)',
+                tension: 0.4
+            },
+            {
+                label: '전체 부정도 평균',
+                data: all_bad_list,
+                fill: false,
+                borderColor: 'rgb(255, 99, 132)',
+                tension: 0.4
+            },
+            {
+                label: nickname + '님 부정치 평균',
+                data: all_avg_list,
+                fill: false,
+                borderColor: '#43A047',
+                tension: 0.4
+            }
+        ]
+    };
+
+    const ctx = document.getElementById('myLineChart').getContext('2d');
+    const myLineChart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+            maintainAspectRatio: true, // 비율 유지하지 않음
+            layout: {
+                padding: {
+                    left: 50,   // 왼쪽 여백
+                    right: 50,  // 오른쪽 여백
+                    top: 20,    // 위쪽 여백
+                    bottom: 20  // 아래쪽 여백
+                }
+            },
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true, text: nickname + '님의 감정평균, 전체 평균', font: {
+                        size: 30
+                    },
+                },
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        generateLabels: function (chart) {
+                            const datasets = chart.data.datasets;
+                            return datasets.map((dataset, i) => ({
+                                text: dataset.label,
+                                datasetIndex: i,
+                                fillStyle: dataset.borderColor,
+                                strokeStyle: dataset.borderColor,
+                                lineWidth: 0.01
+                            }));
+                        },
+                        usePointStyle: false
+                    }
+                },
+                datalabels: {
+                    display: true,         // 라벨을 표시
+                    color: 'black',        // 라벨의 색상
+                    align: 'right',          // 데이터 포인트 위에 라벨 배치
+                    font: {                // 폰트 설정
+                        size: 20,          // 폰트 크기 (예: 14px)
+                        weight: 'bold'     // 폰트 굵기 (옵션)
+                    },
+                    formatter: (value, context) => {
+                        // 전체 부정도 평균과 nickname 부정치 평균에서 마지막 데이터만 표시
+                        const dataset = context.dataset;
+                        const dataIndex = context.dataIndex;
+                        const lastIndex = dataset.data.length - 1;
+
+                        if (dataset.label === '전체 부정도 평균' || dataset.label === nickname + '님 부정치 평균') {
+                            if (dataIndex === lastIndex) {
+                                return value.toFixed(1); // 마지막 데이터 포인트에 소수점 한자리로 라벨 표시
+                            }
+                        }
+                        return null; // 그 외에는 라벨을 표시하지 않음
+                    }
+                }
+            },
+            scales: {
+                x: { beginAtZero: true },
+                y: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 100
+                }
+            }
+        },
+        plugins: [ChartDataLabels] // 플러그인 추가
+    });
+
+}
+
+
+function gaugeGraphUpdate(bad) {
+    var opts = {
+        angle: 0.0,
+        lineWidth: 0.2,
+        radiusScale: 0.5,
+        pointer: {
+            length: 0.6,
+            strokeWidth: 0.035,
+            color: '#000000'
+        },
+        limitMax: false,
+        limitMin: false,
+        colorStart: 'orange',
+        colorStop: 'red',
+        strokeColor: 'green',
+        generateGradient: true,
+        highDpiSupport: true,
+        staticZones: [
+            { strokeStyle: "#388E3C", min: 0, max: 20 }, // even darker green
+            { strokeStyle: "#43A047", min: 21, max: 40 }, // darker lime
+            { strokeStyle: "#FDD835", min: 41, max: 60 }, // darker yellow
+            { strokeStyle: "#FF5722", min: 61, max: 80 }, // darker salmon
+            { strokeStyle: "#D32F2F", min: 81, max: 100 } // darker coral
+        ]
+
+    };
+
+    var target = document.getElementById('gauge');
+
+    if (!target) {
+        return;
+    }
+
+    var gauge = new Gauge(target).setOptions(opts);
+    gauge.maxValue = 100;
+    gauge.setMinValue(0);
+    gauge.animationSpeed = 32;
+
+
+    gauge.set(bad);  // bad 값을 게이지에 설정
+
+
+
+    var gaugeText = document.getElementById('gauge-text');
+
+    if (bad === 0) {
+        gaugeText.textContent = "현재 고민이 없습니다.";
+
+    } else {
+        gaugeText.textContent = Math.round(bad);  // 게이지 텍스트 업데이트
+        gaugeText.style.fontSize = 55;
+    }
+
+
+    if (bad < 20) {
+        gaugeText.style.color = "#388E3C";
+    } else if (bad < 40) {
+        gaugeText.style.color = "#43A047";
+    } else if (bad < 60) {
+        gaugeText.style.color = "#FDD835";
+    } else if (bad < 80) {
+        gaugeText.style.color = "#FF5722";
+    } else if (bad <= 100) {
+        gaugeText.style.color = "#D32F2F";
+    }
+}
 $(document).ready(function () {
     const nickname = document.getElementById('nickname').value;
 
-    // 첫 번째 AJAX 요청 (파이 차트 및 게이지)
-    $.ajax({
-        type: 'POST',
-        url: '/mypage/pie_info',
-        data: { nickname: nickname },
-        success: function (response) {
-            good = parseFloat(response.pie.average_good);
-            bad = parseFloat(response.pie.average_bad);
-            center = parseFloat(response.pie.average_center);
-            my_Q = response.pie.my_Q;
+    // 데이터를 새로 불러오는 함수 정의
+    function refreshData() {
+        // 첫 번째 AJAX 요청 (파이 차트 및 게이지)
+        $.ajax({
+            type: 'POST',
+            url: '/mypage/pie_info',
+            data: { nickname: nickname },
+            success: function (response) {
+                good = parseFloat(response.pie.average_good);
+                bad = parseFloat(response.pie.average_bad);
+                center = parseFloat(response.pie.average_center);
+                my_Q = response.pie.my_Q;
 
-            document.getElementById('worry-text').innerText = my_Q;
-            // 파이차트
-            const pieData = {
-                labels: ['긍정', '부정', '중립'],
-                datasets: [{
-                    label: '감정 분포도',
-                    data: [good, bad, center],
-                    backgroundColor: [
-                        'rgb(54, 162, 235)',  // 파랑 (긍정)
-                        'rgb(255, 80, 80)',  // 빨강 (부정)
-                        'rgb(255, 206, 86)'   // 노랑 (중립)
-                    ],
-                    hoverOffset: 4
-                }]
-            };
-            const pieCtx = document.getElementById('myPieChart').getContext('2d');
-            const myPieChart = new Chart(pieCtx, {
-                type: 'pie',
-                data: pieData,
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                font: {
-                                    size: 18  // 상단 레이블의 텍스트 크기 조정
-                                }
-                            }
-                        },
-                        title: { display: true },
-                        datalabels: {
-                            formatter: (value, context) => {
-                                return value.toFixed(1);
-                            },
-                            color: '#000000',  // 라벨의 텍스트 색상
-                            font: {
-                                weight: 'bold',
-                                size: 14
-                            }
-                        }
-                    }
-                },
-                plugins: [ChartDataLabels]  // datalabels 플러그인 활성화
-            });
+                document.getElementById('worry-text').innerText = my_Q;
 
-        },
-        error: function (xhr, status, error) {
-            console.log("긍부중실패", xhr.responseText);
-        }
-    });
-
-    // 두 번째 AJAX 요청 (우울도 꺾은선 그래프)
-    $.ajax({
-        type: 'POST',
-        url: '/mypage/Graph_BAD',
-        data: { nickname: nickname },
-        success: function (response) {
-            const avg_bad = response.graph.avg_bad;
-            const all_bad = parseFloat(response.graph.all_bad);
-
-            // 꺾은 선 그래프
-            const label_int = avg_bad;
-            const label_int_Length = label_int.length;
-            const labels = Array.from({ length: label_int_Length }, (_, index) => `${index + 1}회차`);
-            const all_bad_list = Array.from({ length: label_int_Length }, () => all_bad);
-            const avg_list = avg_bad.length === 0 ? 0 : avg_bad.reduce((acc, num) => acc + num, 0) / avg_bad.length;
-            const all_avg_list = Array.from({ length: label_int_Length }, () => avg_list);
-
-
-
-            const data = {
-                labels: labels,
-                datasets: [
-                    {
-                        label: '상담 기록에 따른 부정도 추이',
-                        data: avg_bad.reverse(),
-                        fill: false,
-                        borderColor: 'rgb(75, 140, 192)',
-                        tension: 0.4
-                    },
-                    {
-                        label: '전체 부정도 평균',
-                        data: all_bad_list,
-                        fill: false,
-                        borderColor: 'rgb(255, 99, 132)',
-                        tension: 0.4
-                    },
-                    {
-                        label: nickname + '님 부정치 평균',
-                        data: all_avg_list,
-                        fill: false,
-                        borderColor: '#43A047',
-                        tension: 0.4
-                    }
-                ]
-            };
-
-            const ctx = document.getElementById('myLineChart').getContext('2d');
-            const myLineChart = new Chart(ctx, {
-                type: 'line',
-                data: data,
-                options: {
-                    maintainAspectRatio: true, // 비율 유지하지 않음
-                    layout: {
-                        padding: {
-                            left: 50,   // 왼쪽 여백
-                            right: 50,  // 오른쪽 여백
-                            top: 20,    // 위쪽 여백
-                            bottom: 20  // 아래쪽 여백
-                        }
-                    },
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true, text: nickname + '님의 감정평균, 전체 평균', font: {
-                                size: 30
-                            },
-                        },
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                generateLabels: function (chart) {
-                                    const datasets = chart.data.datasets;
-                                    return datasets.map((dataset, i) => ({
-                                        text: dataset.label,
-                                        datasetIndex: i,
-                                        fillStyle: dataset.borderColor,
-                                        strokeStyle: dataset.borderColor,
-                                        lineWidth: 0.01
-                                    }));
-                                },
-                                usePointStyle: false
-                            }
-                        },
-                        datalabels: {
-                            display: true,         // 라벨을 표시
-                            color: 'black',        // 라벨의 색상
-                            align: 'right',          // 데이터 포인트 위에 라벨 배치
-                            font: {                // 폰트 설정
-                                size: 20,          // 폰트 크기 (예: 14px)
-                                weight: 'bold'     // 폰트 굵기 (옵션)
-                            },
-                            formatter: (value, context) => {
-                                // 전체 부정도 평균과 nickname 부정치 평균에서 마지막 데이터만 표시
-                                const dataset = context.dataset;
-                                const dataIndex = context.dataIndex;
-                                const lastIndex = dataset.data.length - 1;
-
-                                if (dataset.label === '전체 부정도 평균' || dataset.label === nickname + '님 부정치 평균') {
-                                    if (dataIndex === lastIndex) {
-                                        return value.toFixed(1); // 마지막 데이터 포인트에 소수점 한자리로 라벨 표시
-                                    }
-                                }
-                                return null; // 그 외에는 라벨을 표시하지 않음
-                            }
-                        }
-                    },
-                    scales: {
-                        x: { beginAtZero: true },
-                        y: {
-                            beginAtZero: true,
-                            min: 0,
-                            max: 100
-                        }
-                    }
-                },
-                plugins: [ChartDataLabels] // 플러그인 추가
-            });
-
-
-        },
-        error: function (xhr, status, error) {
-            console.log("긍부중실패", xhr.responseText);
-        }
-    });
-    $.ajax({
-        type: 'POST',
-        url: '/mypage/graph_info',
-        data: { nickname: nickname },
-        success: function (response) {
-            const g_bad = response.pie2.g_bad;
-
-
-            // 게이지 그래프 업데이트
-            function gaugeGraphUpdate(bad) {
-                var opts = {
-                    angle: 0.0,
-                    lineWidth: 0.2,
-                    radiusScale: 0.5,
-                    pointer: {
-                        length: 0.6,
-                        strokeWidth: 0.035,
-                        color: '#000000'
-                    },
-                    limitMax: false,
-                    limitMin: false,
-                    colorStart: 'orange',
-                    colorStop: 'red',
-                    strokeColor: 'green',
-                    generateGradient: true,
-                    highDpiSupport: true,
-                    staticZones: [
-                        { strokeStyle: "#388E3C", min: 0, max: 20 }, // even darker green
-                        { strokeStyle: "#43A047", min: 21, max: 40 }, // darker lime
-                        { strokeStyle: "#FDD835", min: 41, max: 60 }, // darker yellow
-                        { strokeStyle: "#FF5722", min: 61, max: 80 }, // darker salmon
-                        { strokeStyle: "#D32F2F", min: 81, max: 100 } // darker coral
-                    ]
-
-                };
-
-                var target = document.getElementById('gauge');
-
-                if (!target) {
-                    return;
-                }
-
-                var gauge = new Gauge(target).setOptions(opts);
-                gauge.maxValue = 100;
-                gauge.setMinValue(0);
-                gauge.animationSpeed = 32;
-           
-            
-                gauge.set(bad);  // bad 값을 게이지에 설정
-                
-                
-
-                var gaugeText = document.getElementById('gauge-text');
-                
-                if (bad === 0) {
-                    gaugeText.textContent = "현재 고민이 없습니다.";
-                    
-                }else{
-                    gaugeText.textContent = Math.round(bad);  // 게이지 텍스트 업데이트
-                    gaugeText.style.fontSize = 55;
-                }
-                
-
-                if (bad < 20) {
-                    gaugeText.style.color = "#388E3C";
-                } else if (bad < 40) {
-                    gaugeText.style.color = "#43A047";
-                } else if (bad < 60) {
-                    gaugeText.style.color = "#FDD835";
-                } else if (bad < 80) {
-                    gaugeText.style.color = "#FF5722";
-                } else if (bad <= 100) {
-                    gaugeText.style.color = "#D32F2F";
-                }
+                // 파이차트 실행
+                executeTask();
+            },
+            error: function (xhr, status, error) {
+                console.log("긍부중실패", xhr.responseText);
             }
-            setTimeout(() => {
-                gaugeGraphUpdate(g_bad);
-            }, 3000);
-            document.querySelector('.mypage_tab').addEventListener('click', () => {
-                gaugeGraphUpdate(g_bad);
-            });
+        });
 
-        },
-        error: function (xhr, status, error) {
-            console.log("긍부중실패", xhr.responseText);
-        }
+        // 두 번째 AJAX 요청 (우울도 꺾은선 그래프)
+        $.ajax({
+            type: 'POST',
+            url: '/mypage/Graph_BAD',
+            data: { nickname: nickname },
+            success: function (response) {
+                const avg_bad = response.graph.avg_bad;
+                const all_bad = parseFloat(response.graph.all_bad);
+
+                // 꺾은 선 그래프 업데이트
+                updateLineChart(avg_bad, all_bad);
+            },
+            error: function (xhr, status, error) {
+                console.log("긍부중실패", xhr.responseText);
+            }
+        });
+
+        // 세 번째 AJAX 요청 (게이지 그래프)
+        $.ajax({
+            type: 'POST',
+            url: '/mypage/graph_info',
+            data: { nickname: nickname },
+            success: function (response) {
+                const g_bad = response.pie2.g_bad;
+
+                // 게이지 그래프 업데이트
+                setTimeout(function () {
+                    gaugeGraphUpdate(g_bad);
+                }, 3000);
+            },
+            error: function (xhr, status, error) {
+                console.log("긍부중실패", xhr.responseText);
+            }
+        });
+    }
+
+    // 초기 데이터 로드
+    refreshData();
+
+    // 새로고침 버튼 클릭 시 데이터를 새로 불러옴
+    document.getElementById('mypage_button').addEventListener('click', function () {
+        refreshData();  // 데이터만 새로고침
     });
 });
 
@@ -327,7 +346,7 @@ function calculateScore() {
     // 오류 메시지를 위한 별도 변수
     const errorElement = document.getElementById('error-message');
     const resultElement = document.getElementById('survey_result');
-    
+
     // 모든 항목이 선택되지 않았을 경우
     if (!allAnswered) {
         errorElement.textContent = '모든 항목을 선택해주세요.'; // 오류 메시지 출력
@@ -438,7 +457,7 @@ $(document).ready(function () {
         const formData = $(this).serialize();
         if (currentPw == newPw && newPw == Pw) {
             const confirmation = confirm("정말로 탈퇴하시겠습니까?");
-            if(confirmation){
+            if (confirmation) {
                 $.ajax({
                     type: 'POST',
                     url: '/mypage/del_id',
@@ -460,7 +479,7 @@ $(document).ready(function () {
                         console.log("삭제실패", xhr.responseText);
                     }
                 });
-            }else {
+            } else {
                 alert("탈퇴가 취소되었습니다.");
             }
         } else {
