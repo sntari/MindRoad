@@ -267,7 +267,7 @@ $(document).ready(function () {
                     gaugeText.textContent = "현재 고민이 없습니다.";
                     
                 }else{
-                    gaugeText.textContent = "위험도 : " + Math.round(bad);  // 게이지 텍스트 업데이트
+                    gaugeText.textContent = Math.round(bad);  // 게이지 텍스트 업데이트
                     gaugeText.style.fontSize = 55;
                 }
                 
