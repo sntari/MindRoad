@@ -34,15 +34,14 @@
 
 #show {
   display: inline-block;
-  font-weight: bold;
   color: #000;
   text-decoration: none;
   border-color: #000;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 20px;
   text-align: center;
-  background-color: transparent;
   width: 100px;
+  margin-right: 40px;
   /* 화면에 고정 */
   top : 5%;
   /* 화면 하단에서 20px 위쪽 */
@@ -73,7 +72,7 @@
 }
 
 #show:hover {
-  font-weight: bold;
+  color:#cf6e50 ;
   /* 호버 시 텍스트 굵게 */
 }
 
