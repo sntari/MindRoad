@@ -14,7 +14,6 @@ if (!user) {
 window.currentInput = null;
 
 document.addEventListener('DOMContentLoaded', function () {
-	console.log(user);
 	const chatContent = document.getElementById('chatContent');
 	const chatInput = document.getElementById('chatInput');
 	const sendButton = document.getElementById('sendButton');
