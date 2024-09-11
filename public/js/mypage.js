@@ -68,6 +68,7 @@ function executeTask() {
 }
 
 function updateLineChart(avg_bad, all_bad) {
+    // 꺾은 선 그래프
     const label_int = avg_bad;
     const label_int_Length = label_int.length;
     const labels = Array.from({ length: label_int_Length }, (_, index) => `${index + 1}회차`);
@@ -176,7 +177,6 @@ function updateLineChart(avg_bad, all_bad) {
         },
         plugins: [ChartDataLabels] // 플러그인 추가
     });
-
 }
 
 
