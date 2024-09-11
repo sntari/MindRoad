@@ -65,7 +65,7 @@ $(document).ready(function () {
                         title: { display: true },
                         datalabels: {
                             formatter: (value, context) => {
-                                return value.toFixed(1) + "%";
+                                return value.toFixed(1);
                             },
                             color: '#000000',  // 라벨의 텍스트 색상
                             font: {
