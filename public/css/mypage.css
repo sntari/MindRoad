@@ -79,7 +79,7 @@ body {
 
 #gauge-container {
     padding-top: 50px;
-    border-right: 2px solid #E7AF9E;
+    border-right: 2px solid #f0ba8c;
     margin-left: -9rem;
 }
 
@@ -111,7 +111,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top : 2px solid #E7AF9E;
+    border-top : 2px solid #f0ba8c;
 }
 
 #myLineChart {

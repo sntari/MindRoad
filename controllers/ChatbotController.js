@@ -4,7 +4,6 @@ class ChatbotController {
   static async handleChatbotResponse(req, res) {
     try {
       const { user, questions, sentiment } = req.body;
-      console.log('Received data:', { user, questions, sentiment });
       const insertId = await ChatbotServices.ChatbotSentiment(user, questions, sentiment);
       
       res.status(201).json({ message: 'Chatbot response saved successfully', id: insertId });
