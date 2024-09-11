@@ -31,7 +31,6 @@ function logout(req, res) {
             return res.status(500).send('세션 제거');
         }
         res.redirect('/');
-        console.log("로그아웃 성공");
     });
 }
 

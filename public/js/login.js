@@ -6,7 +6,7 @@ if (!user_data) {
     const modal = document.querySelector(".background");
     const re = document.querySelector(".login__register");
     const cr = document.querySelector(".login__create");
-
+    
     // 회원가입/ 로그인폼 아이디 선택자로 지정
     const signup = document.getElementById("sign-up");
     const signin = document.getElementById("sign-in");
@@ -79,7 +79,6 @@ $(document).ready(function () {
     $('#register_id').blur(function () {
         const memIdValue = $(this).val();
         document.getElementById("register_id_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
-        console.log("AJAX request value:", memIdValue);
         if (!memIdValue) {
             return;
         }
@@ -90,13 +89,11 @@ $(document).ready(function () {
                 EMAIL: memIdValue
             },
             success: function (response) {
-                console.log("Server response:", response);
                 if (response === "available") {
                     document.getElementById("register_id_text").innerText = "";
                     checkEmail = 1;
                 } else {
                     document.getElementById("register_id_text").innerText = "이미 사용중인 이메일입니다.";
-                    console.log("실패");
                     checkEmail = 0;
                 }
             },
@@ -112,7 +109,6 @@ $(document).ready(function () {
     $('#register_nick').blur(function () {
         const NickValue = $(this).val();
         document.getElementById("register_nick_text").innerText = "";				// 중복감지후 텍스트 삭제시 중복감지 알람 사라지게
-        console.log("AJAX request value:", NickValue);
         if (!NickValue) {
             return;
         }
@@ -123,7 +119,6 @@ $(document).ready(function () {
                 NICK: NickValue
             },
             success: function (response) {
-                console.log("Server response:", response);
                 if (response === "available") {
                     document.getElementById("register_nick_text").innerText = "";
                     checkNickname = 1;
@@ -158,7 +153,6 @@ $(document).ready(function () {
                 url: '/member/register',
                 data: formData,
                 success: function (response) {
-                    console.log("회원가입성공", response);
                     loginin.classList.remove("none");		//로그인화면으로 넘어가기
                     loginup.classList.remove("block");		//로그인화면으로 넘어가기
                     loginin.classList.add("block");			//로그인화면으로 넘어가기
@@ -171,7 +165,6 @@ $(document).ready(function () {
                     document.getElementById("sample").innerText = ""; 							 // 비밀번호 보안강도 초기화
                 },
                 error: function (xhr, status, error) {
-                    console.log("회원가입실패", xhr.responseText);
                 }
             });
         }
@@ -205,11 +198,9 @@ $(document).ready(function () {
             url: '/member/login',
             data: formData,
             success: function (response) {
-                console.log("로그인성공", response);
                 window.location.href = '/';
             },
             error: function (xhr, status, error) {
-                console.log("로그인실패", xhr.responseText);
                 document.getElementById("login_check").style.display = 'block';
             }
         });
@@ -262,8 +253,6 @@ function checkPassword(password) {
 }
 $(document).ready(function () {
     $('#register_pw').on('input', function () {
-        console.log(password.value.length);
-
         if (password.value.length == 0 || password.value.length >= 7) {
             document.getElementById("pw_len").style.display = 'none'; // 문자열 길이가 7 이상이면 경고 메시지를 숨김
         } if (0 < password.value.length && password.value.length <= 6) {

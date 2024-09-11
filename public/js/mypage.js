@@ -124,7 +124,7 @@ $(document).ready(function () {
                         label: nickname + '님 부정치 평균',
                         data: all_avg_list,
                         fill: false,
-                        borderColor: 'rgb(0, 255, 0)',
+                        borderColor: '#43A047',
                         tension: 0.4
                     }
                 ]
@@ -248,7 +248,6 @@ $(document).ready(function () {
                 var target = document.getElementById('gauge');
 
                 if (!target) {
-                    console.log("gauge element를 찾을 수 없습니다.");
                     return;
                 }
 
@@ -266,8 +265,10 @@ $(document).ready(function () {
                 
                 if (bad === 0) {
                     gaugeText.textContent = "현재 고민이 없습니다.";
+                    
                 }else{
-                    gaugeText.textContent = Math.round(bad);  // 게이지 텍스트 업데이트
+                    gaugeText.textContent = "위험도 : " + Math.round(bad);  // 게이지 텍스트 업데이트
+                    gaugeText.style.fontSize = 55;
                 }
                 
 
@@ -433,10 +434,6 @@ $(document).ready(function () {
         const newPw = document.getElementById('del-password').value;
         const Pw = document.getElementById('pw_check').innerHTML;
 
-        console.log(currentPw);
-        console.log(newPw);
-        console.log(Pw);
-        
         event.preventDefault(); // 폼의 기본 제출 동작을 막음
         const formData = $(this).serialize();
         if (currentPw == newPw && newPw == Pw) {
